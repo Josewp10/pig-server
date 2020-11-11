@@ -1,0 +1,25 @@
+const {pool, Pool} = require('pg');
+
+class ServicioPG {
+    constructor(){
+        this.pool = new Pool({
+            user: process.env.USER,
+            host: process.env.HOST,
+            database: process.env.DATABASE,
+            password: process.env.PASSWORD,
+            port: 5432
+        });
+    }
+
+    // Ejecuta la clase y el metodo se debe hacer
+// de forma asincrona para que respuesta tenga un valor
+  
+async ejecutarSql(sql,params) {
+    let respuesta = await this.pool.query(sql,params);
+    return respuesta;
+  }
+}
+
+// Exporta la clase, para poder ser utilizada desde otros archivos
+
+module.exports = ServicioPG;
