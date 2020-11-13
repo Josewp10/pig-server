@@ -22,7 +22,7 @@ const validarBovino = bovino => {
 
 //Trae todos los bovinos registrados
 const consultarBovinos = async (bovino) => {    
-    let sql = `SELECT chapeta, tipo_bovino FROM public.bovino;`;
+    let sql = `SELECT * FROM public."Bovinos";`;
     let respuesta = await _servicio.ejecutarSql(sql);
     return respuesta
 };

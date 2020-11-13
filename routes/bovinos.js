@@ -9,10 +9,10 @@ const {
     consultarBovino,
     eliminarBovino,
     editarBovino
-} = require('../controllers/bovino');
+} = require('../controllers/bovinos');
 
 //Trae todos los bovinos
-router.get('/bovino', async (req, res) => {
+router.get('/bovinos', async (req, res) => {
     consultarBovinos()
         .then((bovinoDB) => {
             let bovino = bovinoDB.rows;
@@ -24,7 +24,7 @@ router.get('/bovino', async (req, res) => {
 });
 
 //Trae un bovino en específico
-router.get('/bovino/:chapeta/:tipo', async (req, res) => {
+router.get('/bovinos/:chapeta/:tipo', async (req, res) => {
     let id = req.params.chapeta;
     let tipo_bovino = req.params.tipo;
     
@@ -39,7 +39,7 @@ router.get('/bovino/:chapeta/:tipo', async (req, res) => {
         });
 });
 //Trae todos los bovinos según el tipo
-router.get('/bovino/:tipo', async (req, res) => {
+router.get('/bovinos/:tipo', async (req, res) => {
   let id = req.params.chapeta;
   let tipo_bovino = req.params.tipo;
   
@@ -54,7 +54,7 @@ router.get('/bovino/:tipo', async (req, res) => {
       });
 });
 // Guarda un nuevo bovino
-router.post("/bovino", (req, res) => {
+router.post("/bovinos", (req, res) => {
     try {
       let info_bovino = req.body;
   
@@ -76,7 +76,7 @@ router.post("/bovino", (req, res) => {
   });
 
 //Elimina un bovino
-  router.delete("/bovino/:chapeta", (req, res) => {
+  router.delete("/bovinos/:chapeta", (req, res) => {
     let id = req.params.chapeta;
     eliminarBovino(id)
       .then((respuestaDB) => {
@@ -91,7 +91,7 @@ router.post("/bovino", (req, res) => {
 
   //Actualizar bovino
 
-router.put("/bovino/:chapeta", (req, res) => {
+router.put("/bovinos/:chapeta", (req, res) => {
     try {
       //Capturar el body desde la solicitud
       let chapeta = req.params.chapeta;
