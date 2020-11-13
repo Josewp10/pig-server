@@ -21,6 +21,9 @@ const vs = '/api/v1';
 const ruta_controlRetiros = require("./routes/controlRetiros");
 app.use(ruta_controlRetiros);
 
+const ruta_controlTratamientos = require("./routes/controlTratamientos");
+app.use(ruta_controlTratamientos);
+
  //Puerto
  const port = 3001;
 

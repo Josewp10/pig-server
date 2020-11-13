@@ -4,9 +4,9 @@ const {
 
   ver_tratamiento,
   crear_tratamiento,
-} = require("../controllers/controlTratamiento");
+} = require("../controllers/controlTratamientos");
 
-router.get("/controlTratamiento", (req, res) => {
+router.get("/controlTratamientos", (req, res) => {
   ver_tratamiento()
     .then((answerDB) => {
       let records = answerDB.rows;
@@ -22,7 +22,7 @@ router.get("/controlTratamiento", (req, res) => {
 });
 
 
-router.post("/controlTratamiento", (req, res) => {
+router.post("/controlTratamientos", (req, res) => {
   try {
     let info_tratamiento = req.body;
     crear_tratamiento(info_tratamiento)
