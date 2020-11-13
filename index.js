@@ -4,26 +4,27 @@ const cors = require('cors');
 
 //Inicializar librería
 const app = express();
+
+
 app.use(express.json());
 app.use(cors());
 
+
 //Endpoint
 app.get('/', (req,res) =>{
-    res.send('Bienvenido al control de celo');
+    res.send('Bienvenido a PIG Plataforma de gestión ganadera');
 });
+
 const vs = '/api/v1';
 
-/*/Rutas importadas
-const ruta_bovino = require('./routes/bovino');
-app.use(ruta_bovino);
-
-const ruta_celo = require('./routes/celo');
-app.use(ruta_celo);*/
+//Rutas importadas
+const ruta_controlRetiros = require("./routes/controlRetiros");
+app.use(ruta_controlRetiros);
 
  //Puerto
- const port = process.env.PORT || 3001;
+ const port = 3001;
 
  //Levantamiento
  app.listen(port, () => {
-    console.log(`Escuchando API en PORT:${port}`);
+    console.log(`Escuchando API en http://localhost:${port}`);
  });

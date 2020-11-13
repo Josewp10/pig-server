@@ -1,4 +1,5 @@
 const {pool, Pool} = require('pg');
+require('dotenv').config()
 
 class ServicioPG {
     constructor(){
@@ -7,6 +8,7 @@ class ServicioPG {
             host: process.env.HOST,
             database: process.env.DATABASE,
             password: process.env.PASSWORD,
+            ssl: { rejectUnauthorized: false },
             port: process.env.PORT
         });
     }
