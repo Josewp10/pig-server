@@ -14,8 +14,11 @@
     "cross-env": "^7.0.2",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
+<<<<<<< HEAD
+=======
     "express-sslify": "^1.2.0",
     "install": "^0.13.0",
+>>>>>>> 1080f7e697eedc0948696d667d1bf7a4dc3671fa
     "nodemon": "^2.0.6",
     "pg": "^8.5.0"
   }

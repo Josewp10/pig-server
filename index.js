@@ -18,6 +18,10 @@ app.get('/', (req,res) =>{
 const vs = '/api/v1';
 
 //Rutas importadas
+
+const bovinos = require("./routes/bovinos");
+app.use(bovinos);
+
 const ruta_controlRetiros = require("./routes/controlRetiros");
 app.use(ruta_controlRetiros);
 
