@@ -1,8 +1,9 @@
 const {pool, Pool} = require('pg');
-require('dotenv').config()
 
 class ServicioPG {
+    
     constructor(){
+        
         this.pool = new Pool({
             user: process.env.USER,
             host: process.env.HOST,
@@ -12,7 +13,7 @@ class ServicioPG {
             port: process.env.PORT
         });
     }
-
+    
     // Ejecuta la clase y el metodo se debe hacer
 // de forma asincrona para que respuesta tenga un valor
   

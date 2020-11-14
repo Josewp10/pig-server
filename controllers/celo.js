@@ -16,7 +16,17 @@ const validarCelo = celo => {
             ok: false,
             mensaje: 'Ingrese la información de la hembra'
         };
-    }else if(!celo.fecha){
+    }else if(!celo.fecha_inicio){
+        throw{
+            ok: false,
+            mensaje: 'Ingrese la fecha de inicio'
+        };
+    }else if(!celo.detalles){
+        throw{
+            ok: false,
+            mensaje: 'Ingrese la fecha de inicio'
+        };
+    }else if(!celo.id_usuario){
         throw{
             ok: false,
             mensaje: 'Ingrese la fecha de inicio'
@@ -26,15 +36,28 @@ const validarCelo = celo => {
 
 //Trae todos los celos registrados
 const consultarCelos = async (celo) => {
-    let sql = `SELECT id_celo, id_macho, id_hembra, fecha FROM public.celo;`;
+    let sql = `Select id_celo, fecha_inicio, detalles,
+            (Select nombre from public."Bovinos" where id_bovino = id_macho) as "Nombre Macho",
+            (Select nombre from public."Bovinos" where id_bovino = id_hembra) as "Nombre Hembra", 
+            public."Usuarios"."nombre" 
+            from public."ControlCelos"
+            inner join public."Usuarios" 
+            on public."Usuarios"."id_Tusuario" = public."ControlCelos"."id_usuario";`;
     let respuesta = await _servicio.ejecutarSql(sql);
     return respuesta
 };
 
 //Trae un celo en específico
 let consultarCelo = async (id_celo) => {
-    let sql = `SELECT id_celo, id_macho, id_hembra, fecha FROM public.celo
-      WHERE id_celo = $1`;
+    let sql = `
+    Select id_celo, fecha_inicio, detalles,
+            (Select nombre from public."Bovinos" where id_bovino = id_macho) as "NombreM",
+            (Select nombre from public."Bovinos" where id_bovino = id_hembra) as "NombreH", 
+            public."Usuarios"."nombre" 
+            from public."ControlCelos"
+            inner join public."Usuarios" 
+            on public."Usuarios"."id_Tusuario" = public."ControlCelos"."id_usuario"
+            where id_celo = $1;`;
       
     let respuesta = await _servicio.ejecutarSql(sql, [id_celo]);
     return respuesta;
@@ -43,16 +66,18 @@ let consultarCelo = async (id_celo) => {
 //Inserta celos en la base de datos
 const guardarCelo = async (celo) => {
     //console.log(celo);
-    let sql = `INSERT INTO public.celo(id_macho, id_hembra, fecha)
-                values($1,$2,$3);`;
-    let valores = [celo.id_macho, celo.id_hembra, celo.fecha];
+    let sql = `INSERT INTO public."ControlCelos"(fecha_inicio, detalles, id_macho, id_hembra, id_usuario)
+                select ($1), ($2), ($3), ($4), 
+                (SELECT public."Usuarios"."id_Tusuario" from public."Usuarios" where id_usuario = $5);`;
+    let valores = [celo.fecha_inicio, celo.detalles, celo.id_macho, celo.id_hembra, celo.id_usuario];
     let respuesta = await _servicio.ejecutarSql(sql, valores);
     return respuesta
 };
 
 //Elimina un celo de la base de datos
 const eliminarCelo = async (id_celo) => {
-    let sql = `DELETE FROM public.celo where id_celo = $1`;    
+    let sql = `DELETE FROM public."ControlCelos"
+	            WHERE id_celo = $1;`;    
     let respuesta = await _servicio.ejecutarSql(sql, [id_celo]);
     return respuesta
 };
@@ -66,8 +91,10 @@ const editarCelo = async (celo, id_celo) => {
       };
     }
     let sql =
-      `UPDATE public.celo SET id_macho=$1, id_hembra=$2, fecha=$3 WHERE id_celo=$4;`;
-    let valores = [celo.id_macho, celo.id_hembra, celo.fecha, id_celo];
+      `UPDATE public."ControlCelos"
+            SET fecha_inicio = $1, detalles = $2, id_macho = $3, id_hembra= $4, id_usuario= $5
+            WHERE id_celo = $6;`;
+      let valores = [celo.fecha_inicio, celo.detalles, celo.id_macho, celo.id_hembra, celo.id_usuario, celo.id_celo];
     let respuesta = await _servicio.ejecutarSql(sql, valores);
   
     return respuesta;
