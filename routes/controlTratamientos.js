@@ -4,6 +4,9 @@ const {
 
   ver_tratamiento,
   crear_tratamiento,
+  editar_tratamiento,
+  eliminar_tratamiento,
+  validar,
 } = require("../controllers/controlTratamientos");
 
 router.get('/controlTratamientos', async (req, res) => {
@@ -22,7 +25,7 @@ router.post("/controlTratamientos", (req, res) => {
   try {
     let info_tratamiento= req.body;
 
-
+    validar(info_tratamiento);
     crear_tratamiento(info_tratamiento)
       .then((respuestaDB) => { 
         res.send({ ok: true, mensaje: "tratamiento guardado", info: info_tratamiento });
@@ -36,5 +39,42 @@ router.post("/controlTratamientos", (req, res) => {
     res.send(error);
   }
 });
+
+router.put("/controlTratamientos/:id_tratamiento", (req, res) => {
+  try {
+    //Capturar el body desde la solicitud
+    let id_tratamiento = req.params.id_tratamiento;
+    let info_tratamiento = req.body;
+
+    // Actualiza el usuario en base de datos
+    editar_tratamiento(info_tratamiento, id_tratamiento)
+      .then((respuestaDB) => {
+        res.send({ ok: true, mensaje: "tratamiento editado", info: info_tratamiento });
+      })
+      .catch((error) => {
+          console.log(error);
+        res.send(error);
+      });
+
+    // Responder
+  } catch (error) {
+      console.log(error);
+    res.send(error);
+  }
+});
+
+
+router.delete("/controlTratamientos/:id_tratamiento", (req, res) => {
+  let id = req.params.id_tratamiento;
+  eliminar_tratamiento(id)
+    .then((respuestaDB) => {
+      res.send({ ok: true, mensaje: "tratamiento eliminado", info: { id } });
+    })
+    .catch((error) => {
+      console.log(error);
+      res.send(error);
+    });
+});
+
 
 module.exports = router;
