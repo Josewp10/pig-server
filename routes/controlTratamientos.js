@@ -6,37 +6,33 @@ const {
   crear_tratamiento,
 } = require("../controllers/controlTratamientos");
 
-router.get("/controlTratamientos", (req, res) => {
+router.get('/controlTratamientos', async (req, res) => {
   ver_tratamiento()
-    .then((answerDB) => {
-      let records = answerDB.rows;
-      res.send({
-        ok: true,
-        info: records,
-        mensaje: "tratamientos consultados",
+      .then((answerDB) => {
+          let tratamiento = answerDB.rows;
+          res.send({ok: true, info: tratamiento, mensaje: 'tratamientos consultados'});
+      })
+      .catch(error => {
+          res.send(error);
       });
-    })
-    .catch((error) => {
-      res.send(error);
-    });
 });
 
 
 router.post("/controlTratamientos", (req, res) => {
   try {
-    let info_tratamiento = req.body;
+    let info_tratamiento= req.body;
+
+
     crear_tratamiento(info_tratamiento)
-      .then((answerDB) => {
-        res.send({
-          ok: true,
-          mensaje: "mantenimiento guardado",
-          info: info_tratamiento,
-        });
+      .then((respuestaDB) => { 
+        res.send({ ok: true, mensaje: "tratamiento guardado", info: info_tratamiento });
       })
-      .catch((error) => {     
-          res.send(error) 
+      .catch((error) => {
+        console.log(error);
+        res.send(error);
       });
   } catch (error) {
+      console.log(error); 
     res.send(error);
   }
 });
