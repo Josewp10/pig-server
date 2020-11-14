@@ -4,8 +4,6 @@ let _service = new ServicePG();
 let validar = tratamiento => {
   if (!tratamiento) {
       throw { ok: false, mensaje: "La información del Control del Tratamiento de Leche es obligatoria" };
-  } else if (!tratamiento.id_tratamiento) {
-      throw { ok: false, mensaje: "El id de tratamiento es obligatoria" };
   } else if (!tratamiento.fecha_inicio) {
       throw { ok: false, mensaje: "El Fecha de Inicio es obligatoria" };
   } else if (!tratamiento.fecha_fin) {
@@ -41,12 +39,11 @@ const ver_tratamiento = async (tratamiento) => {
 };
   
   let crear_tratamiento = async (tratamiento) => {
-    let sql = `INSERT INTO public."ControlTratamientos"(
-      id_tratamiento, fecha_inicio, fecha_fin, hora, enfermedad, detalles, tipo_dosis, id_bovino, id_usuario)
-      VALUES ($1, $2, $3, $4, $5, $6, $7, $8 , $9)`;
+    let sql = `INSERT INTO public."ControlTratamientos"( fecha_inicio, fecha_fin, hora, enfermedad, detalles, tipo_dosis, id_bovino, id_usuario)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8 )`;
         
         let values = [
-          tratamiento.id_tratamiento,
+         
           tratamiento.fecha_inicio,
           tratamiento.fecha_fin,
           tratamiento.hora,
