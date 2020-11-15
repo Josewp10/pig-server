@@ -63,7 +63,7 @@ const ver_tratamiento = async (tratamiento) => {
     if (tratamiento.id_tratamiento != id_tratamiento) {
       throw {
         ok: false,
-        mensaje: "El id del tratamiento no corresponde al enviado",
+        mensaje: "El id del control tratamiento no corresponde al enviado",
       };
     }
     let sql =

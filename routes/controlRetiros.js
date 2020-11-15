@@ -41,4 +41,44 @@ router.post("/controlRetiros", async (req, res) => {
   }
 });
 
+/**
+ * Actualizar
+ */
+router.put("/controlRetiro/:id_retiro", (req, res) => {
+  try {
+    let id_retiro = req.params.id_retiro;
+    let info_retiro = req.body;
+
+    _controlador.actualizarControlRetiro(info_retiro, id_retiro)
+      .then((respuestaDB) => {
+        res.send({ ok: true, mensaje: "Control de Retiro Editado", info: info_retiro });
+      })
+      .catch((error) => {
+          console.log(error);
+        res.send(error);
+      });
+
+    // Responder
+  } catch (error) {
+      console.log(error);
+    res.send(error);
+  }
+});
+
+/**
+ * Eliminar
+ */
+router.delete("/controlRetiros/:id_retiro", (req, res) => {
+  let id = req.params.id_retiro;
+  
+  _controlador.eliminarControlRetiro(id).then((respuestaDB) => {
+      res.send({ ok: true, mensaje: "control retiro eliminado", info: { id } });
+    })
+    .catch((error) => {
+      console.log(error);
+      res.send(error);
+    });
+});
+
+
 module.exports = router

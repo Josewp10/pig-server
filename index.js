@@ -28,6 +28,9 @@ app.use(ruta_controlRetiros);
 const ruta_controlTratamientos = require("./routes/controlTratamientos");
 app.use(ruta_controlTratamientos);
 
+const ruta_controlCelo= require("./routes/celo");
+app.use(ruta_controlCelo);
+
  //Puerto
  const port = 3001;
 

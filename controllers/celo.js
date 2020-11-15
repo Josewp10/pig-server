@@ -37,8 +37,8 @@ const validarCelo = celo => {
 //Trae todos los celos registrados
 const consultarCelos = async (celo) => {
     let sql = `Select id_celo, fecha_inicio, detalles,
-            (Select nombre from public."Bovinos" where id_bovino = id_macho) as "Nombre Macho",
-            (Select nombre from public."Bovinos" where id_bovino = id_hembra) as "Nombre Hembra", 
+            (Select nombre from public."Bovinos" where id_bovino = id_macho) as "Nombre_Macho",
+            (Select nombre from public."Bovinos" where id_bovino = id_hembra) as "Nombre_Hembra", 
             public."Usuarios"."nombre" 
             from public."ControlCelos"
             inner join public."Usuarios" 
