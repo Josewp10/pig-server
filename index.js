@@ -31,6 +31,9 @@ app.use(ruta_controlTratamientos);
 const ruta_controlCelo= require("./routes/celo");
 app.use(ruta_controlCelo);
 
+const ruta_usuarios= require("./routes/usuarios");
+app.use(ruta_usuarios);
+
  //Puerto
  const port = 3001;
 
