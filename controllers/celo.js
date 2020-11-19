@@ -68,7 +68,7 @@ const guardarCelo = async (celo) => {
     //console.log(celo);
     let sql = `INSERT INTO public."ControlCelos"(fecha_inicio, detalles, id_macho, id_hembra, id_usuario)
                 select ($1), ($2), ($3), ($4), 
-                (SELECT public."Usuarios"."id_usuario" from public."Usuarios" where id_usuario = $5);`;
+                (SELECT public."Usuarios"."id_Tusuario" from public."Usuarios" where id_usuario = $5);`;
     let valores = [celo.fecha_inicio, celo.detalles, celo.id_macho, celo.id_hembra, celo.id_usuario];
     let respuesta = await _servicio.ejecutarSql(sql, valores);
     return respuesta

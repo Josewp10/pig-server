@@ -1,6 +1,6 @@
 const {pool, Pool} = require('pg');
 require('dotenv').config()
-
+console.log(process.env.USER);
 class ServicioPG {
     constructor(){
         this.pool = new Pool({

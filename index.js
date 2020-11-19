@@ -37,13 +37,11 @@ app.use(ruta_usuarios);
 const ruta_dosis= require("./routes/tipoDosis");
 app.use(ruta_dosis);
 
-<<<<<<< HEAD
-const ruta_sms= require("./routes/notificacionSMS");
-app.use(ruta_sms);
-=======
 const ruta_tareas= require("./routes/registroTareas");
 app.use(ruta_tareas);
->>>>>>> da3d09452e13033436d880378a6d7563cd1254f3
+
+const ruta_sms= require("./routes/notificacionSMS");
+app.use(ruta_sms);
 
  //Puerto
  const port = 3001;
