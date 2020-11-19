@@ -32,6 +32,14 @@ let consultarControlRetiro = async () => {
     return respuesta;
 };
 
+let consultarporControlRetiro = async (id_retiro) => {
+    let sql = `
+    SELECT id_retiro, hora_ingreso, fecha_ingreso, fecha_salida, num_ordenos_descartar, observaciones, id_bovino, id_usuario
+	FROM public."ControlRetiros"
+      WHERE id_retiro = $1;`;
+    let respuesta = await _servicio.ejecutarSql(sql, [id_retiro]);
+    return respuesta;
+};
 
 let insertarControlRetiro = async (control) => {
     let sql = `INSERT INTO public."ControlRetiros" (
@@ -81,4 +89,4 @@ let actualizarControlRetiro = async (control, id_retiro) => {
     return respuesta;
 };
 
-module.exports = { validar, insertarControlRetiro, consultarControlRetiro, actualizarControlRetiro, eliminarControlRetiro }
+module.exports = { validar, insertarControlRetiro, consultarControlRetiro, actualizarControlRetiro, eliminarControlRetiro, consultarporControlRetiro }

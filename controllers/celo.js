@@ -42,7 +42,8 @@ const consultarCelos = async (celo) => {
             public."Usuarios"."nombre" 
             from public."ControlCelos"
             inner join public."Usuarios" 
-            on public."Usuarios"."id_Tusuario" = public."ControlCelos"."id_usuario";`;
+            on public."Usuarios"."id_Tusuario" = public."ControlCelos"."id_usuario"
+            ORDER BY id_celo ASC;`;
     let respuesta = await _servicio.ejecutarSql(sql);
     return respuesta
 };
@@ -50,13 +51,8 @@ const consultarCelos = async (celo) => {
 //Trae un celo en específico
 let consultarCelo = async (id_celo) => {
     let sql = `
-    Select id_celo, fecha_inicio, detalles,
-            (Select nombre from public."Bovinos" where id_bovino = id_macho) as "NombreM",
-            (Select nombre from public."Bovinos" where id_bovino = id_hembra) as "NombreH", 
-            public."Usuarios"."nombre" 
-            from public."ControlCelos"
-            inner join public."Usuarios" 
-            on public."Usuarios"."id_Tusuario" = public."ControlCelos"."id_usuario"
+    SELECT id_celo, fecha_inicio, detalles, id_macho, id_hembra, id_usuario
+	FROM public."ControlCelos"
             where id_celo = $1;`;
       
     let respuesta = await _servicio.ejecutarSql(sql, [id_celo]);

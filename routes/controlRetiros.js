@@ -18,6 +18,21 @@ router.get("/controlRetiros", (req, res) => {
     });
 });
 
+//Trae uno en específico
+router.get('/controlRetiros/:id_retiro', async (req, res) => {
+  let id = req.params.id_retiro;
+  _controlador.consultarporControlRetiro(id)
+      .then((controlRetiro) => {
+          let controlRetiros = controlRetiro.rows;
+          res.send({ok: true, info: controlRetiros, mensaje: 'Control Retiro consultado'});
+      })
+      .catch(error => {
+          console.log(error);
+          res.send(error);
+      });
+});
+
+
 /**
  * Guardar 
  */
