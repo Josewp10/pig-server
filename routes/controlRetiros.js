@@ -44,7 +44,7 @@ router.post("/controlRetiros", async (req, res) => {
 /**
  * Actualizar
  */
-router.put("/controlRetiro/:id_retiro", (req, res) => {
+router.put("/controlRetiros/:id_retiro", (req, res) => {
   try {
     let id_retiro = req.params.id_retiro;
     let info_retiro = req.body;

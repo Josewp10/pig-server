@@ -6,6 +6,7 @@ const {
   editar_tratamiento,
   eliminar_tratamiento,
   validar,
+  consultarporControl
 } = require("../controllers/controlTratamientos");
 
 router.get('/controlTratamientos', async (req, res) => {
@@ -15,6 +16,21 @@ router.get('/controlTratamientos', async (req, res) => {
           res.send({ok: true, info: tratamiento, mensaje: 'controles de tratamientos consultados'});
       })
       .catch(error => {
+          res.send(error);
+      });
+});
+
+
+//Trae un Celo en específico
+router.get('/controlTratamientos/:id_tratamiento', async (req, res) => {
+  let id = req.params.id_tratamiento;
+  consultarporControl(id)
+      .then((controlTratamiento) => {
+          let controltratamiento = controlTratamiento.rows;
+          res.send({ok: true, info: controltratamiento, mensaje: 'Tratamiento consultado'});
+      })
+      .catch(error => {
+          console.log(error);
           res.send(error);
       });
 });
