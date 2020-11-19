@@ -37,6 +37,9 @@ app.use(ruta_usuarios);
 const ruta_dosis= require("./routes/tipoDosis");
 app.use(ruta_dosis);
 
+const ruta_tareas= require("./routes/registroTareas");
+app.use(ruta_tareas);
+
  //Puerto
  const port = 3001;
 
