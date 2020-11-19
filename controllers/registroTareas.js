@@ -35,6 +35,17 @@ const consultarTarea = async (tarea) => {
     return respuesta
 };
 
+let consultarTareas = async (id_registro) => {
+    let sql = `SELECT "Tareas".nombre as Tareas, "Usuarios".nombre as usuarios, fecha
+	FROM public."RegistroTareas"
+	 INNER JOIN public."Tareas" ON "RegistroTareas".id_tarea= "Tareas"."id_tarea"
+    INNER JOIN public."Usuarios" ON "RegistroTareas".id_usuario = "Usuarios"."id_Tusuario"
+      WHERE id_registro = $1 `;
+      
+    let respuesta = await _servicio.ejecutarSql(sql, [id_registro]);
+    return respuesta;
+  };
+
 
 
 //Inserta tareas en la base de datos
@@ -72,4 +83,4 @@ const editarTarea = async (tarea, id_registro) => {
   };
   
 
-module.exports = {validarTarea, consultarTarea,  guardarTarea, eliminarTarea, editarTarea};
+module.exports = {validarTarea, consultarTarea, consultarTareas, guardarTarea, eliminarTarea, editarTarea};

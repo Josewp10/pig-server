@@ -6,6 +6,7 @@ const {
     validarTarea,
     guardarTarea,
     consultarTarea,
+    consultarTareas,
     eliminarTarea,
     editarTarea
 } = require('../controllers/registroTareas');
@@ -22,7 +23,21 @@ router.get('/registroTareas', async (req, res) => {
         });
 });
 
-// Guarda un nuevo bovino
+router.get('/registroTareas/:id_registro', async (req, res) => {
+  
+    let tipo_tarea = req.params.id_registro;
+    
+    consultarTareas(tipo_tarea)
+        .then((tareaDB) => {
+            let tarea = tareaDB.rows;
+            res.send({ok: true, info: tarea, mensaje: 'tareas consultadas'});
+        })
+        .catch(error => {
+            console.log(error);
+            res.send(error);
+        });
+  });
+// Guarda un nueva tarea
 router.post("/registroTareas", (req, res) => {
     try {
       let info_tarea = req.body;
