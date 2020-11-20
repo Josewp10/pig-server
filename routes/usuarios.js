@@ -4,6 +4,7 @@ const router = express.Router();
 const {
     validarUsuario,
     consultarUsuario,
+    consultarCelUsuario,
     guardarUsuario,
     
 } = require('../controllers/usuarios');
@@ -13,6 +14,19 @@ router.get('/usuarios', async (req, res) => {
         .then((answerDB) => {
             let usuario = answerDB.rows;
             res.send({ok: true, info: usuario, mensaje: 'Usuarios consultados'});
+        })
+        .catch(error => {
+            res.send(error);
+        });
+  });
+
+  //Consulta del celular por usuario
+  router.get('/usuarios/celular/:id_usuario', async (req, res) => {
+    let id = req.params.id_usuario;
+    consultarCelUsuario(id)
+        .then((answerDB) => {
+            let usuario = answerDB.rows;
+            res.send({ok: true, info: usuario, mensaje: 'Celular de usuario consultado'});
         })
         .catch(error => {
             res.send(error);

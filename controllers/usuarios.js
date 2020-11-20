@@ -45,7 +45,13 @@ const consultarUsuario = async (usuario) => {
     return respuesta
 };
 
-
+//Trae el número celular de un usuario en específico
+const consultarCelUsuario = async (id_usuario) => {
+    let sql = `SELECT celular
+	            FROM public."Usuarios" where id_usuario = $1 ;`;
+    let respuesta = await _servicio.ejecutarSql(sql, [id_usuario]);
+    return respuesta
+};
 //Inserta usuarios en la base de datos
 const guardarUsuario = async (usuario) => {
     
@@ -59,4 +65,4 @@ const guardarUsuario = async (usuario) => {
 };
 
 
-module.exports = {validarUsuario, consultarUsuario, guardarUsuario};
+module.exports = {validarUsuario, consultarUsuario, consultarCelUsuario,guardarUsuario};
