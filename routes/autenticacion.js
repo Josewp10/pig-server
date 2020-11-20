@@ -15,7 +15,7 @@ router.post("/login", (req, res) => {
                 if (usuario_consulta) {
                     res.status(200).send({
                         ok: true,
-                        info: usuario,
+                        info: usuario.correo,
                         message: "Usuario autenticado",
                     });
                 } else {

@@ -6,12 +6,13 @@ const twilio_client = require('twilio')(twilio_id, twilio_token);
 
 class ServicioSMS {
     constructor() {}
+
     async enviarSMS (info){
         twilio_client.messages.create({
             to:`${info.to}`,
             from:twilio_number,
             body: `${info.body}`
-        }).then(message => {console.log(message)})
+        }).then(message => {console.log(message.status)})
         .catch(error => {console.log(error)});
     }
 }
