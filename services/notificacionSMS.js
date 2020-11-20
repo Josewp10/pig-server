@@ -8,10 +8,10 @@ class ServicioSMS {
     constructor() {}
     async enviarSMS (info){
         twilio_client.messages.create({
-            to:`+573184233137`,
+            to:`${info.to}`,
             from:twilio_number,
-            body: `nuevo ensayo`
-        }).then(message => {console.log(message.sid)})
+            body: `${info.body}`
+        }).then(message => {console.log(message)})
         .catch(error => {console.log(error)});
     }
 }

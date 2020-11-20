@@ -19,6 +19,9 @@ const vs = '/api/v1';
 
 //Rutas importadas
 
+const ruta_autenticacion= require("./routes/autenticacion");
+app.use(ruta_autenticacion);
+
 const bovinos = require("./routes/bovinos");
 app.use(bovinos);
 
