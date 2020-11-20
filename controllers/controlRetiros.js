@@ -26,7 +26,8 @@ let consultarControlRetiro = async () => {
     let sql = `SELECT "ControlRetiros".id_retiro, "ControlRetiros".hora_ingreso, "ControlRetiros".fecha_ingreso, "ControlRetiros".fecha_salida, "ControlRetiros".num_ordenos_descartar, "ControlRetiros".observaciones, "Bovinos".nombre as Bovino, "Usuarios".nombre as Usuario
 	FROM public."ControlRetiros"
 	INNER JOIN public."Bovinos" ON "ControlRetiros".id_bovino = "Bovinos"."id_Tbovinos"
-	INNER JOIN public."Usuarios" ON "ControlRetiros".id_usuario = "Usuarios"."id_Tusuario";`;
+    INNER JOIN public."Usuarios" ON "ControlRetiros".id_usuario = "Usuarios"."id_Tusuario"
+    ORDER BY id_retiro ASC;`;
     let respuesta = await _servicio.ejecutarSql(sql);
     return respuesta;
 };
