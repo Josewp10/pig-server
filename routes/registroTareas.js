@@ -30,7 +30,7 @@ router.get('/registroTareas/:id_registro', async (req, res) => {
     consultarTareas(tipo_tarea)
         .then((tareaDB) => {
             let tarea = tareaDB.rows;
-            res.send({ok: true, info: tarea, mensaje: 'tareas consultadas'});
+            res.send({ok: true, info: tarea, mensaje: 'Tarea consultada'});
         })
         .catch(error => {
             console.log(error);

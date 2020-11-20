@@ -27,19 +27,18 @@ const validarTarea = tarea => {
 
 //Trae todos las tarea registradas
 const consultarTarea = async (tarea) => {    
-    let sql = `SELECT "Tareas".nombre as Tareas, "Usuarios".nombre as usuarios, fecha
+    let sql = `SELECT id_registro, "Tareas".nombre as Tareas, "Usuarios".nombre as usuario, fecha
 	FROM public."RegistroTareas"
 	 INNER JOIN public."Tareas" ON "RegistroTareas".id_tarea= "Tareas"."id_tarea"
-    INNER JOIN public."Usuarios" ON "RegistroTareas".id_usuario = "Usuarios"."id_Tusuario";`;
+    INNER JOIN public."Usuarios" ON "RegistroTareas".id_usuario = "Usuarios"."id_Tusuario"
+    ORDER BY id_registro ASC;`;
     let respuesta = await _servicio.ejecutarSql(sql);
     return respuesta
 };
 
 let consultarTareas = async (id_registro) => {
-    let sql = `SELECT "Tareas".nombre as Tareas, "Usuarios".nombre as usuarios, fecha
+    let sql = `SELECT id_registro, id_tarea, id_usuario, fecha
 	FROM public."RegistroTareas"
-	 INNER JOIN public."Tareas" ON "RegistroTareas".id_tarea= "Tareas"."id_tarea"
-    INNER JOIN public."Usuarios" ON "RegistroTareas".id_usuario = "Usuarios"."id_Tusuario"
       WHERE id_registro = $1 `;
       
     let respuesta = await _servicio.ejecutarSql(sql, [id_registro]);

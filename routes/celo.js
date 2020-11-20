@@ -29,7 +29,7 @@ router.get('/celo/:id_celo', async (req, res) => {
     consultarCelo(id)
         .then((celoDB) => {
             let celo = celoDB.rows;
-            res.send({ok: true, info: celo, mensaje: 'Celos consultados'});
+            res.send({ok: true, info: celo, mensaje: 'Celo consultado'});
         })
         .catch(error => {
             console.log(error);
