@@ -37,6 +37,9 @@ app.use(ruta_usuarios);
 const ruta_dosis= require("./routes/tipoDosis");
 app.use(ruta_dosis);
 
+const ruta_sms= require("./routes/notificacionSMS");
+app.use(ruta_sms);
+
  //Puerto
  const port = 3001;
 
