@@ -1,6 +1,20 @@
+/**
+ * Controlador encargado de validar las peticiones contra la base de datos
+ * para la gestión de bovinos
+ */
+
+//Llamado a todas las librerías y servicios requeridos
 const ServicioPG = require('../services/postgres');
 let _servicio = new ServicioPG();
 
+
+
+ /**
+  * @description Se toma el parametro con la información del bovino y se valida:
+  *  - Que no sea vacio.
+  *  - Que contenga la chapeta, tipo bovino.
+  * @param {Object} bovino 
+  */
 const validarBovino = bovino => {
     if (!bovino) {
         throw{
@@ -20,14 +34,21 @@ const validarBovino = bovino => {
     }
 };
 
-//Trae todos los bovinos registrados
-const consultarBovinos = async (bovino) => {    
-    let sql = `SELECT * FROM public."Bovinos";`;
+/**
+ * @description Consulta toda la información de los bovinos en la base de datos.
+ */
+const consultarBovinos = async () => {    
+    let sql = `SELECT "id_Tbovinos", chapeta, id_tipo, nombre, id_raza, genetica, finca
+               FROM public."Bovinos";`;
     let respuesta = await _servicio.ejecutarSql(sql);
     return respuesta
 };
 
-//Trae un bovino en específico
+/**
+ * @description Conslulta un bovino en específico en la base de datos.
+ * @param {int} tipo 
+ * @param {int} chapeta 
+ */
 let consultarBovino = async (tipo,chapeta) => {   
     let sql = `SELECT chapeta FROM public.bovino
       WHERE tipo_bovino = $1 and chapeta = $2`;
@@ -36,8 +57,11 @@ let consultarBovino = async (tipo,chapeta) => {
     return respuesta;
   };
 
-  //Trae un bovino en específico
-let consultarTipo = async (tipo) => {
+/**
+ * @description Consulta las chapetas de los bovinos filtradas por el tipo de bovino.
+ * @param {int} tipo 
+ */
+  let consultarChapeta = async (tipo) => {
   let sql = `SELECT chapeta FROM public.bovino
     WHERE tipo_bovino = $1 `;
     
@@ -45,24 +69,34 @@ let consultarTipo = async (tipo) => {
   return respuesta;
 };
 
-//Inserta Bovinos en la base de datos
+/**
+ * @description Almacena un nuevo bovino en la base de datos.
+ * @param {Object} bovino 
+ */
 const guardarBovino = async (bovino) => {
-    //console.log(bovino);
-    let sql = `INSERT INTO public.bovino(chapeta, tipo_bovino)
-                values($1,$2);`;
+    let sql = `INSERT INTO public."Bovinos"(chapeta, id_tipo, nombre, id_raza, genetica, finca)
+                VALUES ($1, $2, $3, $4, $5, $6);`;
     let valores = [bovino.chapeta, bovino.tipo_bovino];
     let respuesta = await _servicio.ejecutarSql(sql, valores);
     return respuesta
 };
+gua
 
-//Elimina un bovino de la base de datos
+/**
+ * @description Elimina un bovino de la base de datos.
+ * @param {String} chapeta 
+ */
 const eliminarBovino = async (chapeta) => {
     let sql = `DELETE FROM public.bovino where chapeta = $1`;    
     let respuesta = await _servicio.ejecutarSql(sql, [chapeta]);
     return respuesta
 };
 
-//Actualiza la información de un bovino
+/**
+ * @description Modifica la información de un bovino.
+ * @param {Object} bovino 
+ * @param {String} chapeta 
+ */
 const editarBovino = async (bovino, chapeta) => {
     if (bovino.chapeta != chapeta) {
       throw {
@@ -71,7 +105,9 @@ const editarBovino = async (bovino, chapeta) => {
       };
     }
     let sql =
-      `UPDATE public.bovino SET chapeta=$1, tipo_bovino=$2 WHERE chapeta=$3;`;
+      `UPDATE public."Bovinos"
+        SET chapeta=$1, id_tipo=$2, nombre=$3, id_raza=$4, genetica=$5, finca=$6
+        WHERE $7;`;
     let valores = [bovino.chapeta, bovino.tipo_bovino, chapeta];
     let respuesta = await _servicio.ejecutarSql(sql, valores);
   
@@ -79,4 +115,6 @@ const editarBovino = async (bovino, chapeta) => {
   };
   
 
-module.exports = {validarBovino, consultarBovinos, consultarBovino,consultarTipo, guardarBovino, eliminarBovino, editarBovino};
+module.exports = {validarBovino, consultarBovinos, 
+                 consultarBovino,consultarChapeta,
+                 guardarBovino, eliminarBovino, editarBovino};

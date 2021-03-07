@@ -1,3 +1,9 @@
+/**
+ * Ruta encargada de gestionar por completo las peticiones
+ * referentes a la información de los controles de celo
+ */
+
+//Llamado a todas las librerías, servicios y controladores requeridos
 const express = require('express');
 const router = express.Router();
 
@@ -10,7 +16,13 @@ const {
     editarCelo
 } = require('../controllers/celo');
 
-//Trae todos los celos
+
+/**
+ * Petición: consultar todos los celos registrados
+ * Parametros: Vacío
+ * Cuerpo: Vacío
+ * Respuesta: Celos consultados o mensaje de error
+ */
 router.get('/celo', async (req, res) => {
     consultarCelos()
         .then((celoDB) => {
@@ -23,7 +35,13 @@ router.get('/celo', async (req, res) => {
         });
 });
 
-//Trae un Celo en específico
+
+/**
+ * Petición: Consultar un celo específico
+ * Parametros: id del celo
+ * Cuerpo: Vacío
+ * Respuesta: Celo consultado o mensaje de error
+ */
 router.get('/celo/:id_celo', async (req, res) => {
     let id = req.params.id_celo;
     consultarCelo(id)
@@ -37,7 +55,13 @@ router.get('/celo/:id_celo', async (req, res) => {
         });
 });
 
-// Guarda un nuevo celo
+
+/**
+ * Petición: almacenar un nuevo celo
+ * Parametros: Vacío
+ * Cuerpo: Todos los datos del celo
+ * Respuesta: Celo almacenado o mensaje de error
+ */
 router.post("/celo", (req, res) => {
     try {
       let info_celo = req.body;
@@ -60,6 +84,12 @@ router.post("/celo", (req, res) => {
   });
 
 //Elimina un celo
+/**
+ * Petición: Eliminar un celo
+ * Parametros: id del celo
+ * Cuerpo: Vacío
+ * Respuesta: Celo eliminado o mensaje de error
+ */
   router.delete("/celo/:id_celo", (req, res) => {
     let id = req.params.id_celo;
     eliminarCelo(id)
@@ -74,7 +104,12 @@ router.post("/celo", (req, res) => {
   });
 
   //Actualizar celo
-
+/**
+ * Petición: Actualizar la información de un celo
+ * Parametros: id del celo
+ * Cuerpo: Todos los datos del celo
+ * Respuesta: Celo actualizado o mensaje de error
+ */
 router.put("/celo/:id_celo", (req, res) => {
     try {
       //Capturar el body desde la solicitud

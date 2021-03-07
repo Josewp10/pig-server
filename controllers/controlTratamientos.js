@@ -1,3 +1,9 @@
+/**
+ * Controlador encargado de validar las peticiones contra la base de datos
+ * para la gestión de controles de tratamiento
+ */
+
+//Llamado a todas las librerías y servicios requeridos
 const ServicePG = require("../services/postgres");
 let _service = new ServicePG();
 

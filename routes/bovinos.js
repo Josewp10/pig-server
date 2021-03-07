@@ -1,3 +1,9 @@
+/**
+ * Ruta encargada de gestionar por completo las peticiones
+ * referentes a la información de los bovinos y sus variantes
+ */
+
+//Llamado a todas las librerías y servicios requeridos
 const express = require('express');
 const router = express.Router();
 
@@ -5,13 +11,18 @@ const {
     validarBovino,
     guardarBovino,
     consultarBovinos,
-    consultarTipo,
+    consultarChapeta,
     consultarBovino,
     eliminarBovino,
     editarBovino
 } = require('../controllers/bovinos');
 
-//Trae todos los bovinos
+/**
+ * Petición: Traer todos los bovinos
+ * Parámetros: Vacío
+ * Cuerpo: Vacío
+ * Respuesta: Bovinos registrados o mensaje de error
+ */
 router.get('/bovinos', async (req, res) => {
     consultarBovinos()
         .then((bovinoDB) => {
@@ -23,7 +34,13 @@ router.get('/bovinos', async (req, res) => {
         });
 });
 
-//Trae un bovino en específico
+
+/**
+ * Petición: Traer un bovino específico
+ * Parámetros: Chapeta, tipo de bovino
+ * Cuerpo: Vacío
+ * Respuesta: Bovino registrado o mensaje de error
+ */
 router.get('/bovinos/:chapeta/:tipo', async (req, res) => {
     let id = req.params.chapeta;
     let tipo_bovino = req.params.tipo;
@@ -38,12 +55,18 @@ router.get('/bovinos/:chapeta/:tipo', async (req, res) => {
             res.send(error);
         });
 });
-//Trae todos los bovinos según el tipo
+
+
+/**
+ * Petición: Traer todos los bovinos según el tipo
+ * Parámetros:  Tipo de bovino
+ * Cuerpo: Vacío
+ * Respuesta: Bovino registrado o mensaje de error
+ */
 router.get('/bovinos/:tipo', async (req, res) => {
-  let id = req.params.chapeta;
   let tipo_bovino = req.params.tipo;
   
-  consultarTipo(tipo_bovino)
+  consultarChapeta(tipo_bovino)
       .then((bovinoDB) => {
           let bovino = bovinoDB.rows;
           res.send({ok: true, info: bovino, mensaje: 'bovinos consultados'});
@@ -53,7 +76,13 @@ router.get('/bovinos/:tipo', async (req, res) => {
           res.send(error);
       });
 });
-// Guarda un nuevo bovino
+
+/**
+ * Petición: Almacenar la información de un bovino
+ * Parámetros: Vacío
+ * Cuerpo: Todos los datos del bovino
+ * Respuesta: Registro del bovino o mensaje de error
+ */
 router.post("/bovinos", (req, res) => {
     try {
       let info_bovino = req.body;
@@ -75,12 +104,17 @@ router.post("/bovinos", (req, res) => {
     }
   });
 
-//Elimina un bovino
+
+/**
+ * Petición: Eliminar la información de un bovino
+ * Parametros: Chapeta del bovino
+ * Cuerpo: Vacío
+ * Respuesta: Bovino eliminado o mensaje de error
+ */
   router.delete("/bovinos/:chapeta", (req, res) => {
     let id = req.params.chapeta;
     eliminarBovino(id)
       .then((respuestaDB) => {
-        console.log("LOLO");
         res.send({ ok: true, mensaje: "Bovino eliminado", info: { id } });
       })
       .catch((error) => {
@@ -89,8 +123,13 @@ router.post("/bovinos", (req, res) => {
       });
   });
 
-  //Actualizar bovino
 
+/**
+ * Petición: Actualizar la información de un bovino
+ * Parametros: Chapeta del bovino
+ * Cuerpo: Todos los datos del bovino
+ * Respuesta: Bovino actualizado o mensaje de error
+ */
 router.put("/bovinos/:chapeta", (req, res) => {
     try {
       //Capturar el body desde la solicitud

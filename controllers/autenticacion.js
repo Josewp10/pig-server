@@ -1,7 +1,20 @@
+/**
+ * Controlador encargado de validar las peticiones contra la base de datos
+ * para autenticar a los usuarios y dar acceso al sistema
+ */
 
+//Llamado a todas las librerías y servicios requeridos
 const ServicioPg = require("../services/postgres");
 const _service = new ServicioPg();
 
+
+ /**
+  * @description Se toma el parametro con la información del usuario y se valida:
+  *  - Que no sea vacio
+  *  - Que contenga el e-mail y la contraseña
+  * 
+  * @param {Object} usuario 
+  */
 let validarLogin = (usuario) => {
     if (!usuario) {
         throw {
@@ -17,6 +30,10 @@ let validarLogin = (usuario) => {
       }
   };
 
+/**
+ * @description Verifica si hay un usuario registrado en la base de dados
+ * @param {Object} usuario 
+ */
   let consultarUsuario = async (usuario) => {
     
     let sql = `SELECT * FROM public."Usuarios" WHERE correo = $1 AND contrasena = md5($2)`;

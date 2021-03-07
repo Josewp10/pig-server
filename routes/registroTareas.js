@@ -1,4 +1,9 @@
+/**
+ * Ruta encargada de gestionar por completo las peticiones
+ * referentes a la información de las tareas
+ */
 
+//Llamado a todas las librerías, servicios y controladores requeridos
 const express = require('express');
 const router = express.Router();
 

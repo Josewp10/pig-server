@@ -1,5 +1,12 @@
+/**
+ * Controlador encargado de validar las peticiones contra la base de datos
+ * para la gestión de usuarios
+ */
+
+//Llamado a todas las librerías y servicios requeridos
 const ServicioPG = require('../services/postgres');
 let _servicio = new ServicioPG();
+
 const validarUsuario = usuario => {
     if (!usuario) {
         throw{

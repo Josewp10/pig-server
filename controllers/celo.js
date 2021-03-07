@@ -1,5 +1,14 @@
+/**
+ * Controlador encargado de validar las peticiones contra la base de datos
+ * para la gestión de controles de celo
+ */
+
+
+//Llamado a todas las librerías, servicios y controladores requeridos
 const ServicioPG = require('../services/postgres');
 let _servicio = new ServicioPG();
+
+
 const validarCelo = celo => {
     if (!celo) {
         throw{

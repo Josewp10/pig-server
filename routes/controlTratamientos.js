@@ -1,3 +1,9 @@
+/**
+ * Ruta encargada de gestionar por completo las peticiones
+ * referentes a la información de los controles de tratamientos
+ */
+
+//Llamado a todas las librerías, servicios y controladores requeridos
 const express = require("express");
 const router = express.Router();
 const {
@@ -9,6 +15,13 @@ const {
   consultarporControl
 } = require("../controllers/controlTratamientos");
 
+
+/**
+ * Petición: Consultar todos los controles de tratamientos
+ * Parametros: Vacío
+ * Cuerpo: Vacío
+ * Respuesta: Controles consultados o mensaje de error
+ */
 router.get('/controlTratamientos', async (req, res) => {
   ver_tratamiento()
       .then((answerDB) => {
@@ -20,8 +33,12 @@ router.get('/controlTratamientos', async (req, res) => {
       });
 });
 
-
-//Trae un Celo en específico
+/**
+ * Petición: Consultar un control de tratamiento
+ * Parametros: id del tratamiento
+ * Cuerpo: Vacío
+ * Respuesta: Controles consultados o mensaje de error
+ */
 router.get('/controlTratamientos/:id_tratamiento', async (req, res) => {
   let id = req.params.id_tratamiento;
   consultarporControl(id)
@@ -36,6 +53,12 @@ router.get('/controlTratamientos/:id_tratamiento', async (req, res) => {
 });
 
 
+/**
+ * Petición: Guardar un control de tratamiento
+ * Parametros: Vacío
+ * Cuerpo: Datos del control de tratamiento
+ * Respuesta: Control de tratamiento guardado o mensaje de error
+ */
 router.post("/controlTratamientos", (req, res) => {
   try {
     let info_tratamiento= req.body;
@@ -55,13 +78,19 @@ router.post("/controlTratamientos", (req, res) => {
   }
 });
 
+/**
+ * Petición: Actualizar un control de tratamiento
+ * Parametros: id tratamiento
+ * Cuerpo: Datos del control de tratamiento
+ * Respuesta: Control actualizado o mensaje de error
+ */
 router.put("/controlTratamientos/:id_tratamiento", (req, res) => {
   try {
-    //Capturar el body desde la solicitud
+    
     let id_tratamiento = req.params.id_tratamiento;
     let info_tratamiento = req.body;
 
-    // Actualiza el usuario en base de datos
+
     editar_tratamiento(info_tratamiento, id_tratamiento)
       .then((respuestaDB) => {
         res.send({ ok: true, mensaje: "control tratamiento editado", info: info_tratamiento });
@@ -79,6 +108,12 @@ router.put("/controlTratamientos/:id_tratamiento", (req, res) => {
 });
 
 
+/**
+ * Petición: Eliminar un controle de tratamiento
+ * Parametros: id tratamiento
+ * Cuerpo: Vacío
+ * Respuesta: Control eliminado o mensaje de error
+ */
 router.delete("/controlTratamientos/:id_tratamiento", (req, res) => {
   let id = req.params.id_tratamiento;
   eliminar_tratamiento(id)

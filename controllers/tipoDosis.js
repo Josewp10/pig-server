@@ -1,3 +1,9 @@
+/**
+ * Controlador encargado de validar las peticiones contra la base de datos
+ * para la gestión de las dosis
+ */
+
+//Llamado a todas las librerías y servicios requeridos
 const ServicioPG = require('../services/postgres');
 let _servicio = new ServicioPG();
 const validarDosis = dosis => {
