@@ -7,6 +7,12 @@
 const ServicePG = require("../services/postgres");
 let _service = new ServicePG();
 
+/**
+ * @description Se toma el parametro con la información del control de tratamiento y se valida:
+ *  - Que no sea vacío
+ *  - Que contenga los campos: fecha_inicio, fecha_fin, hora, enfermedad, detalles, tipo_dosis, id_bovino, id_usuario.
+ * @param {Object} tratamiento 
+ */
 let validar = tratamiento => {
   if (!tratamiento) {
       throw { ok: false, mensaje: "La información del Control del Tratamiento de Leche es obligatoria" };
@@ -32,6 +38,11 @@ else if (!tratamiento.id_usuario) {
 }
 };
 
+/**
+ * @description Consulta la información de todos los controles de tratamientos en la base de datos.
+ * @param {Object} tratamiento 
+ * @returns 
+ */
 const ver_tratamiento = async (tratamiento) => {    
   let sql = `SELECT "ControlTratamientos".id_tratamiento, "ControlTratamientos".fecha_inicio, "ControlTratamientos".fecha_fin,
   "ControlTratamientos".hora, "ControlTratamientos".enfermedad, "ControlTratamientos".detalles, 
@@ -45,7 +56,12 @@ const ver_tratamiento = async (tratamiento) => {
   let respuesta = await _service.ejecutarSql(sql);
   return respuesta
 };
-  
+
+/**
+ * @description Conculta toda la información de un control de tratamiento en específico de la base de datos.
+ * @param {int} id_tratamiento 
+ * @returns 
+ */
 let consultarporControl = async (id_tratamiento) => {
   let sql = `
   SELECT "ControlTratamientos".id_tratamiento, "ControlTratamientos".fecha_inicio, "ControlTratamientos".fecha_fin,
@@ -58,6 +74,11 @@ let consultarporControl = async (id_tratamiento) => {
   return respuesta;
 };
 
+/**
+ * @description Almacena un control de tratamiento en la base de datos.
+ * @param {Object} tratamiento 
+ * @returns 
+ */
   let crear_tratamiento = async (tratamiento) => {
     let sql = `INSERT INTO public."ControlTratamientos"( fecha_inicio, fecha_fin, hora, enfermedad, detalles, tipo_dosis, id_bovino, id_usuario)
       VALUES ($1, $2, $3, $4, $5, $6, $7, $8 )`;
@@ -78,7 +99,12 @@ let consultarporControl = async (id_tratamiento) => {
   };
 
   
-
+/**
+ * @description Actualiza la información de un control de tratamiento en la base de datos. 
+ * @param {Object} tratamiento 
+ * @param {int} id_tratamiento 
+ * @returns 
+ */
   const editar_tratamiento = async (tratamiento,id_tratamiento) => {
     if (tratamiento.id_tratamiento != id_tratamiento) {
       throw {
@@ -105,6 +131,11 @@ let consultarporControl = async (id_tratamiento) => {
         return respuesta;
   };
 
+/**
+ * @description Elimina un control de tratamiento de la base de datos.
+ * @param {int} id_tratamiento 
+ * @returns 
+ */
   const eliminar_tratamiento = async (id_tratamiento) => {
     let sql = `DELETE FROM public."ControlTratamientos"
 	WHERE id_tratamiento = $1`;    

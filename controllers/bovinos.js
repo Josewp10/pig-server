@@ -36,6 +36,7 @@ const validarBovino = bovino => {
 
 /**
  * @description Consulta toda la información de los bovinos en la base de datos.
+ * @returns
  */
 const consultarBovinos = async () => {    
     let sql = `SELECT "id_Tbovinos", chapeta, id_tipo, nombre, id_raza, genetica, finca
@@ -44,14 +45,16 @@ const consultarBovinos = async () => {
     return respuesta
 };
 
+
 /**
  * @description Conslulta un bovino en específico en la base de datos.
  * @param {int} tipo 
  * @param {int} chapeta 
+ * @returns
  */
 let consultarBovino = async (tipo,chapeta) => {   
-    let sql = `SELECT chapeta FROM public.bovino
-      WHERE tipo_bovino = $1 and chapeta = $2`;
+    let sql = `SELECT "id_Tbovinos", chapeta, id_tipo, nombre, id_raza, genetica, finca
+    FROM public."Bovinos" where id_tipo=$1 and chapeta =$2;`;
       
     let respuesta = await _servicio.ejecutarSql(sql, [tipo,chapeta]);
     return respuesta;
@@ -60,6 +63,7 @@ let consultarBovino = async (tipo,chapeta) => {
 /**
  * @description Consulta las chapetas de los bovinos filtradas por el tipo de bovino.
  * @param {int} tipo 
+ * @returns
  */
   let consultarChapeta = async (tipo) => {
   let sql = `SELECT chapeta FROM public.bovino
@@ -71,7 +75,8 @@ let consultarBovino = async (tipo,chapeta) => {
 
 /**
  * @description Almacena un nuevo bovino en la base de datos.
- * @param {Object} bovino 
+ * @param {Object} bovino
+ * @returns 
  */
 const guardarBovino = async (bovino) => {
     let sql = `INSERT INTO public."Bovinos"(chapeta, id_tipo, nombre, id_raza, genetica, finca)
@@ -80,11 +85,12 @@ const guardarBovino = async (bovino) => {
     let respuesta = await _servicio.ejecutarSql(sql, valores);
     return respuesta
 };
-gua
+
 
 /**
  * @description Elimina un bovino de la base de datos.
  * @param {String} chapeta 
+ * @returns
  */
 const eliminarBovino = async (chapeta) => {
     let sql = `DELETE FROM public.bovino where chapeta = $1`;    
@@ -95,7 +101,8 @@ const eliminarBovino = async (chapeta) => {
 /**
  * @description Modifica la información de un bovino.
  * @param {Object} bovino 
- * @param {String} chapeta 
+ * @param {String} chapeta
+ * @returns 
  */
 const editarBovino = async (bovino, chapeta) => {
     if (bovino.chapeta != chapeta) {
@@ -110,7 +117,6 @@ const editarBovino = async (bovino, chapeta) => {
         WHERE $7;`;
     let valores = [bovino.chapeta, bovino.tipo_bovino, chapeta];
     let respuesta = await _servicio.ejecutarSql(sql, valores);
-  
     return respuesta;
   };
   

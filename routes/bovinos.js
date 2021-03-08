@@ -6,16 +6,9 @@
 //Llamado a todas las librerías y servicios requeridos
 const express = require('express');
 const router = express.Router();
+const _controlador = require("../controllers/bovinos");
 
-const {
-    validarBovino,
-    guardarBovino,
-    consultarBovinos,
-    consultarChapeta,
-    consultarBovino,
-    eliminarBovino,
-    editarBovino
-} = require('../controllers/bovinos');
+
 
 /**
  * Petición: Traer todos los bovinos
@@ -24,7 +17,9 @@ const {
  * Respuesta: Bovinos registrados o mensaje de error
  */
 router.get('/bovinos', async (req, res) => {
-    consultarBovinos()
+  
+  _controlador
+  .consultarBovinos()
         .then((bovinoDB) => {
             let bovino = bovinoDB.rows;
             res.send({ok: true, info: bovino, mensaje: 'bovinos consultados'});
@@ -45,7 +40,8 @@ router.get('/bovinos/:chapeta/:tipo', async (req, res) => {
     let id = req.params.chapeta;
     let tipo_bovino = req.params.tipo;
     
-    consultarBovino(tipo_bovino,id)
+    _controlador
+    .consultarBovino(tipo_bovino,id)
         .then((bovinoDB) => {
             let bovino = bovinoDB.rows;
             res.send({ok: true, info: bovino, mensaje: 'bovinos consultados'});
@@ -66,7 +62,8 @@ router.get('/bovinos/:chapeta/:tipo', async (req, res) => {
 router.get('/bovinos/:tipo', async (req, res) => {
   let tipo_bovino = req.params.tipo;
   
-  consultarChapeta(tipo_bovino)
+  _controlador
+  .consultarChapeta(tipo_bovino)
       .then((bovinoDB) => {
           let bovino = bovinoDB.rows;
           res.send({ok: true, info: bovino, mensaje: 'bovinos consultados'});
@@ -87,9 +84,10 @@ router.post("/bovinos", (req, res) => {
     try {
       let info_bovino = req.body;
   
-      validarBovino(info_bovino);
+      _controlador.validarBovino(info_bovino);
   
-      guardarBovino(info_bovino)
+      _controlador
+      .guardarBovino(info_bovino)
         .then((respuestaDB) => {
           console.log("entro");  
           res.send({ ok: true, mensaje: "Bovino guardado", info: info_bovino });
@@ -113,7 +111,9 @@ router.post("/bovinos", (req, res) => {
  */
   router.delete("/bovinos/:chapeta", (req, res) => {
     let id = req.params.chapeta;
-    eliminarBovino(id)
+
+    _controlador
+    .eliminarBovino(id)
       .then((respuestaDB) => {
         res.send({ ok: true, mensaje: "Bovino eliminado", info: { id } });
       })
@@ -137,7 +137,8 @@ router.put("/bovinos/:chapeta", (req, res) => {
       let info_bovino = req.body;
   
       // Actualiza el usuario en base de datos
-      editarBovino(info_bovino, chapeta)
+      _controlador
+      .editarBovino(info_bovino, chapeta)
         .then((respuestaDB) => {
           res.send({ ok: true, mensaje: "Bovino editado", info: info_bovino });
         })

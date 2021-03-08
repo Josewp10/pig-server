@@ -12,7 +12,6 @@ const _service = new ServicioPg();
   * @description Se toma el parametro con la información del usuario y se valida:
   *  - Que no sea vacio
   *  - Que contenga el e-mail y la contraseña
-  * 
   * @param {Object} usuario 
   */
 let validarLogin = (usuario) => {
@@ -32,7 +31,8 @@ let validarLogin = (usuario) => {
 
 /**
  * @description Verifica si hay un usuario registrado en la base de dados
- * @param {Object} usuario 
+ * @param {Object} usuario
+ * @returns
  */
   let consultarUsuario = async (usuario) => {
     

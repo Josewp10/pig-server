@@ -6,15 +6,8 @@
 //Llamado a todas las librerías, servicios y controladores requeridos
 const express = require('express');
 const router = express.Router();
+const _controlador = require('../controllers/celo');
 
-const {
-    validarCelo,
-    guardarCelo,
-    consultarCelos,
-    consultarCelo,
-    eliminarCelo,
-    editarCelo
-} = require('../controllers/celo');
 
 
 /**
@@ -24,7 +17,9 @@ const {
  * Respuesta: Celos consultados o mensaje de error
  */
 router.get('/celo', async (req, res) => {
-    consultarCelos()
+  
+  _controlador  
+    .consultarCelos()
         .then((celoDB) => {
             let celo = celoDB.rows;
             res.send({ok: true, info: celo, mensaje: 'Celos consultados'});
@@ -44,7 +39,9 @@ router.get('/celo', async (req, res) => {
  */
 router.get('/celo/:id_celo', async (req, res) => {
     let id = req.params.id_celo;
-    consultarCelo(id)
+
+    _controlador
+    .consultarCelo(id)
         .then((celoDB) => {
             let celo = celoDB.rows;
             res.send({ok: true, info: celo, mensaje: 'Celo consultado'});
@@ -65,10 +62,11 @@ router.get('/celo/:id_celo', async (req, res) => {
 router.post("/celo", (req, res) => {
     try {
       let info_celo = req.body;
+      
+      _controlador.validarCelo(info_celo);
   
-      validarCelo(info_celo);
-  
-      guardarCelo(info_celo)
+      _controlador
+      .guardarCelo(info_celo)
         .then((respuestaDB) => {
           console.log("entro");  
           res.send({ ok: true, mensaje: "Celo guardado", info: info_celo });
@@ -83,7 +81,7 @@ router.post("/celo", (req, res) => {
     }
   });
 
-//Elimina un celo
+
 /**
  * Petición: Eliminar un celo
  * Parametros: id del celo
@@ -92,7 +90,9 @@ router.post("/celo", (req, res) => {
  */
   router.delete("/celo/:id_celo", (req, res) => {
     let id = req.params.id_celo;
-    eliminarCelo(id)
+
+    _controlador
+    .eliminarCelo(id)
       .then((respuestaDB) => {
         console.log("LOLO");
         res.send({ ok: true, mensaje: "Celo eliminado", info: { id } });
@@ -103,7 +103,7 @@ router.post("/celo", (req, res) => {
       });
   });
 
-  //Actualizar celo
+  
 /**
  * Petición: Actualizar la información de un celo
  * Parametros: id del celo
@@ -115,9 +115,12 @@ router.put("/celo/:id_celo", (req, res) => {
       //Capturar el body desde la solicitud
       let id_celo = req.params.id_celo;
       let info_celo = req.body;
+
+      _controlador.validarCelo(info_celo);
   
       // Actualiza uno celo en base de datos
-      editarCelo(info_celo, id_celo)
+      _controlador
+      .editarCelo(info_celo, id_celo)
         .then((respuestaDB) => {
           res.send({ ok: true, mensaje: "Celo editado", info: info_celo });
         })

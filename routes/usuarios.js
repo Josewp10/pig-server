@@ -5,16 +5,13 @@
 //Llamado a todas las librerías, servicios y controladores requeridos
 const express = require('express');
 const router = express.Router();
-const {
-    validarUsuario,
-    consultarUsuario,
-    consultarCelUsuario,
-    guardarUsuario,
-    
-} = require('../controllers/usuarios');
+const _controlador = require('../controllers/usuarios');
+
 
 router.get('/usuarios', async (req, res) => {
-    consultarUsuario()
+
+  _controlador
+    .consultarUsuario()
         .then((answerDB) => {
             let usuario = answerDB.rows;
             res.send({ok: true, info: usuario, mensaje: 'Usuarios consultados'});
@@ -27,7 +24,9 @@ router.get('/usuarios', async (req, res) => {
   //Consulta del celular por usuario
   router.get('/usuarios/celular/:id_usuario', async (req, res) => {
     let id = req.params.id_usuario;
-    consultarCelUsuario(id)
+
+    _controlador
+    .consultarCelUsuario(id)
         .then((answerDB) => {
             let usuario = answerDB.rows;
             res.send({ok: true, info: usuario, mensaje: 'Celular de usuario consultado'});
@@ -42,9 +41,10 @@ router.post("/usuarios", (req, res) => {
     try {
       let info_usuario = req.body;
   
-      validarUsuario(info_usuario);
+      _controlador.validarUsuario(info_usuario);
   
-      guardarUsuario(info_usuario)
+      _controlador
+      .guardarUsuario(info_usuario)
         .then((respuestaDB) => {
           console.log("entro");  
           res.send({ ok: true, mensaje: "usuario guardado", info: info_usuario });

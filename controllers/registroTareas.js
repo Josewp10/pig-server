@@ -7,6 +7,12 @@
 const ServicioPG = require('../services/postgres');
 let _servicio = new ServicioPG();
 
+/**
+ * @description Se toma el parametro con la información de la tarea y se valida:
+ *  - Que no sea vacío
+ *  - Que contenga los campos: id_tarea, id_usuario, fecha.
+ * @param {Object} tarea 
+ */
 const validarTarea = tarea => {
     if (!tarea) {
         throw{
@@ -31,8 +37,11 @@ const validarTarea = tarea => {
     }
 };
 
-//Trae todos las tarea registradas
-const consultarTarea = async (tarea) => {    
+/**
+ * @description Consulta la información de todas las tareas en la base de datos.
+ * @returns 
+ */
+const consultarTarea = async () => {    
     let sql = `SELECT id_registro, "Tareas".nombre as Tareas, "Usuarios".nombre as usuario, fecha
 	FROM public."RegistroTareas"
 	 INNER JOIN public."Tareas" ON "RegistroTareas".id_tarea= "Tareas"."id_tarea"
@@ -42,6 +51,11 @@ const consultarTarea = async (tarea) => {
     return respuesta
 };
 
+/**
+ * @description Conculta toda la información de una tarea en la base de datos.
+ * @param {int} id_registro 
+ * @returns 
+ */
 let consultarTareas = async (id_registro) => {
     let sql = `SELECT id_registro, id_tarea, id_usuario, fecha
 	FROM public."RegistroTareas"
@@ -52,8 +66,11 @@ let consultarTareas = async (id_registro) => {
   };
 
 
-
-//Inserta tareas en la base de datos
+/**
+ * @description Almacena la información de una tarea en la base de datos.
+ * @param {Object} tarea 
+ * @returns 
+ */
 const guardarTarea = async (tarea) => {
   
     let sql = `INSERT INTO public."RegistroTareas"(
@@ -64,14 +81,23 @@ const guardarTarea = async (tarea) => {
     return respuesta
 };
 
-//Elimina tareas  de la base de datos
-const eliminarTarea = async (tarea) => {
+/**
+ * @description Elimina la información de una tarea de la base de datos.
+ * @param {int} id_tarea 
+ * @returns 
+ */
+const eliminarTarea = async (id_tarea) => {
     let sql = `DELETE FROM public."RegistroTareas" where id_registro = $1`;    
-    let respuesta = await _servicio.ejecutarSql(sql, [tarea]);
+    let respuesta = await _servicio.ejecutarSql(sql, [id_tarea]);
     return respuesta
 };
 
-//Actualiza la información de un bovino
+/**
+ * @description Actualiza la información de una tarea en la base de datos.
+ * @param {Object} tarea 
+ * @param {int} id_registro 
+ * @returns 
+ */
 const editarTarea = async (tarea, id_registro) => {
     if (tarea.id_registro != id_registro) {
       throw {

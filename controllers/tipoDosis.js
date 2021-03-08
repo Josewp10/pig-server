@@ -6,6 +6,13 @@
 //Llamado a todas las librerías y servicios requeridos
 const ServicioPG = require('../services/postgres');
 let _servicio = new ServicioPG();
+
+/**
+ *@description Se toma el parametro con la información del tipo de dosis y se valida:
+ *  - Que no sea vacío
+ *  - Que contenga los campos: tipo.
+ * @param {Object} dosis 
+ */
 const validarDosis = dosis => {
     if (!dosis) {
         throw{
@@ -23,8 +30,11 @@ const validarDosis = dosis => {
     }
 };
 
-//Trae todos los usuario registrados
-const consultarDosis = async (dosis) => {
+/**
+ * @description Consulta los tipos de dosis de la base de datos
+ * @returns 
+ */
+const consultarDosis = async () => {
     let sql = `SELECT id_tipo, tipo
 	FROM public."TipoDosis";`;
     let respuesta = await _servicio.ejecutarSql(sql);
@@ -32,7 +42,11 @@ const consultarDosis = async (dosis) => {
 };
 
 
-//Inserta dosis en la base de datos
+/**
+ * 
+ * @param {String} dosis 
+ * @returns 
+ */
 const guardarDosis = async (dosis) => {
     
     let sql = `INSERT INTO public."TipoDosis"(

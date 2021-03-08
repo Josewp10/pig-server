@@ -8,7 +8,12 @@
 const ServicioPG = require('../services/postgres');
 let _servicio = new ServicioPG();
 
-
+/**
+ * @description Se toma el parametro con la información del control de celo y se valida:
+ *  - Que no sea vacío.
+ *  - Que contenga los campos: id_macho, id_hembra, fecha_inicio, detalles, id_usuario.
+ * @param {*} celo 
+ */
 const validarCelo = celo => {
     if (!celo) {
         throw{
@@ -43,32 +48,46 @@ const validarCelo = celo => {
     }
 };
 
-//Trae todos los celos registrados
-const consultarCelos = async (celo) => {
+/**
+ * @description Consulta todos los celos registrados en la base de datos.
+ * @returns 
+ */
+const consultarCelos = async () => {
     let sql = `Select id_celo, fecha_inicio, detalles,
-            (Select nombre from public."Bovinos" where id_bovino = id_macho) as "Nombre_Macho",
-            (Select nombre from public."Bovinos" where id_bovino = id_hembra) as "Nombre_Hembra", 
-            public."Usuarios"."nombre" 
-            from public."ControlCelos"
-            inner join public."Usuarios" 
-            on public."Usuarios"."id_Tusuario" = public."ControlCelos"."id_usuario"
-            ORDER BY id_celo ASC;`;
+                (Select nombre from public."Bovinos" where chapeta = id_macho) as "Nombre_Macho",
+                (Select nombre from public."Bovinos" where chapeta = id_hembra) as "Nombre_Hembra", 
+                public."Usuarios"."nombre" 
+                from public."ControlCelos" inner join public."Usuarios" 
+                on public."Usuarios"."id_Tusuario" = public."ControlCelos"."id_usuario"
+                ORDER BY id_celo ASC;`;
     let respuesta = await _servicio.ejecutarSql(sql);
     return respuesta
 };
 
-//Trae un celo en específico
+/**
+ * @description Conculta toda la información de un celo en específico de la base de datos.
+ * @param {int} id_celo 
+ * @returns 
+ */
 let consultarCelo = async (id_celo) => {
-    let sql = `
-    SELECT id_celo, fecha_inicio, detalles, id_macho, id_hembra, id_usuario
-	FROM public."ControlCelos"
-            where id_celo = $1;`;
+    let sql = `Select id_celo, fecha_inicio, detalles,
+                (Select nombre from public."Bovinos" where chapeta = id_macho) as "Nombre_Macho",
+                (Select nombre from public."Bovinos" where chapeta = id_hembra) as "Nombre_Hembra", 
+                public."Usuarios"."nombre" 
+                from public."ControlCelos"
+                inner join public."Usuarios" 
+                on public."Usuarios"."id_Tusuario" = public."ControlCelos"."id_usuario"
+                where id_celo=$1;`;
       
     let respuesta = await _servicio.ejecutarSql(sql, [id_celo]);
     return respuesta;
   };
 
-//Inserta celos en la base de datos
+/**
+ * @description Almacena un control de celo en la base de datos.
+ * @param {Object} celo 
+ * @returns 
+ */
 const guardarCelo = async (celo) => {
     //console.log(celo);
     let sql = `INSERT INTO public."ControlCelos"(fecha_inicio, detalles, id_macho, id_hembra, id_usuario)
@@ -79,7 +98,11 @@ const guardarCelo = async (celo) => {
     return respuesta
 };
 
-//Elimina un celo de la base de datos
+/**
+ * @description Elimina un control de celo de la base de datos.
+ * @param {int} id_celo 
+ * @returns 
+ */
 const eliminarCelo = async (id_celo) => {
     let sql = `DELETE FROM public."ControlCelos"
 	            WHERE id_celo = $1;`;    
@@ -87,7 +110,12 @@ const eliminarCelo = async (id_celo) => {
     return respuesta
 };
 
-//Actualiza la información de un celo
+/**
+ * @description Actualiza la información de un control de celo en la base de datos. 
+ * @param {Object} celo 
+ * @param {int} id_celo 
+ * @returns 
+ */
 const editarCelo = async (celo, id_celo) => {
     if (celo.id_celo != id_celo) {
       throw {

@@ -6,19 +6,13 @@
 //Llamado a todas las librerías, servicios y controladores requeridos
 const express = require('express');
 const router = express.Router();
+const _controlador = require('../controllers/registroTareas');
 
-const {
-    validarTarea,
-    guardarTarea,
-    consultarTarea,
-    consultarTareas,
-    eliminarTarea,
-    editarTarea
-} = require('../controllers/registroTareas');
 
-//Trae todos las tareas
 router.get('/registroTareas', async (req, res) => {
-    consultarTarea()
+  
+  _controlador
+  .consultarTarea()
         .then((tareaDB) => {
             let tarea = tareaDB.rows;
             res.send({ok: true, info: tarea, mensaje: 'tareas consultadas'});
@@ -32,7 +26,8 @@ router.get('/registroTareas/:id_registro', async (req, res) => {
   
     let tipo_tarea = req.params.id_registro;
     
-    consultarTareas(tipo_tarea)
+    _controlador
+    .consultarTareas(tipo_tarea)
         .then((tareaDB) => {
             let tarea = tareaDB.rows;
             res.send({ok: true, info: tarea, mensaje: 'Tarea consultada'});
@@ -42,14 +37,15 @@ router.get('/registroTareas/:id_registro', async (req, res) => {
             res.send(error);
         });
   });
-// Guarda un nueva tarea
+
 router.post("/registroTareas", (req, res) => {
     try {
       let info_tarea = req.body;
   
-      validarTarea(info_tarea);
+      _controlador.validarTarea(info_tarea);
   
-      guardarTarea(info_tarea)
+      _controlador
+      .guardarTarea(info_tarea)
         .then((respuestaDB) => { 
           res.send({ ok: true, mensaje: "tarea guardada", info: info_tarea });
         })
@@ -63,10 +59,11 @@ router.post("/registroTareas", (req, res) => {
     }
   });
 
-//Elimina un bovino
   router.delete("/registroTareas/:id_registro", (req, res) => {
     let id = req.params.id_registro;
-    eliminarTarea(id)
+
+    _controlador
+    .eliminarTarea(id)
       .then((respuestaDB) => {
         res.send({ ok: true, mensaje: "tarea eliminada", info: { id } });
       })
@@ -76,7 +73,7 @@ router.post("/registroTareas", (req, res) => {
       });
   });
 
-  //Actualizar bovino
+  
 
 router.put("/registroTareas/:id_registro", (req, res) => {
     try {
@@ -84,8 +81,10 @@ router.put("/registroTareas/:id_registro", (req, res) => {
       let id_registro = req.params.id_registro;
       let info_tarea = req.body;
   
-      // Actualiza el usuario en base de datos
-      editarTarea(info_tarea, id_registro)
+      _controlador.validarTarea(info_tarea);
+      
+      _controlador
+      .editarTarea(info_tarea, id_registro)
         .then((respuestaDB) => {
           res.send({ ok: true, mensaje: "tarea editada", info: info_tarea });
         })

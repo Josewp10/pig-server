@@ -18,7 +18,7 @@ const _controlador = require("../controllers/controlRetiros");
 router.get("/controlRetiros", (req, res) => {
 
   _controlador
-    .consultarControlRetiro()
+    .consultarControlesRetiro()
     .then(respuestaDB => {
       console.log(respuestaDB);
       let controlRetiros = respuestaDB.rows;
@@ -40,7 +40,7 @@ router.get('/controlRetiros/:id_retiro', async (req, res) => {
 
   let id = req.params.id_retiro;
 
-  _controlador.consultarporControlRetiro(id)
+  _controlador.consultarControlRetiro(id)
       .then((controlRetiro) => {
           let controlRetiros = controlRetiro.rows;
           res.send({ok: true, info: controlRetiros, mensaje: 'Control Retiro consultado'});
@@ -90,6 +90,8 @@ router.put("/controlRetiros/:id_retiro", (req, res) => {
     let id_retiro = req.params.id_retiro;
     let info_retiro = req.body;
 
+    _controlador.validar(info_retiro);
+
     _controlador.actualizarControlRetiro(info_retiro, id_retiro)
       .then((respuestaDB) => {
         res.send({ ok: true, mensaje: "Control de Retiro Editado", info: info_retiro });
@@ -125,4 +127,4 @@ router.delete("/controlRetiros/:id_retiro", (req, res) => {
 });
 
 
-module.exports = router
+module.exports = router;

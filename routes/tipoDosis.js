@@ -6,16 +6,13 @@
 //Llamado a todas las librerías, servicios y controladores requeridos
 const express = require('express');
 const router = express.Router();
+const _controlador = require('../controllers/tipoDosis');
 
-const {
-    validarDosis,
-    consultarDosis,
-    guardarDosis,
-    
-} = require('../controllers/tipoDosis');
 
 router.get('/tipoDosis', async (req, res) => {
-    consultarDosis()
+  
+  _controlador
+  .consultarDosis()
         .then((answerDB) => {
             let dosis = answerDB.rows;
             res.send({ok: true, info: dosis, mensaje: 'tipo de dosis consultadas'});
@@ -25,14 +22,15 @@ router.get('/tipoDosis', async (req, res) => {
         });
   });
 
-// Guarda un nuevo tipo de Dosis
-router.post("/tipoDosis", (req, res) => {
+
+  router.post("/tipoDosis", (req, res) => {
     try {
       let info_dosis = req.body;
   
-      validarDosis(info_dosis);
+      _controlador.validarDosis(info_dosis);
   
-      guardarDosis(info_dosis)
+      _controlador
+      .guardarDosis(info_dosis)
         .then((respuestaDB) => {
           console.log("entro");  
           res.send({ ok: true, mensaje: "tipo de dosis guardado", info: info_dosis });
