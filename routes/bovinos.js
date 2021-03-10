@@ -62,11 +62,12 @@ router.get('/bovinos/chapeta_tipo/:chapeta/:tipo', async (req, res) => {
 
   let tipo_bovino = req.params.tipo;
   let consulta = req.params.consulta;
+  let chapeta = req.params.chapeta;
     
   switch (consulta) {
     case 'chapeta':
           _controlador
-          .consultarChapeta(tipo_bovino)
+          .consultarChapeta(chapeta)
           .then((bovinoDB) => {
               let bovino = bovinoDB.rows;
               res.send({ok: true, info: bovino, mensaje: 'bovinos consultados'});
