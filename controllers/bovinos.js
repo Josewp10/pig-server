@@ -45,7 +45,6 @@ const consultarBovinos = async () => {
     return respuesta
 };
 
-
 /**
  * @description Conslulta un bovino en específico en la base de datos.
  * @param {int} tipo 
@@ -61,14 +60,26 @@ let consultarBovino = async (tipo,chapeta) => {
   };
 
 /**
+ * @description Conslulta todos los bovinos de un tipo específico.
+ * @param {int} tipo  
+ * @returns
+ */
+ let consultarPorTipo = async (tipo) => {
+  let sql = `SELECT "id_Tbovinos", chapeta, id_tipo, nombre, id_raza, genetica, finca FROM public."Bovinos"
+              WHERE id_tipo = $1 `;
+    
+  let respuesta = await _servicio.ejecutarSql(sql, [tipo]);
+  return respuesta;
+}
+
+/**
  * @description Consulta las chapetas de los bovinos filtradas por el tipo de bovino.
  * @param {int} tipo 
  * @returns
  */
   let consultarChapeta = async (tipo) => {
-  let sql = `SELECT chapeta FROM public.bovino
-    WHERE tipo_bovino = $1 `;
-    
+  let sql = `SELECT chapeta FROM public."Bovinos"
+            WHERE id_tipo = $1 `;    
   let respuesta = await _servicio.ejecutarSql(sql, [tipo]);
   return respuesta;
 };
@@ -93,7 +104,7 @@ const guardarBovino = async (bovino) => {
  * @returns
  */
 const eliminarBovino = async (chapeta) => {
-    let sql = `DELETE FROM public.bovino where chapeta = $1`;    
+    let sql = `DELETE FROM public."Bovinos" where chapeta = $1`;    
     let respuesta = await _servicio.ejecutarSql(sql, [chapeta]);
     return respuesta
 };
@@ -123,4 +134,5 @@ const editarBovino = async (bovino, chapeta) => {
 
 module.exports = {validarBovino, consultarBovinos, 
                  consultarBovino,consultarChapeta,
-                 guardarBovino, eliminarBovino, editarBovino};
+                 guardarBovino, eliminarBovino, 
+                 editarBovino, consultarPorTipo};

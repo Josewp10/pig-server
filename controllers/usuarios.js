@@ -52,7 +52,7 @@ const validarUsuario = usuario => {
  * @description Consulta la información de todos los usuarios registrados en la base de datos.
  * @returns 
  */
-const consultarUsuario = async () => {
+const consultarUsuarios = async () => {
     let sql = `SELECT "Usuarios"."id_Tusuario", "Usuarios".id_usuario, "Usuarios".nombre, 
     "Usuarios".correo, "Usuarios".celular, "TiposUsuarios".nombre
         FROM public."Usuarios"

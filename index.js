@@ -43,8 +43,8 @@ app.use(ruta_dosis);
 const ruta_tareas= require("./routes/registroTareas");
 app.use(ruta_tareas);
 
-const ruta_sms= require("./routes/notificacionSMS");
-app.use(ruta_sms);
+//const ruta_sms= require("./routes/notificacionSMS");
+//app.use(ruta_sms);
 
  //Puerto
  const port = 3001;

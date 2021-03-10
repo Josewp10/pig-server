@@ -14,7 +14,7 @@ const _controlador = require("../controllers/bovinos");
  * Petición: Traer todos los bovinos
  * Parámetros: Vacío
  * Cuerpo: Vacío
- * Respuesta: Bovinos registrados o mensaje de error
+ * Respuesta: Bovinos consultado o mensaje de error
  */
 router.get('/bovinos', async (req, res) => {
   
@@ -34,9 +34,9 @@ router.get('/bovinos', async (req, res) => {
  * Petición: Traer un bovino específico
  * Parámetros: Chapeta, tipo de bovino
  * Cuerpo: Vacío
- * Respuesta: Bovino registrado o mensaje de error
+ * Respuesta: Bovino consultado o mensaje de error
  */
-router.get('/bovinos/:chapeta/:tipo', async (req, res) => {
+router.get('/bovinos/chapeta_tipo/:chapeta/:tipo', async (req, res) => {
     let id = req.params.chapeta;
     let tipo_bovino = req.params.tipo;
     
@@ -52,26 +52,46 @@ router.get('/bovinos/:chapeta/:tipo', async (req, res) => {
         });
 });
 
-
 /**
- * Petición: Traer todos los bovinos según el tipo
- * Parámetros:  Tipo de bovino
+ * Petición: Traer las chapetas o la información completa de todos los bovinos según el tipo
+ * Parámetros:  Tipo de bovino, consulta (por tipo ó chapeta)
  * Cuerpo: Vacío
- * Respuesta: Bovino registrado o mensaje de error
+ * Respuesta: Bovinos consultados o mensaje de error
  */
-router.get('/bovinos/:tipo', async (req, res) => {
+ router.get('/bovinos/:consulta/:tipo', async (req, res) => {
+
   let tipo_bovino = req.params.tipo;
+  let consulta = req.params.consulta;
+    
+  switch (consulta) {
+    case 'chapeta':
+          _controlador
+          .consultarChapeta(tipo_bovino)
+          .then((bovinoDB) => {
+              let bovino = bovinoDB.rows;
+              res.send({ok: true, info: bovino, mensaje: 'bovinos consultados'});
+          })
+          .catch(error => {
+              console.log(error);
+              res.send(error);
+          });
+      break;
+    case 'tipo':
+          _controlador
+          .consultarPorTipo(tipo_bovino)
+          .then((bovinoDB) => {
+              let bovino = bovinoDB.rows;
+              res.send({ok: true, info: bovino, mensaje: 'bovinos consultados'});
+          })
+          .catch(error => {
+              console.log(error);
+              res.send(error);
+          });
+      break;
+    default:
+      break;
+  }
   
-  _controlador
-  .consultarChapeta(tipo_bovino)
-      .then((bovinoDB) => {
-          let bovino = bovinoDB.rows;
-          res.send({ok: true, info: bovino, mensaje: 'bovinos consultados'});
-      })
-      .catch(error => {
-          console.log(error);
-          res.send(error);
-      });
 });
 
 /**

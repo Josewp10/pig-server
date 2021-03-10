@@ -2,9 +2,10 @@ const {pool, Pool} = require('pg');
 require('dotenv').config()
 
 class ServicioPG {
+    
     constructor(){
         this.pool = new Pool({
-            user: process.env.USER,
+            user: process.env.USERDB,
             host: process.env.HOST,
             database: process.env.DATABASE,
             password: process.env.PASSWORD,
