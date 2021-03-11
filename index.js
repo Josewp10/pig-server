@@ -55,5 +55,5 @@ app.use(ruta_genealogicos);
  //Levantamiento
  
  app.listen(process.env.PORT || port, () => {
-    console.log(`Escuchando API en http://localhost:${port}`);
+    console.log(`Escuchando API en http://localhost:${process.env.PORT}`);
  });
