@@ -53,6 +53,7 @@ app.use(ruta_genealogicos);
  const port = 3001;
 
  //Levantamiento
- app.listen(port, () => {
+ 
+ app.listen(process.env.PORT || port, () => {
     console.log(`Escuchando API en http://localhost:${port}`);
  });
