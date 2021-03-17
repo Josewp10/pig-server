@@ -46,6 +46,12 @@ app.use(ruta_tareas);
 const ruta_genealogicos= require("./routes/genealogicos");
 app.use(ruta_genealogicos);
 
+const ruta_razas= require("./routes/registroRazas");
+app.use(ruta_razas);
+
+const ruta_tipos= require("./routes/registroTipos");
+app.use(ruta_tipos);
+
 //const ruta_sms= require("./routes/notificacionSMS");
 //app.use(ruta_sms);
 
