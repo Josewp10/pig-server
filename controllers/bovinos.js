@@ -66,7 +66,7 @@ let consultarBovino = async (tipo,chapeta) => {
  */
  let consultarPorTipo = async (tipo) => {
   let sql = `SELECT "id_Tbovinos", chapeta, id_tipo, nombre, id_raza, genetica, finca FROM public."Bovinos"
-              WHERE id_tipo = $1 `;
+              WHERE id_tipo = $1 order by finca asc, nombre asc`;
     
   let respuesta = await _servicio.ejecutarSql(sql, [tipo]);
   return respuesta;
