@@ -12,10 +12,10 @@ const _controlador = require('../controllers/registroTipos');
 
 router.get('/registroTipos/:id_tipo', async (req, res) => {
   
-    let tipo_tipo = req.params.id_tipo;
+    let id_tipo = req.params.id_tipo;
     
     _controlador
-    .consultarRaza(tipo_tipo)
+    .consultarTipo(id_tipo)
         .then((tipoDB) => {
             let tipo = tipoDB.rows;
             res.send({ok: true, info: tipo, mensaje: 'Tipo consultado'});
