@@ -73,6 +73,20 @@ let consultarBovino = async (tipo,chapeta) => {
 }
 
 /**
+ * @description Conslulta la chapeta y nombre de los bovinos de un tipo específico.
+ * @param {int} tipo  
+ * @returns
+ */
+ let consultarPorTipoEspecifico = async (tipo) => {
+  let sql = `SELECT chapeta, nombre
+	        FROM public."Bovinos" where id_tipo=$1
+           order by finca asc, nombre asc`;
+    
+  let respuesta = await _servicio.ejecutarSql(sql, [tipo]);
+  return respuesta;
+}
+
+/**
  * @description Consulta las chapetas de los bovinos filtradas por el tipo de bovino.
  * @param {int} tipo 
  * @returns
@@ -126,7 +140,8 @@ const editarBovino = async (bovino, chapeta) => {
       `UPDATE public."Bovinos"
         SET chapeta=$1, id_tipo=$2, nombre=$3, id_raza=$4, genetica=$5, finca=$6
         WHERE chapeta = $7;`;
-    let valores = [bovino.chapeta, bovino.id_tipo, bovino.nombre, bovino.id_raza, bovino.genetica, bovino.finca, chapeta];
+    let valores = [bovino.chapeta, bovino.id_tipo, bovino.nombre, 
+      bovino.id_raza, bovino.genetica, bovino.finca, chapeta];
     let respuesta = await _servicio.ejecutarSql(sql, valores);
     return respuesta;
   };
@@ -135,4 +150,4 @@ const editarBovino = async (bovino, chapeta) => {
 module.exports = {validarBovino, consultarBovinos, 
                  consultarBovino,consultarChapeta,
                  guardarBovino, eliminarBovino, 
-                 editarBovino, consultarPorTipo};
+                 editarBovino, consultarPorTipo, consultarPorTipoEspecifico};

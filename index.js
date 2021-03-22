@@ -52,6 +52,9 @@ app.use(ruta_razas);
 const ruta_tipos= require("./routes/registroTipos");
 app.use(ruta_tipos);
 
+const ruta_medicamentos= require("./routes/medicamentos");
+app.use(ruta_medicamentos);
+
 //const ruta_sms= require("./routes/notificacionSMS");
 //app.use(ruta_sms);
 

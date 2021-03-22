@@ -16,12 +16,12 @@ let _servicio = new ServicioPG();
  */
 const validarGenealogico = arbol => {
     if (!arbol) {
-        throw{
+        throw {
             ok: false,
             mensaje: 'Ingrese la información de cada bovino'
         };
-    }else if(!arbol. id_tbovino){
-        throw{
+    } else if (!arbol.id_tbovino) {
+        throw {
             ok: false,
             mensaje: 'Ingrese la información del bovino'
         };
@@ -32,7 +32,7 @@ const validarGenealogico = arbol => {
  * @description Consulta todos los registros de genealógicos en la base de datos.
  * @returns 
  */
-const consultarGenealogicos = async () => {    
+const consultarGenealogicos = async () => {
     let sql = `SELECT "id_Tgenealogico", id_tbovino, id_mama, id_papa, id_abuela, id_abuelo
                 FROM public."Genealogicos";`;
     let respuesta = await _servicio.ejecutarSql(sql);
@@ -44,13 +44,13 @@ const consultarGenealogicos = async () => {
  * @param {int} id_tbovino 
  * @returns 
  */
-let consultarGenealogico = async (id_tbovino) => {   
+let consultarGenealogico = async (id_tbovino) => {
     let sql = `SELECT "id_Tgenealogico", id_tbovino, id_mama, id_papa, id_abuela, id_abuelo
     FROM public."Genealogicos" where id_tbovino=$1;`;
-      
+
     let respuesta = await _servicio.ejecutarSql(sql, [id_tbovino]);
     return respuesta;
-  };
+};
 
 /**
  * @description Almacena un nuevo registro genealógico en la base de datos.
@@ -77,7 +77,7 @@ let insertarGenealogico = async (arbol) => {
  * @returns 
  */
 let eliminarGenealogico = async (id_tbovino) => {
-    let sql = `DELETE FROM public."Genealogicos" where id_tbovino=$1;`;    
+    let sql = `DELETE FROM public."Genealogicos" where id_tbovino=$1;`;
     let respuesta = await _servicio.ejecutarSql(sql, [id_tbovino]);
     return respuesta
 };
@@ -90,13 +90,13 @@ let eliminarGenealogico = async (id_tbovino) => {
  */
 let editarGenealogico = async (arbol, id_tbovino) => {
     if (arbol.id_tbovino != id_tbovino) {
-      throw {
-        ok: false,
-        mensaje: "El id del bovino no corresponde al enviado",
-      };
+        throw {
+            ok: false,
+            mensaje: "El id del bovino no corresponde al enviado",
+        };
     }
     let sql =
-      `UPDATE public."Genealogicos"
+        `UPDATE public."Genealogicos"
       SET  id_mama=$1, id_papa=$2, id_abuela=$3, id_abuelo=$4 WHERE id_tbovino=$5;`;
     let valores = [
         arbol.id_tbovino,
@@ -107,8 +107,10 @@ let editarGenealogico = async (arbol, id_tbovino) => {
     ];
     let respuesta = await _servicio.ejecutarSql(sql, valores);
     return respuesta;
-  };
+};
 
-  module.exports = {  validarGenealogico,insertarGenealogico, 
-    consultarGenealogico, editarGenealogico, 
-    eliminarGenealogico, consultarGenealogicos };
+module.exports = {
+    validarGenealogico, insertarGenealogico,
+    consultarGenealogico, editarGenealogico,
+    eliminarGenealogico, consultarGenealogicos
+};

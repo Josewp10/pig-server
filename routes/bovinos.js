@@ -14,7 +14,7 @@ const _controlador = require("../controllers/bovinos");
  * Petición: Traer todos los bovinos
  * Parámetros: Vacío
  * Cuerpo: Vacío
- * Respuesta: Bovinos consultado o mensaje de error
+ * Respuesta: Bovinos consultados o mensaje de error
  */
 router.get('/bovinos', async (req, res) => {
   
@@ -80,6 +80,18 @@ router.get('/bovinos/chapeta_tipo/:chapeta/:tipo', async (req, res) => {
     case 'tipo':
           _controlador
           .consultarPorTipo(tipo_bovino)
+          .then((bovinoDB) => {
+              let bovino = bovinoDB.rows;
+              res.send({ok: true, info: bovino, mensaje: 'bovinos consultados'});
+          })
+          .catch(error => {
+              console.log(error);
+              res.send(error);
+          });
+      break;
+      case 'chapetaNombre':
+          _controlador
+          .consultarPorTipoEspecifico(tipo_bovino)
           .then((bovinoDB) => {
               let bovino = bovinoDB.rows;
               res.send({ok: true, info: bovino, mensaje: 'bovinos consultados'});
