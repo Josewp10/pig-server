@@ -45,8 +45,13 @@ const consultarGenealogicos = async () => {
  * @returns 
  */
 let consultarGenealogico = async (id_tbovino) => {   
-    let sql = `SELECT "id_Tgenealogico", id_tbovino, id_mama, id_papa, id_abuela, id_abuelo
-    FROM public."Genealogicos" where id_tbovino=$1;`;
+    let sql = `SELECT (SELECT nombre FROM public."Bovinos" where "Bovinos"."id_Tbovinos" = "Genealogicos".id_tbovino) as "Bovino",
+    (SELECT nombre FROM public."Bovinos" where "Bovinos"."id_Tbovinos"="Genealogicos".id_mama) as "Mamá",
+    (SELECT nombre FROM public."Bovinos" where "Bovinos"."id_Tbovinos"="Genealogicos".id_papa) as "Papá",
+    (SELECT nombre FROM public."Bovinos" where "Bovinos"."id_Tbovinos"="Genealogicos".id_abuelo) as "Abuelo",
+    (SELECT nombre FROM public."Bovinos" where "Bovinos"."id_Tbovinos"="Genealogicos".id_abuela) as "Abuela"
+    FROM public."Genealogicos" 
+    where EXISTS(SELECT id_tbovino FROM public."Genealogicos" where id_tbovino= $1) and id_tbovino= $1;`;
       
     let respuesta = await _servicio.ejecutarSql(sql, [id_tbovino]);
     return respuesta;
