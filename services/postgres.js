@@ -10,7 +10,7 @@ class ServicioPG {
             database: process.env.DATABASE,
             password: process.env.PASSWORD,
             ssl: { rejectUnauthorized: false },
-            port: process.env.PORT
+            port: process.env.PORTPG
         });
     }
 

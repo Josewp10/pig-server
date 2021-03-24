@@ -26,7 +26,7 @@ const validarBovino = bovino => {
             ok: false,
             mensaje: 'Ingrese la información del bovino'
         };
-    }else if(!bovino.tipo_bovino){
+    }else if(!bovino.id_tipo){
         throw{
             ok: false,
             mensaje: 'Ingrese la información del bovino'
@@ -66,7 +66,21 @@ let consultarBovino = async (tipo,chapeta) => {
  */
  let consultarPorTipo = async (tipo) => {
   let sql = `SELECT "id_Tbovinos", chapeta, id_tipo, nombre, id_raza, genetica, finca FROM public."Bovinos"
-              WHERE id_tipo = $1 `;
+              WHERE id_tipo = $1 order by finca asc, nombre asc`;
+    
+  let respuesta = await _servicio.ejecutarSql(sql, [tipo]);
+  return respuesta;
+}
+
+/**
+ * @description Conslulta la chapeta y nombre de los bovinos de un tipo específico.
+ * @param {int} tipo  
+ * @returns
+ */
+ let consultarPorTipoEspecifico = async (tipo) => {
+  let sql = `SELECT chapeta, nombre
+	        FROM public."Bovinos" where id_tipo=$1
+           order by finca asc, nombre asc`;
     
   let respuesta = await _servicio.ejecutarSql(sql, [tipo]);
   return respuesta;
@@ -78,8 +92,8 @@ let consultarBovino = async (tipo,chapeta) => {
  * @returns
  */
   let consultarChapeta = async (tipo) => {
-  let sql = `SELECT chapeta FROM public."Bovinos"
-            WHERE id_tipo = $1 `;    
+  let sql = `SELECT "id_Tbovinos", chapeta, id_tipo, nombre, id_raza, genetica, finca FROM public."Bovinos"
+            WHERE chapeta = $1 `;    
   let respuesta = await _servicio.ejecutarSql(sql, [tipo]);
   return respuesta;
 };
@@ -92,7 +106,7 @@ let consultarBovino = async (tipo,chapeta) => {
 const guardarBovino = async (bovino) => {
     let sql = `INSERT INTO public."Bovinos"(chapeta, id_tipo, nombre, id_raza, genetica, finca)
                 VALUES ($1, $2, $3, $4, $5, $6);`;
-    let valores = [bovino.chapeta, bovino.tipo_bovino];
+    let valores = [bovino.chapeta, bovino.id_tipo, bovino.nombre, bovino.id_raza, bovino.genetica, bovino.finca];
     let respuesta = await _servicio.ejecutarSql(sql, valores);
     return respuesta
 };
@@ -125,8 +139,9 @@ const editarBovino = async (bovino, chapeta) => {
     let sql =
       `UPDATE public."Bovinos"
         SET chapeta=$1, id_tipo=$2, nombre=$3, id_raza=$4, genetica=$5, finca=$6
-        WHERE $7;`;
-    let valores = [bovino.chapeta, bovino.tipo_bovino, chapeta];
+        WHERE chapeta = $7;`;
+    let valores = [bovino.chapeta, bovino.id_tipo, bovino.nombre, 
+      bovino.id_raza, bovino.genetica, bovino.finca, chapeta];
     let respuesta = await _servicio.ejecutarSql(sql, valores);
     return respuesta;
   };
@@ -135,4 +150,4 @@ const editarBovino = async (bovino, chapeta) => {
 module.exports = {validarBovino, consultarBovinos, 
                  consultarBovino,consultarChapeta,
                  guardarBovino, eliminarBovino, 
-                 editarBovino, consultarPorTipo};
+                 editarBovino, consultarPorTipo, consultarPorTipoEspecifico};

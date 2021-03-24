@@ -46,6 +46,15 @@ app.use(ruta_tareas);
 const ruta_genealogicos= require("./routes/genealogicos");
 app.use(ruta_genealogicos);
 
+const ruta_razas= require("./routes/registroRazas");
+app.use(ruta_razas);
+
+const ruta_tipos= require("./routes/registroTipos");
+app.use(ruta_tipos);
+
+const ruta_medicamentos= require("./routes/medicamentos");
+app.use(ruta_medicamentos);
+
 //const ruta_sms= require("./routes/notificacionSMS");
 //app.use(ruta_sms);
 
@@ -53,6 +62,7 @@ app.use(ruta_genealogicos);
  const port = 3001;
 
  //Levantamiento
- app.listen(port, () => {
-    console.log(`Escuchando API en http://localhost:${port}`);
+ 
+ app.listen(process.env.PORT || port, () => {
+    console.log(`Escuchando API en http://localhost:${process.env.PORT}`);
  });
