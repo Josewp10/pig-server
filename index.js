@@ -58,8 +58,13 @@ app.use(ruta_medicamentos);
 const ruta_controlPrenez= require("./routes/controlPrenez");
 app.use(ruta_controlPrenez);
 
+const ruta_produccions= require("./routes/produccions");
+app.use(ruta_produccions);
+
 const ruta_pajillas= require("./routes/pajillas");
 app.use(ruta_pajillas);
+
+
 
 //const ruta_sms= require("./routes/notificacionSMS");
 //app.use(ruta_sms);
