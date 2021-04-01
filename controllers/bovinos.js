@@ -66,7 +66,7 @@ let consultarBovino = async (tipo,chapeta) => {
  */
  let consultarPorTipo = async (tipo) => {
   let sql = `SELECT "id_Tbovinos", chapeta, id_tipo, nombre, id_raza, genetica, finca FROM public."Bovinos"
-              WHERE id_tipo = $1 order by finca asc, nombre asc`;
+              WHERE id_tipo = $1 order by finca asc, nombre asc;`;
     
   let respuesta = await _servicio.ejecutarSql(sql, [tipo]);
   return respuesta;
@@ -80,7 +80,7 @@ let consultarBovino = async (tipo,chapeta) => {
  let consultarPorTipoEspecifico = async (tipo) => {
   let sql = `SELECT chapeta, nombre
 	        FROM public."Bovinos" where id_tipo=$1
-           order by finca asc, nombre asc`;
+           order by finca asc, nombre asc;`;
     
   let respuesta = await _servicio.ejecutarSql(sql, [tipo]);
   return respuesta;
@@ -93,7 +93,7 @@ let consultarBovino = async (tipo,chapeta) => {
  */
   let consultarChapeta = async (tipo) => {
   let sql = `SELECT "id_Tbovinos", chapeta, id_tipo, nombre, id_raza, genetica, finca FROM public."Bovinos"
-            WHERE chapeta = $1 `;    
+            WHERE chapeta = $1;`;    
   let respuesta = await _servicio.ejecutarSql(sql, [tipo]);
   return respuesta;
 };
@@ -118,7 +118,7 @@ const guardarBovino = async (bovino) => {
  * @returns
  */
 const eliminarBovino = async (chapeta) => {
-    let sql = `DELETE FROM public."Bovinos" where chapeta = $1`;    
+    let sql = `DELETE FROM public."Bovinos" where chapeta = $1;`;    
     let respuesta = await _servicio.ejecutarSql(sql, [chapeta]);
     return respuesta
 };

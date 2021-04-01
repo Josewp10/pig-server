@@ -31,7 +31,7 @@ const validarMedicamento = medicamento => {
             ok: false,
             mensaje: 'Ingrese el nombre del medicamento'
         };
-    }else if(!medicamento.horas_retiro_leche){
+    }else if(medicamento.horas_retiro_leche===null){
         throw{
             ok: false,
             mensaje: 'Ingrese las horas de retiro que requiere el medicamento'

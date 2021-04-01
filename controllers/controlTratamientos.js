@@ -45,13 +45,13 @@ else if (!tratamiento.id_usuario) {
  */
 const ver_tratamiento = async (tratamiento) => {    
   let sql = `SELECT "ControlTratamientos".id_tratamiento, "ControlTratamientos".fecha_inicio, "ControlTratamientos".fecha_fin,
-  "ControlTratamientos".hora, "ControlTratamientos".enfermedad, "ControlTratamientos".detalles, 
-  "TipoDosis".tipo as tipoDosis, "Bovinos".nombre as Bovino, "Usuarios".nombre as usuario
-    FROM public."ControlTratamientos"
-    INNER JOIN public."Bovinos" ON "ControlTratamientos".id_bovino= "Bovinos"."id_Tbovinos"
-    INNER JOIN public."Usuarios" ON "ControlTratamientos".id_usuario = "Usuarios"."id_Tusuario"
-    INNER JOIN public."TipoDosis" ON "ControlTratamientos".tipo_dosis = "TipoDosis"."id_tipo"
-    ORDER BY id_tratamiento ASC;`
+          "ControlTratamientos".hora, "ControlTratamientos".enfermedad, "ControlTratamientos".detalles, 
+          "TipoDosis".tipo as tipoDosis, "Bovinos".nombre as Bovino, "Usuarios".nombre as usuario
+          FROM public."ControlTratamientos"
+          INNER JOIN public."Bovinos" ON "ControlTratamientos".id_bovino= "Bovinos"."chapeta"
+          INNER JOIN public."Usuarios" ON "ControlTratamientos".id_usuario = "Usuarios"."id_usuario"
+          INNER JOIN public."TipoDosis" ON "ControlTratamientos".tipo_dosis = "TipoDosis"."id_tipo"
+          ORDER BY id_tratamiento ASC;`
   ;
   let respuesta = await _service.ejecutarSql(sql);
   return respuesta
@@ -63,13 +63,15 @@ const ver_tratamiento = async (tratamiento) => {
  * @returns 
  */
 let consultarporControl = async (id_tratamiento) => {
-  let sql = `
-  SELECT "ControlTratamientos".id_tratamiento, "ControlTratamientos".fecha_inicio, "ControlTratamientos".fecha_fin,
-  "ControlTratamientos".hora, "ControlTratamientos".enfermedad, "ControlTratamientos".detalles, 
-  "ControlTratamientos".tipo_dosis , "ControlTratamientos".id_bovino, "ControlTratamientos".id_usuario
-    FROM public."ControlTratamientos"
-    WHERE id_tratamiento = $1;`;
-    
+  let sql = `SELECT "ControlTratamientos".id_tratamiento, "ControlTratamientos".fecha_inicio, "ControlTratamientos".fecha_fin,
+        "ControlTratamientos".hora, "ControlTratamientos".enfermedad, "ControlTratamientos".detalles, 
+        "TipoDosis".tipo as tipoDosis, "Bovinos".nombre as Bovino, "Usuarios".nombre as usuario
+        FROM public."ControlTratamientos"
+        INNER JOIN public."Bovinos" ON "ControlTratamientos".id_bovino= "Bovinos"."chapeta"
+        INNER JOIN public."Usuarios" ON "ControlTratamientos".id_usuario = "Usuarios"."id_usuario"
+        INNER JOIN public."TipoDosis" ON "ControlTratamientos".tipo_dosis = "TipoDosis"."id_tipo"
+        WHERE id_tratamiento = 1;`;
+          
   let respuesta = await _service.ejecutarSql(sql, [id_tratamiento]);
   return respuesta;
 };
@@ -137,8 +139,7 @@ let consultarporControl = async (id_tratamiento) => {
  * @returns 
  */
   const eliminar_tratamiento = async (id_tratamiento) => {
-    let sql = `DELETE FROM public."ControlTratamientos"
-	WHERE id_tratamiento = $1`;    
+    let sql = `DELETE FROM public."ControlTratamientos"	WHERE id_tratamiento = $1`;    
     let respuesta = await _service.ejecutarSql(sql, [id_tratamiento]);
     return respuesta
 };

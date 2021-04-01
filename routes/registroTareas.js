@@ -12,7 +12,7 @@ const _controlador = require('../controllers/registroTareas');
 router.get('/registroTareas', async (req, res) => {
   
   _controlador
-  .consultarTarea()
+  .consultarTareas()
         .then((tareaDB) => {
             let tarea = tareaDB.rows;
             res.send({ok: true, info: tarea, mensaje: 'tareas consultadas'});
@@ -27,7 +27,7 @@ router.get('/registroTareas/:id_registro', async (req, res) => {
     let tipo_tarea = req.params.id_registro;
     
     _controlador
-    .consultarTareas(tipo_tarea)
+    .consultarTarea(tipo_tarea)
         .then((tareaDB) => {
             let tarea = tareaDB.rows;
             res.send({ok: true, info: tarea, mensaje: 'Tarea consultada'});

@@ -47,8 +47,8 @@ let consultarControlesRetiro = async () => {
             "ControlRetiros".observaciones, "Bovinos".nombre as Bovino, "Usuarios".nombre as Usuario,
             "TiposRetiros".nombre as "Tipo retiro"
             FROM public."ControlRetiros"
-            INNER JOIN public."Bovinos" ON "ControlRetiros".id_bovino = "Bovinos"."id_Tbovinos"
-            INNER JOIN public."Usuarios" ON "ControlRetiros".id_usuario = "Usuarios"."id_Tusuario"
+            INNER JOIN public."Bovinos" ON "ControlRetiros".id_bovino = "Bovinos"."chapeta"
+            INNER JOIN public."Usuarios" ON "ControlRetiros".id_usuario = "Usuarios"."id_usuario"
             INNER JOIN public."TiposRetiros" ON "ControlRetiros".id_tipo = "TiposRetiros"."id_tipo"
             ORDER BY id_retiro ASC;`;
     let respuesta = await _servicio.ejecutarSql(sql);
@@ -66,8 +66,8 @@ let consultarControlRetiro = async (id_retiro) => {
             "ControlRetiros".observaciones, "Bovinos".nombre as Bovino, "Usuarios".nombre as Usuario,
             "TiposRetiros".nombre as "Tipo retiro"
             FROM public."ControlRetiros"
-            INNER JOIN public."Bovinos" ON "ControlRetiros".id_bovino = "Bovinos"."id_Tbovinos"
-            INNER JOIN public."Usuarios" ON "ControlRetiros".id_usuario = "Usuarios"."id_Tusuario"
+            INNER JOIN public."Bovinos" ON "ControlRetiros".id_bovino = "Bovinos"."chapeta"
+            INNER JOIN public."Usuarios" ON "ControlRetiros".id_usuario = "Usuarios"."id_usuario"
             INNER JOIN public."TiposRetiros" ON "ControlRetiros".id_tipo = "TiposRetiros"."id_tipo"
             where id_retiro = $1;`;
     let respuesta = await _servicio.ejecutarSql(sql, [id_retiro]);

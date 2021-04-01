@@ -41,11 +41,11 @@ const validarTarea = tarea => {
  * @description Consulta la información de todas las tareas en la base de datos.
  * @returns 
  */
-const consultarTarea = async () => {    
+const consultarTareas = async () => {    
     let sql = `SELECT id_registro, "Tareas".nombre as Tareas, "Usuarios".nombre as usuario, fecha
 	FROM public."RegistroTareas"
 	 INNER JOIN public."Tareas" ON "RegistroTareas".id_tarea= "Tareas"."id_tarea"
-    INNER JOIN public."Usuarios" ON "RegistroTareas".id_usuario = "Usuarios"."id_Tusuario"
+    INNER JOIN public."Usuarios" ON "RegistroTareas".id_usuario = "Usuarios"."id_usuario"
     ORDER BY id_registro ASC;`;
     let respuesta = await _servicio.ejecutarSql(sql);
     return respuesta
@@ -56,7 +56,7 @@ const consultarTarea = async () => {
  * @param {int} id_registro 
  * @returns 
  */
-let consultarTareas = async (id_registro) => {
+let consultarTarea = async (id_registro) => {
     let sql = `SELECT id_registro, id_tarea, id_usuario, fecha
 	FROM public."RegistroTareas"
       WHERE id_registro = $1 `;

@@ -68,7 +68,6 @@ router.post("/medicamentos", (req, res) => {
       _controlador
       .guardarMedicamento(info_medicamento)
         .then((respuestaDB) => {
-          console.log("entro");  
           res.send({ ok: true, mensaje: "Medicamento almacenado", info: info_medicamento });
         })
         .catch((error) => {
