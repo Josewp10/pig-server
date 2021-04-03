@@ -64,6 +64,10 @@ app.use(ruta_produccions);
 const ruta_pajillas= require("./routes/pajillas");
 app.use(ruta_pajillas);
 
+const ruta_termo= require("./routes/termos");
+app.use(ruta_termo);
+
+
 
 
 //const ruta_sms= require("./routes/notificacionSMS");
