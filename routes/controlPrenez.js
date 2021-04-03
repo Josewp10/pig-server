@@ -7,11 +7,11 @@ const _controlador = require("../controllers/controlPrenez");
 router.get("/controlPrenez", (req, res) => {
 
   _controlador
-    .consultarControlPrenez()
+    .consultarControlesPrenez()
     .then(respuestaDB => {
       console.log(respuestaDB);
       let controlPrenez = respuestaDB.rows;
-      res.send({ ok: true, info: controlPrenez, mensaje: "Control de preñez Consultado" });
+      res.send({ ok: true, info: controlPrenez, mensaje: "Controles de preñez Consultado" });
     })
     .catch(error => {
       res.send(error);

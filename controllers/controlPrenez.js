@@ -28,18 +28,22 @@ let validar = control => {
 
 
 let consultarControlesPrenez = async () => {
-    let sql = `SELECT id_control, id_vaca, fecha_palpacion, confirmacion_palpacion, fecha_secado, num_parto, "Usuarios".nombre as Usuario, id_celo
+    let sql = `SELECT id_control, "Bovinos".nombre as Vaca, fecha_palpacion, confirmacion_palpacion, 
+	fecha_secado, num_parto, "Usuarios".nombre as Usuario, id_celo
 	FROM public."ControlPrenez"
-	INNER JOIN public."Usuarios" ON "ControlPrenez".id_usuario = "Usuarios"."id_Tusuario";`;
+	INNER JOIN public."Bovinos" ON "ControlPrenez".id_vaca = "Bovinos".chapeta
+	INNER JOIN public."Usuarios" ON "ControlPrenez".id_usuario = "Usuarios".id_usuario;	`;
     let respuesta = await _servicio.ejecutarSql(sql);
     return respuesta;
 };
 
 
 let consultarControlPrenez = async (id_control) => {
-    let sql = `SELECT id_control, id_vaca, fecha_palpacion, confirmacion_palpacion, fecha_secado, num_parto, "Usuarios".nombre as Usuario, id_celo
+    let sql = `SELECT id_control, "Bovinos".nombre as Vaca, fecha_palpacion, confirmacion_palpacion, 
+	fecha_secado, num_parto, "Usuarios".nombre as Usuario, id_celo
 	FROM public."ControlPrenez"
-	INNER JOIN public."Usuarios" ON "ControlPrenez".id_usuario = "Usuarios"."id_Tusuario"
+	INNER JOIN public."Bovinos" ON "ControlPrenez".id_vaca = "Bovinos".chapeta
+	INNER JOIN public."Usuarios" ON "ControlPrenez".id_usuario = "Usuarios".id_usuario
     where id_control = $1;`;
     let respuesta = await _servicio.ejecutarSql(sql, [id_control]);
     return respuesta;

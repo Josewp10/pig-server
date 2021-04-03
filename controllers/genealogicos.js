@@ -114,6 +114,6 @@ let editarGenealogico = async (arbol, id_tbovino) => {
     return respuesta;
   };
 
-  module.exports = {  validarGenealogico,insertarGenealogico, 
+module.exports = {  validarGenealogico,insertarGenealogico, 
     consultarGenealogico, editarGenealogico, 
     eliminarGenealogico, consultarGenealogicos }; 

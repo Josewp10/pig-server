@@ -56,7 +56,7 @@ const consultarCelos = async () => {
     let sql = `Select id_celo, fecha_inicio, detalles,
                 (Select nombre from public."Bovinos" where chapeta = id_macho) as "Nombre_Macho",
                 (Select nombre from public."Bovinos" where chapeta = id_hembra) as "Nombre_Hembra", 
-                public."Usuarios"."nombre" 
+                public."Usuarios"."nombre", fecha_posible_parto
                 from public."ControlCelos" inner join public."Usuarios" 
                 on public."Usuarios"."id_usuario" = public."ControlCelos"."id_usuario"
                 ORDER BY id_celo ASC;`;
@@ -73,7 +73,7 @@ let consultarCelo = async (id_celo) => {
     let sql = `Select id_celo, fecha_inicio, detalles,
                 (Select nombre from public."Bovinos" where chapeta = id_macho) as "Nombre_Macho",
                 (Select nombre from public."Bovinos" where chapeta = id_hembra) as "Nombre_Hembra", 
-                public."Usuarios"."nombre" 
+                public."Usuarios"."nombre", fecha_posible_parto
                 from public."ControlCelos"
                 inner join public."Usuarios" 
                 on public."Usuarios"."id_usuario" = public."ControlCelos"."id_usuario"
@@ -90,9 +90,8 @@ let consultarCelo = async (id_celo) => {
  */
 const guardarCelo = async (celo) => {
     //console.log(celo);
-    let sql = `INSERT INTO public."ControlCelos"(fecha_inicio, detalles, id_macho, id_hembra, id_usuario)
-                select ($1), ($2), ($3), ($4), 
-                (SELECT public."Usuarios"."id_Tusuario" from public."Usuarios" where id_usuario = $5);`;
+    let sql = `Insert into public."ControlCelos"(fecha_inicio, detalles, id_macho, id_hembra, id_usuario)
+                values ($1,$2,$3,$4,$5);`;
     let valores = [celo.fecha_inicio, celo.detalles, celo.id_macho, celo.id_hembra, celo.id_usuario];
     let respuesta = await _servicio.ejecutarSql(sql, valores);
     return respuesta
@@ -123,10 +122,7 @@ const editarCelo = async (celo, id_celo) => {
         mensaje: "El id del celo no corresponde al enviado",
       };
     }
-    let sql =
-      `UPDATE public."ControlCelos"
-            SET fecha_inicio = $1, detalles = $2, id_macho = $3, id_hembra= $4, id_usuario= $5
-            WHERE id_celo = $6;`;
+    let sql =`CALL public.updateprenez($1,$2,$3,$4,$5,$6);`;
       let valores = [celo.fecha_inicio, celo.detalles, celo.id_macho, celo.id_hembra, celo.id_usuario, celo.id_celo];
     let respuesta = await _servicio.ejecutarSql(sql, valores);
   

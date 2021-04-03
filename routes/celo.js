@@ -68,7 +68,7 @@ router.post("/celo", (req, res) => {
       _controlador
       .guardarCelo(info_celo)
         .then((respuestaDB) => {
-          console.log("entro");  
+         
           res.send({ ok: true, mensaje: "Celo guardado", info: info_celo });
         })
         .catch((error) => {
