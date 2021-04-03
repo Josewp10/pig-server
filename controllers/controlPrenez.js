@@ -59,15 +59,13 @@ let actualizarControlPrenez = async (control, id_control) => {
     }
     let sql = `UPDATE public."ControlPrenez"
 	SET  id_vaca=$1, fecha_palpacion=$2, confirmacion_palpacion=$3, 
-    fecha_secado=$4, num_parto=$5, id_usuario=$6, id_celo=$7 WHERE id_control=$8`;
+    num_parto=$4, id_usuario=$5, WHERE id_control=$6`;
     let values = [
         control.id_vaca,
         control.fecha_palpacion,
         control.confirmacion_palpacion,
-        control.fecha_secado,
         control.num_parto,
         control.id_usuario,
-        control.id_celo,
         id_control
     ];
     let respuesta = await _servicio.ejecutarSql(sql, values);
