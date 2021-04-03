@@ -72,5 +72,6 @@ let actualizarControlPrenez = async (control, id_control) => {
     return respuesta;
 };
 
-module.exports = { validar, consultarControlesPrenez, 
-    actualizarControlPrenez, consultarControlPrenez };
+module.exports = { validar, 
+    consultarControlesPrenez, actualizarControlPrenez, 
+ consultarControlPrenez };
