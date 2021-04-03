@@ -50,31 +50,6 @@ let consultarControlPrenez = async (id_control) => {
 };
 
 
-let insertarControlPrenez  = async (control) => {
-    let sql = `INSERT INTO public."ControlPrenez"(
-         id_vaca, fecha_palpacion, confirmacion_palpacion, 
-        fecha_secado, num_parto, id_usuario, id_celo)   VALUES ($1, $2, $3, $4, $5, $6, $7, $8 )`;
-
-    let values = [
-        control.id_vaca,
-        control.fecha_palpacion,
-        control.confirmacion_palpacion,
-        control.fecha_secado,
-        control.num_parto,
-        control.id_usuario,
-        control.id_celo];
-    let respuesta = await _servicio.ejecutarSql(sql, values);
-    return respuesta;
-};
-
-
-let eliminarControlPrenez = async (id_control) => {
-    let sql = `DELETE FROM public."ControlPrenez" WHERE id_control = $1;`;
-    let respuesta = await _servicio.ejecutarSql(sql, [id_control]);
-    return respuesta;
-};
-
-
 let actualizarControlPrenez = async (control, id_control) => {
     if (control.id_control != id_control) {
         throw {

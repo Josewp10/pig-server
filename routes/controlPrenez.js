@@ -38,25 +38,7 @@ router.get('/controlPrenez/:id_control', async (req, res) => {
 
 
 
-router.post("/controlPrenez", async (req, res) => {
-  try {
-    let info_control = await req.body;
 
-   _controlador.validar(info_control);
-
-    _controlador
-      .insertarControlPrenez(info_control)
-      .then(respuestaDB => {
-        res.send({ ok: true, mensaje: "Control preñez Registrado", info: info_control });
-      })
-      .catch(error => {
-        res.send(error);
-      });
-
-  } catch (error) {
-    res.send(error);
-  }
-});
 
 
 router.put("/controlPrenez/:id_control", (req, res) => {
@@ -81,19 +63,5 @@ router.put("/controlPrenez/:id_control", (req, res) => {
     res.send(error);
   }
 });
-
-
-router.delete("/controlPrenez/:id_control", (req, res) => {
-  let id = req.params.id_control;
-  
-  _controlador.eliminarControlPrenez(id).then((respuestaDB) => {
-      res.send({ ok: true, mensaje: "control retiro eliminado", info: { id } });
-    })
-    .catch((error) => {
-      console.log(error);
-      res.send(error);
-    });
-});
-
 
 module.exports = router;
