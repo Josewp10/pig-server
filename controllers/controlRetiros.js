@@ -44,7 +44,7 @@ let validar = control => {
 let consultarControlesRetiro = async () => {
     let sql = `SELECT "ControlRetiros".id_retiro, "ControlRetiros".hora_ingreso, "ControlRetiros".fecha_ingreso, 
             "ControlRetiros".fecha_salida, "ControlRetiros".num_ordenos_descartar, 
-            "ControlRetiros".observaciones, "Bovinos".nombre as Bovino, "Usuarios".nombre as Usuario,
+            "ControlRetiros".observaciones,"ControlRetiros".id_bovino as id_bovino, "Bovinos".nombre as Bovino, "Usuarios".nombre as Usuario,
             "TiposRetiros".nombre as "Tipo retiro"
             FROM public."ControlRetiros"
             INNER JOIN public."Bovinos" ON "ControlRetiros".id_bovino = "Bovinos"."chapeta"
@@ -63,7 +63,7 @@ let consultarControlesRetiro = async () => {
 let consultarControlRetiro = async (id_retiro) => {
     let sql = `SELECT "ControlRetiros".id_retiro, "ControlRetiros".hora_ingreso, "ControlRetiros".fecha_ingreso, 
             "ControlRetiros".fecha_salida, "ControlRetiros".num_ordenos_descartar, 
-            "ControlRetiros".observaciones, "Bovinos".nombre as Bovino, "Usuarios".nombre as Usuario,
+            "ControlRetiros".observaciones,"ControlRetiros".id_bovino as id_bovino, "Bovinos".nombre as Bovino, "Usuarios".nombre as Usuario,
             "TiposRetiros".nombre as "Tipo retiro"
             FROM public."ControlRetiros"
             INNER JOIN public."Bovinos" ON "ControlRetiros".id_bovino = "Bovinos"."chapeta"

@@ -46,7 +46,7 @@ else if (!tratamiento.id_usuario) {
 const ver_tratamiento = async (tratamiento) => {    
   let sql = `SELECT "ControlTratamientos".id_tratamiento, "ControlTratamientos".fecha_inicio, "ControlTratamientos".fecha_fin,
           "ControlTratamientos".hora, "ControlTratamientos".enfermedad, "ControlTratamientos".detalles, 
-          "TipoDosis".tipo as tipoDosis, "Bovinos".nombre as Bovino, "Usuarios".nombre as usuario
+          "TipoDosis".tipo as tipoDosis, "ControlTratamientos".id_bovino,"Bovinos".nombre as Bovino, "Usuarios".nombre as usuario
           FROM public."ControlTratamientos"
           INNER JOIN public."Bovinos" ON "ControlTratamientos".id_bovino= "Bovinos"."chapeta"
           INNER JOIN public."Usuarios" ON "ControlTratamientos".id_usuario = "Usuarios"."id_usuario"
@@ -65,7 +65,7 @@ const ver_tratamiento = async (tratamiento) => {
 let consultarporControl = async (id_tratamiento) => {
   let sql = `SELECT "ControlTratamientos".id_tratamiento, "ControlTratamientos".fecha_inicio, "ControlTratamientos".fecha_fin,
         "ControlTratamientos".hora, "ControlTratamientos".enfermedad, "ControlTratamientos".detalles, 
-        "TipoDosis".tipo as tipoDosis, "Bovinos".nombre as Bovino, "Usuarios".nombre as usuario
+        "TipoDosis".tipo as tipoDosis, "ControlTratamientos".id_bovino, "Bovinos".nombre as Bovino, "Usuarios".nombre as usuario
         FROM public."ControlTratamientos"
         INNER JOIN public."Bovinos" ON "ControlTratamientos".id_bovino= "Bovinos"."chapeta"
         INNER JOIN public."Usuarios" ON "ControlTratamientos".id_usuario = "Usuarios"."id_usuario"

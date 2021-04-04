@@ -31,7 +31,7 @@ const validarPajilla = pajilla => {
 };
 
 const consultarPajillas = async () => {    
-    let sql = `SELECT id_pajilla, id_termo, "Bovinos".nombre as toro, "Razas".nombre as raza, disponibilidad
+    let sql = `SELECT id_pajilla, id_termo,"Pajillas".id_toro, "Bovinos".nombre as toro, "Razas".nombre as raza, disponibilidad
 	FROM public."Pajillas"
 		INNER JOIN public."Bovinos" ON "Pajillas".id_toro = "Bovinos"."chapeta"
 	INNER JOIN public."Razas" ON "Pajillas".id_raza = "Razas"."id_raza";`;
@@ -40,7 +40,7 @@ const consultarPajillas = async () => {
 };
 
 let consultarPajilla = async (id_toro) => {
-    let sql = `SELECT id_pajilla, id_termo, "Bovinos".nombre as toro, "Razas".nombre as raza, disponibilidad
+    let sql = `SELECT id_pajilla, id_termo,"Pajillas".id_toro, "Bovinos".nombre as toro, "Razas".nombre as raza, disponibilidad
 	FROM public."Pajillas"
 	INNER JOIN public."Bovinos" ON "Pajillas".id_toro = "Bovinos"."chapeta"
 	INNER JOIN public."Razas" ON "Pajillas".id_raza = "Razas"."id_raza" WHERE "Pajillas".id_toro = $1;`;    

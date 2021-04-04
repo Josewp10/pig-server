@@ -46,7 +46,7 @@ const validarLecheria = lecheria => {
  * @returns 
  */
 const consultarLecherias = async () => {    
-    let sql =  `SELECT "Lecheria_Lactante"."id_Tlecheria",lecheria, "Bovinos".nombre, fecha, cantidad_dia, "Usuarios".nombre
+    let sql =  `SELECT "Lecheria_Lactante"."id_Tlecheria",lecheria, ,"Bovinos".nombre, fecha, cantidad_dia, "Usuarios".nombre
 	FROM public."Lecheria_Lactante"
 	inner join public."Bovinos" on id_lactante = chapeta
 	inner join public."Lecherias" on "Lecheria_Lactante"."id_Tlecheria" = "Lecherias"."id_Tlecheria"

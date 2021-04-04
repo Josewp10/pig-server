@@ -57,8 +57,8 @@ const consultarCelos = async () => {
                 (Select nombre from public."Bovinos" where chapeta = id_macho) as "Nombre_Macho",
                 (Select nombre from public."Bovinos" where chapeta = id_hembra) as "Nombre_Hembra", 
                 public."Usuarios"."nombre", fecha_posible_parto
-                from public."ControlCelos" inner join public."Usuarios" 
-                on public."Usuarios"."id_usuario" = public."ControlCelos"."id_usuario"
+                from public."ControlCelos" 
+                inner join public."Usuarios" on public."Usuarios"."id_usuario" = public."ControlCelos"."id_usuario"
                 ORDER BY id_celo ASC;`;
     let respuesta = await _servicio.ejecutarSql(sql);
     return respuesta
