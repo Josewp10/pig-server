@@ -61,6 +61,13 @@ const consultarUsuarios = async () => {
     return respuesta
 };
 
+const consultarUsuariosNombreyId = async () => {
+    let sql = `SELECT  "Usuarios".id_usuario, "Usuarios".nombre
+        FROM public."Usuarios";`;
+    let respuesta = await _servicio.ejecutarSql(sql);
+    return respuesta
+};
+
 /**
  * @description Consulta la información de un usuario en la base de datos.
  * @param {int} id_usuario 
@@ -105,4 +112,5 @@ const guardarUsuario = async (usuario) => {
 };
 
 
-module.exports = {validarUsuario, consultarUsuario, consultarCelUsuario,guardarUsuario};
+module.exports = {validarUsuario, consultarUsuario, consultarUsuarios,
+     consultarCelUsuario, consultarUsuariosNombreyId ,guardarUsuario};

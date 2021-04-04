@@ -30,6 +30,19 @@ router.get('/bovinos', async (req, res) => {
 });
 
 
+router.get('/bovinos/novillonaLactante', async (req, res) => {
+  
+  _controlador
+  .consultarNovillonasyLactantes()
+        .then((bovinoDB) => {
+            let bovino = bovinoDB.rows;
+            res.send({ok: true, info: bovino, mensaje: 'bovinos consultados'});
+        })
+        .catch(error => {
+            res.send(error);
+        });
+});
+
 /**
  * Petición: Traer un bovino específico
  * Parámetros: Chapeta, tipo de bovino

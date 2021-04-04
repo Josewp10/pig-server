@@ -71,9 +71,11 @@ const consultarCelos = async () => {
  */
 let consultarCelo = async (id_celo) => {
     let sql = `Select id_celo, fecha_inicio, detalles,
+                id_macho,
                 (Select nombre from public."Bovinos" where chapeta = id_macho) as "Nombre_Macho",
-                (Select nombre from public."Bovinos" where chapeta = id_hembra) as "Nombre_Hembra", 
-                public."Usuarios"."nombre", fecha_posible_parto
+                id_hembra,
+                (Select nombre from public."Bovinos" where chapeta = id_hembra) as "Nombre_Hembra",
+                public."Usuarios"."id_usuario", public."Usuarios"."nombre", fecha_posible_parto
                 from public."ControlCelos"
                 inner join public."Usuarios" 
                 on public."Usuarios"."id_usuario" = public."ControlCelos"."id_usuario"

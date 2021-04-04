@@ -28,8 +28,8 @@ let validar = control => {
 
 
 let consultarControlesPrenez = async () => {
-    let sql = `SELECT id_control, "Bovinos".nombre as Vaca, fecha_palpacion, confirmacion_palpacion, 
-	fecha_secado, num_parto, "Usuarios".nombre as Usuario, id_celo
+    let sql = `SELECT id_control, "Bovinos".chapeta as id_vaca, "Bovinos".nombre as Vaca, fecha_palpacion, confirmacion_palpacion, 
+	fecha_secado, num_parto, "Usuarios".id_usuario as id_usuario, "Usuarios".nombre as Usuario, id_celo
 	FROM public."ControlPrenez"
 	INNER JOIN public."Bovinos" ON "ControlPrenez".id_vaca = "Bovinos".chapeta
 	INNER JOIN public."Usuarios" ON "ControlPrenez".id_usuario = "Usuarios".id_usuario;	`;
@@ -39,8 +39,8 @@ let consultarControlesPrenez = async () => {
 
 
 let consultarControlPrenez = async (id_control) => {
-    let sql = `SELECT id_control, "Bovinos".nombre as Vaca, fecha_palpacion, confirmacion_palpacion, 
-	fecha_secado, num_parto, "Usuarios".nombre as Usuario, id_celo
+    let sql = `SELECT id_control, "Bovinos".chapeta as id_vaca, "Bovinos".nombre as Vaca, fecha_palpacion, confirmacion_palpacion, 
+	fecha_secado, num_parto, "Usuarios".id_usuario as id_usuario, "Usuarios".nombre as Usuario, id_celo
 	FROM public."ControlPrenez"
 	INNER JOIN public."Bovinos" ON "ControlPrenez".id_vaca = "Bovinos".chapeta
 	INNER JOIN public."Usuarios" ON "ControlPrenez".id_usuario = "Usuarios".id_usuario
@@ -72,6 +72,6 @@ let actualizarControlPrenez = async (control, id_control) => {
     return respuesta;
 };
 
-module.exports = { validar, insertarControlPrenez, 
+module.exports = { validar, 
     consultarControlesPrenez, actualizarControlPrenez, 
-    eliminarControlPrenez, consultarControlPrenez };
+ consultarControlPrenez };

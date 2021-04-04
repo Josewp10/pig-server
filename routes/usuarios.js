@@ -21,6 +21,20 @@ router.get('/usuarios', async (req, res) => {
         });
   });
 
+  
+router.get('/usuarios/NombreId', async (req, res) => {
+
+  _controlador
+    .consultarUsuariosNombreyId()
+        .then((answerDB) => {
+            let usuario = answerDB.rows;
+            res.send({ok: true, info: usuario, mensaje: 'Usuarios consultados'});
+        })
+        .catch(error => {
+            res.send(error);
+        });
+  });
+
   //Consulta del celular por usuario
   router.get('/usuarios/celular/:id_usuario', async (req, res) => {
     let id = req.params.id_usuario;

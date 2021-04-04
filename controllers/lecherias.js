@@ -46,27 +46,21 @@ const validarLecheria = lecheria => {
  * @returns 
  */
 const consultarLecherias = async () => {    
-    let sql = `SELECT "Lecheria_Lactante"."id_Tlecheria", "Bovinos".nombre, fecha, cantidad_dia, "Usuarios".nombre
+    let sql =  `SELECT "Lecheria_Lactante"."id_Tlecheria",lecheria, "Bovinos".nombre, fecha, cantidad_dia, "Usuarios".nombre
 	FROM public."Lecheria_Lactante"
 	inner join public."Bovinos" on id_lactante = chapeta
-	inner join public."Lecherias" on "Lecheria_Lactante"."id_Tlecheria"="Lecherias"."id_Tlecheria"
+	inner join public."Lecherias" on "Lecheria_Lactante"."id_Tlecheria" = "Lecherias"."id_Tlecheria"
 	inner join public."Usuarios" on "Lecherias".id_usuario="Usuarios".id_usuario;`;
     let respuesta = await _servicio.ejecutarSql(sql);
     return respuesta
 };
-
-/**
- * @description Consulta el registro específico de una lecheria en la base de datos.
- * @param {int} id_lecheria 
- * @returns 
- */
-let consultarLecheria = async (id_lecheria)=> {
-    let sql = `SELECT "Lecheria_Lactante"."id_Tlecheria", "Bovinos".nombre, fecha, cantidad_dia, "Usuarios".nombre
+let consultarLecheria = async (id_) => {
+    let sql = `SELECT "Lecheria_Lactante"."id_Tlecheria",lecheria, "Bovinos".nombre, fecha, cantidad_dia, "Usuarios".nombre
 	FROM public."Lecheria_Lactante"
 	inner join public."Bovinos" on id_lactante = chapeta
-	inner join public."Lecherias" on "Lecheria_Lactante"."id_Tlecheria"="Lecherias"."id_Tlecheria"
+	inner join public."Lecherias" on "Lecheria_Lactante"."id_Tlecheria" = "Lecherias"."id_Tlecheria"
 	inner join public."Usuarios" on "Lecherias".id_usuario="Usuarios".id_usuario
-    WHERE id_lecheria= $1;`;    
+	where "Lecherias"."id_Tlecheria"=$1;`;    
     let respuesta = await _servicio.ejecutarSql(sql, [id_lecheria]);
     return respuesta;
   };
