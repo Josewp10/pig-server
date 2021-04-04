@@ -12,7 +12,7 @@ let _servicio = new ServicioPG();
  * @description Se toma el parametro con la información del genealógico y se valida:
  *  - Que no sea vacio
  *  - Que contenga a id_tbovino
- * @param {*} arbol 
+ * @param {Object} arbol 
  */
 const validarGenealogico = arbol => {
     if (!arbol) {
@@ -64,7 +64,7 @@ let consultarGenealogico = async (id_tbovino) => {
  */
 let insertarGenealogico = async (arbol) => {
     let sql = `INSERT INTO public."Genealogicos"( id_tbovino, id_mama, id_papa, id_abuela, id_abuelo)
-    VALUES ($1, $2, $3, $4, $5)`;
+    VALUES ($1, $2, $3, $4, $5);`;
 
     let values = [
         arbol.id_tbovino,
