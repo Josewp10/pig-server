@@ -2,7 +2,7 @@
 const ServicioPG = require("../services/postgres");
 let _servicio = new ServicioPG();
 
-va
+
  /**
   * @description Se toma el parametro con la información del control de preñéz y se valida:
   *  - Que no sea vacio.
