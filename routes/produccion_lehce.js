@@ -1,10 +1,10 @@
 const express = require("express");
 const router = express.Router();
-const _controlador = require("../controllers/produccions");
+const _controlador = require("../controllers/produccion_leche");
 
 
 
-router.get("/produccions", (req, res) => {
+router.get("/produccionLeche", (req, res) => {
 
   _controlador
     .consultarProduccion()
@@ -18,9 +18,9 @@ router.get("/produccions", (req, res) => {
     });
 });
 
-router.get('/produccions/:id_lecheria', async (req, res) => {
+router.get('/produccions/:id_produccion', async (req, res) => {
 
-    let id = req.params.id_lecheria;
+    let id = req.params.id_produccion;
   
     _controlador.consultarProduccion(id)
         .then((respuestaDB) => {
@@ -33,8 +33,8 @@ router.get('/produccions/:id_lecheria', async (req, res) => {
         });
   });
 
-  router.delete("/produccions/:id_lecheria", (req, res) => {
-    let id = req.params.id_lecheria;
+  router.delete("/produccions/:id_produccion", (req, res) => {
+    let id = req.params.id_produccion;
     
     _controlador.eliminarProduccion(id).then((respuestaDB) => {
         res.send({ ok: true, mensaje: "produccion eliminada", info: { id } });
