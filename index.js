@@ -58,14 +58,17 @@ app.use(ruta_medicamentos);
 const ruta_controlPrenez= require("./routes/controlPrenez");
 app.use(ruta_controlPrenez);
 
-const ruta_produccions= require("./routes/produccions");
-app.use(ruta_produccions);
+const ruta_produccion_leche= require("./routes/produccion_leche");
+app.use(ruta_produccion_leche);
 
 const ruta_pajillas= require("./routes/pajillas");
 app.use(ruta_pajillas);
 
 const ruta_termo= require("./routes/termos");
 app.use(ruta_termo);
+
+const ruta_lecherias= require("./routes/lecherias");
+app.use(ruta_lecherias);
 
 
 

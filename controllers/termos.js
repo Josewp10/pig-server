@@ -29,6 +29,11 @@ let consultarTermo = async (id_termo) => {
     return respuesta;
   };
 
+/**
+ * @description Almacena un nuevo termo en la base de datos.
+ * @param {Object} termo
+ * @returns 
+ */
   const guardarTermo = async (termo) => {
     let sql = `INSERT INTO public."Termos"(
        num_pajillas) VALUES ($1);`;
@@ -39,6 +44,11 @@ let consultarTermo = async (id_termo) => {
     return respuesta
 };
 
+/**
+ * @description Elimina un termo de la base de datos.
+ * @param {String} id_termo 
+ * @returns
+ */
 const eliminarTermo = async (id_termo) => {
     let sql = `DELETE FROM public."Termos" where id_termo = $1;`;    
     let respuesta = await _servicio.ejecutarSql(sql, [id_termo]);
