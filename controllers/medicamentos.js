@@ -114,7 +114,7 @@ const eliminarMedicamento = async (chapeta) => {
 /**
  * @description Modifica la información de un medicamento.
  * @param {Object} medicamento 
- * @param {String} chapeta
+ * @param {String} codigo
  * @returns 
  */
 const editarMedicamento = async (medicamento, codigo) => {

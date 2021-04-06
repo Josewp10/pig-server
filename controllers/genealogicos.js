@@ -33,8 +33,12 @@ const validarGenealogico = arbol => {
  * @returns 
  */
 const consultarGenealogicos = async () => {    
-    let sql = `SELECT "id_Tgenealogico", id_tbovino, id_mama, id_papa, id_abuela, id_abuelo
-                FROM public."Genealogicos";`;
+    let sql = `SELECT id_bovino, (SELECT nombre FROM public."Bovinos" where "Bovinos"."chapeta" = "Genealogicos".id_bovino) as "Bovino",
+    id_mama, (SELECT nombre FROM public."Bovinos" where "Bovinos"."chapeta"="Genealogicos".id_mama) as "Mamá",
+    id_papa, (SELECT nombre FROM public."Bovinos" where "Bovinos"."chapeta"="Genealogicos".id_papa) as "Papá",
+	 id_abuela, (SELECT nombre FROM public."Bovinos" where "Bovinos"."chapeta"="Genealogicos".id_abuela) as "Abuela",
+    id_abuelo, (SELECT nombre FROM public."Bovinos" where "Bovinos"."chapeta"="Genealogicos".id_abuelo) as "Abuelo"
+    FROM public."Genealogicos";`;
     let respuesta = await _servicio.ejecutarSql(sql);
     return respuesta
 };
@@ -45,13 +49,13 @@ const consultarGenealogicos = async () => {
  * @returns 
  */
 let consultarGenealogico = async (id_tbovino) => {   
-    let sql = `SELECT (SELECT nombre FROM public."Bovinos" where "Bovinos"."id_Tbovinos" = "Genealogicos".id_tbovino) as "Bovino",
-    (SELECT nombre FROM public."Bovinos" where "Bovinos"."id_Tbovinos"="Genealogicos".id_mama) as "Mamá",
-    (SELECT nombre FROM public."Bovinos" where "Bovinos"."id_Tbovinos"="Genealogicos".id_papa) as "Papá",
-    (SELECT nombre FROM public."Bovinos" where "Bovinos"."id_Tbovinos"="Genealogicos".id_abuelo) as "Abuelo",
-    (SELECT nombre FROM public."Bovinos" where "Bovinos"."id_Tbovinos"="Genealogicos".id_abuela) as "Abuela"
-    FROM public."Genealogicos" 
-    where EXISTS(SELECT id_tbovino FROM public."Genealogicos" where id_tbovino= $1) and id_tbovino= $1;`;
+    let sql = `SELECT id_bovino, (SELECT nombre FROM public."Bovinos" where "Bovinos"."chapeta" = "Genealogicos".id_bovino) as "Bovino",
+    id_mama, (SELECT nombre FROM public."Bovinos" where "Bovinos"."chapeta"="Genealogicos".id_mama) as "Mamá",
+    id_papa, (SELECT nombre FROM public."Bovinos" where "Bovinos"."chapeta"="Genealogicos".id_papa) as "Papá",
+	 id_abuela, (SELECT nombre FROM public."Bovinos" where "Bovinos"."chapeta"="Genealogicos".id_abuela) as "Abuela",
+    id_abuelo, (SELECT nombre FROM public."Bovinos" where "Bovinos"."chapeta"="Genealogicos".id_abuelo) as "Abuelo"
+    FROM public."Genealogicos"
+    where EXISTS(SELECT id_bovino FROM public."Genealogicos" where id_bovino= $1) and id_bovino= $1;`;
 
     let respuesta = await _servicio.ejecutarSql(sql, [id_tbovino]);
     return respuesta;
@@ -63,7 +67,7 @@ let consultarGenealogico = async (id_tbovino) => {
  * @returns 
  */
 let insertarGenealogico = async (arbol) => {
-    let sql = `INSERT INTO public."Genealogicos"( id_tbovino, id_mama, id_papa, id_abuela, id_abuelo)
+    let sql = `INSERT INTO public."Genealogicos"( id_bovino, id_mama, id_papa, id_abuela, id_abuelo)
     VALUES ($1, $2, $3, $4, $5);`;
 
     let values = [
@@ -82,7 +86,7 @@ let insertarGenealogico = async (arbol) => {
  * @returns 
  */
 let eliminarGenealogico = async (id_tbovino) => {
-    let sql = `DELETE FROM public."Genealogicos" where id_tbovino=$1;`;    
+    let sql = `DELETE FROM public."Genealogicos" where id_bovino=$1;`;    
     let respuesta = await _servicio.ejecutarSql(sql, [id_tbovino]);
     return respuesta
 };
@@ -102,7 +106,7 @@ let editarGenealogico = async (arbol, id_tbovino) => {
     }
     let sql =
       `UPDATE public."Genealogicos"
-      SET  id_mama=$1, id_papa=$2, id_abuela=$3, id_abuelo=$4 WHERE id_tbovino=$5;`;
+      SET  id_mama=$1, id_papa=$2, id_abuela=$3, id_abuelo=$4 WHERE id_bovino=$5;`;
     let valores = [
         arbol.id_tbovino,
         arbol.id_mama,

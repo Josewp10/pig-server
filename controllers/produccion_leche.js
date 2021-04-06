@@ -46,11 +46,13 @@ const validarProduccion = produccion => {
  * @returns 
  */
 const consultarProducciones = async () => {    
-    let sql =  `SELECT "Produccion_Lactante"."id_Tproduccion",lecheria,"Produccion_Lactante".id_lactante,"Bovinos".nombre, fecha, cantidad_dia, "Usuarios".nombre
-	FROM public."Produccion_Lactante"
-	inner join public."Bovinos" on id_lactante = chapeta
-	inner join public."Producciones_leche" on "Produccion_Lactante"."id_Tproduccion" = "Producciones_leche"."id_Tproduccion"
-	inner join public."Usuarios" on "Producciones_leche".id_usuario="Usuarios".id_usuario;`;
+    let sql =  `SELECT "Produccion_Lactante"."id_Tproduccion",lecheria,"Produccion_Lactante".id_lactante,
+        "Bovinos".nombre, fecha, cantidad_dia, "Usuarios".nombre as Encargado
+        FROM public."Produccion_Lactante"
+        inner join public."Bovinos" on id_lactante = chapeta
+        inner join public."Producciones_leche" on "Produccion_Lactante"."id_Tproduccion" = "Producciones_leche"."id_Tproduccion"
+        inner join public."Lecherias" on "Lecherias".id_lecheria="Producciones_leche".lecheria
+        inner join public."Usuarios" on "Lecherias".id_usuario="Usuarios".id_usuario;`;
     let respuesta = await _servicio.ejecutarSql(sql);
     return respuesta
 };
@@ -61,36 +63,42 @@ const consultarProducciones = async () => {
  * @returns 
  */
 let consultarProduccion = async (id_produccion) => {
-    let sql = `SELECT "Produccion_Lactante"."id_Tproduccion",lecheria,"Produccion_Lactante".id_lactante,"Bovinos".nombre, fecha, cantidad_dia, "Usuarios".nombre
-	FROM public."Produccion_Lactante"
-	inner join public."Bovinos" on id_lactante = chapeta
-	inner join public."Producciones_leche" on "Produccion_Lactante"."id_Tproduccion" = "Producciones_leche"."id_Tproduccion"
-	inner join public."Usuarios" on "Producciones_leche".id_usuario="Usuarios".id_usuario
-	where "Producciones_leche"."id_Tproduccion"=$1;`;    
+    let sql = `SELECT "Produccion_Lactante"."id_Tproduccion",lecheria,"Produccion_Lactante".id_lactante,
+        "Bovinos".nombre, fecha, cantidad_dia, "Usuarios".nombre Encargado
+        FROM public."Produccion_Lactante"
+        inner join public."Bovinos" on id_lactante = chapeta
+        inner join public."Producciones_leche" on "Produccion_Lactante"."id_Tproduccion" = "Producciones_leche"."id_Tproduccion"
+        inner join public."Lecherias" on "Lecherias".id_lecheria="Producciones_leche".lecheria
+        inner join public."Usuarios" on "Lecherias".id_usuario="Usuarios".id_usuario
+	    where "Producciones_leche"."id_Tproduccion"=$1;`;    
     let respuesta = await _servicio.ejecutarSql(sql, [id_produccion]);
     return respuesta;
   };
 
 /**
  * @description Almacena un nuevo registro de producción de un día y lactante en específico.
+ * El objeto debe contener:
+ *  - Chapeta bovino lactante
+ *  - id de la lechería
+ *  - Fecha de la producción
+ *  - Cantidad producida
  * @param {Object} lecheria 
  * @returns 
  */
  let insertarProduccion = async (lecheria) => {
-    let sql = `CALL public.insertProduccionLeche($1,$2,$3,$4,$5);`;
+    let sql = `CALL public.insertproduccionleche($1,$2,$3,$4);`;
 
     let values = [
         lecheria.id_bovino,
         arbol.id_lecheria,
         arbol.fecha,
-        arbol.cantidad_dia,
-        arbol.id_usuario];
+        arbol.cantidad_dia];
     let respuesta = await _servicio.ejecutarSql(sql, values);
     return respuesta;
 };
 
 /**
- * @description Elimina un medicamento de la base de datos.
+ * @description Elimina un lecheria de la base de datos.
  * @param {String} chapeta 
  * @returns
  */
@@ -101,5 +109,32 @@ let consultarProduccion = async (id_produccion) => {
     return respuesta
 };
 
-module.exports={validarProduccion,consultarProducciones, consultarProduccion, insertarProduccion, eliminarProduccion};
+/**
+ * @description Modifica la información de una produccion de leche.
+ * El objeto debe contener:
+ *  - Chapeta bovino lactante
+ *  - id de la lechería
+ *  - Fecha de la producción
+ *  - Cantidad producida
+ * @param {Object} produccion 
+ * @param {int} id_Tproduccion
+ * @returns 
+ */
+ const editarProduccion = async (produccion, id_Tproduccion) => {
+    if (produccion.id_Tproduccion != id_Tproduccion) {
+      throw {
+        ok: false,
+        mensaje: "El id de la produccion no corresponde al enviado",
+      };
+    }
+    let sql =`call updateproduccionleche($1, $2, $3, $4,$5);`;
+    let valores = [produccion.id_Tproduccion, produccion.id_lecheria, produccion.fecha, 
+        produccion.id_lactante, produccion.cantidad_dia];
+    let respuesta = await _servicio.ejecutarSql(sql, valores);
+    return respuesta;
+  };
+
+module.exports={validarProduccion,consultarProducciones,
+    consultarProduccion, insertarProduccion, 
+    editarProduccion,eliminarProduccion};
 
