@@ -76,9 +76,9 @@ router.put("/controlPrenez/:id_control", (req, res) => {
     let id_control = req.params.id_control;
     let info_preñez = req.body;
 
-    _controlador.validar(info_retiro);
+    _controlador.validar(info_preñez);
 
-    _controlador.actualizarControlRetiro(info_preñez, id_control)
+    _controlador.actualizarControlPrenez(info_preñez, id_control)
       .then((respuestaDB) => {
         res.send({ ok: true, mensaje: "Control de preñéz Editado", info: info_preñez });
       })

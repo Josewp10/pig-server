@@ -96,7 +96,7 @@ let actualizarControlPrenez = async (control, id_control) => {
     }
     let sql = `UPDATE public."ControlPrenez"
 	SET  fecha_palpacion=$1, confirmacion_palpacion=$2, 
-    num_parto=$3, id_usuario=$4, WHERE id_control=$5;`;
+    num_parto=$3, id_usuario=$4 WHERE id_control=$5;`;
     let values = [
         control.fecha_palpacion,
         control.confirmacion_palpacion,
