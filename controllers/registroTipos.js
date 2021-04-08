@@ -29,7 +29,7 @@ const validarTipo = tipo => {
 
 
 /**
- * @description Consulta toda la información de tipo de bovino en la base de datos.
+ * @description Consulta toda la información de los tipos de bovino en la base de datos.
  * @param {int} id_tipo 
  * @returns 
  */
@@ -42,6 +42,11 @@ let consultarTipo = async (id_tipo) => {
     return respuesta;
   };
 
+  /**
+ * @description Consulta toda la información de un tipo de bovino en la base de datos.
+ * @param {int} id_tipo 
+ * @returns 
+ */
   let consultarTipos = async () => {
     let sql = `SELECT id_tipo, nombre
 	FROM public."TiposBovinos"`;
@@ -49,7 +54,6 @@ let consultarTipo = async (id_tipo) => {
     let respuesta = await _servicio.ejecutarSql(sql);
     return respuesta;
   };
-
 
 
 module.exports = {consultarTipo,consultarTipos, validarTipo};

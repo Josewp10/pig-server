@@ -76,6 +76,47 @@ let consultarProduccion = async (id_produccion) => {
   };
 
 /**
+ * @description Consulta todos los registros de produccion diaria de leche de una lechería en la base de datos entre dos fechas cualquiera.
+ * El objeto debe contener:
+ *  - id_lecheria.
+ *  - fecha_inicio.
+ *  - fecha_fin.
+ * @param {Object} lecheria_fechas 
+ * @returns 
+ */
+let consultarLecheriaFecha = async (lecheria_fechas) => {
+    let sql = `SELECT "id_Tproduccion", lecheria, fecha, cantidad_dia
+	FROM public."Producciones_leche" where lecheria =$1
+	and fecha between $2 and $3;`;    
+        let values = [
+            lecheria_fechas.id_lecheria,
+            lecheria_fechas.fecha_inicio,
+            lecheria_fechas.fecha_fin];
+    let respuesta = await _servicio.ejecutarSql(sql, values);
+    return respuesta;
+  };
+
+  /**
+ * @description Consulta la cantidad total de leche producida de una lechería en la base de datos entre dos fechas cualquiera.
+ * El objeto debe contener:
+ *  - id_lecheria.
+ *  - fecha_inicio.
+ *  - fecha_fin.
+ * @param {Object} lecheria_fechas 
+ * @returns 
+ */
+   let consultarCantidadLecheriaFecha = async (lecheria_fechas) => {
+    let sql = `select  lecheria, sum(cantidad_dia)as Litros FROM public."Producciones_leche" where lecheria =$1
+	            and fecha between $2 and $3 group by lecheria;`;    
+        let values = [
+            lecheria_fechas.id_lecheria,
+            lecheria_fechas.fecha_inicio,
+            lecheria_fechas.fecha_fin];
+    let respuesta = await _servicio.ejecutarSql(sql, values);
+    return respuesta;
+  };
+
+/**
  * @description Almacena un nuevo registro de producción de un día y lactante en específico.
  * El objeto debe contener:
  *  - Chapeta bovino lactante
@@ -135,6 +176,6 @@ let consultarProduccion = async (id_produccion) => {
   };
 
 module.exports={validarProduccion,consultarProducciones,
-    consultarProduccion, insertarProduccion, 
-    editarProduccion,eliminarProduccion};
+    consultarProduccion, insertarProduccion, consultarCantidadLecheriaFecha,
+    editarProduccion,eliminarProduccion, consultarLecheriaFecha};
 

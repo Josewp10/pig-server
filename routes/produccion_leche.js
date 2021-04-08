@@ -50,6 +50,55 @@ router.get('/produccionLeche/:id_produccion', async (req, res) => {
   });
 
 /**
+ * Petición: Consulta los registros según el tipo de consulta
+ * Parámetros: Tipo consulta
+ *  - registros: Todas las producciones registradas de una lechería.
+ *  - litros: Cantidad total de leche producida en litros de una lechería.
+ * Cuerpo: 
+ *  - id_lecheria.
+ *  - fecha_inicio.
+ *  - fecha_fin.
+ * Respuesta: Producciones consultadas o mensaje de error
+ */
+ router.get("/produccionLeche/fechas/:consulta", (req, res) => {
+
+  let consulta = req.params.consulta;
+  let info_lecherias = req.body;
+
+  
+  switch (consulta) {
+    case 'registros':      
+      _controlador
+      .consultarLecheriaFecha(info_lecherias)
+      .then(respuestaDB => {
+        console.log(respuestaDB);
+        let produccion = respuestaDB.rows;
+        res.send({ ok: true, info: produccion, mensaje: "Producciones consultadas" });
+      })
+      .catch(error => {
+        res.send(error);
+      });
+      break;
+    case 'litros':
+      
+      _controlador
+      .consultarCantidadLecheriaFecha(info_lecherias)
+      .then(respuestaDB => {
+        console.log(respuestaDB);
+        let produccion = respuestaDB.rows;
+        res.send({ ok: true, info: produccion, mensaje: "Total litros producidos consultados" });
+      })
+      .catch(error => {
+        res.send(error);
+      });
+      break;
+    default:
+      break;
+  }
+
+});
+
+/**
  * Petición: Almacena un registro de produccion de leche
  * Parámetros: vacío
  * Cuerpo: Todos los datos del registro produccion de leche
