@@ -21,8 +21,6 @@ router.post('/sms', async (req, res) => {
     
     try {
         let info = req.body;
-        //console.log(info);
-
         _sms
         .enviarSMS(info)
         .then(

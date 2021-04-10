@@ -18,13 +18,9 @@ let _servicio = new ServicioPG();
         throw { ok: false, mensaje: "La fecha de parto  es obligatorio" };
     } else if (!partos.pesaje) {
         throw { ok: false, mensaje: "El pesaje del bovino es obligatorio" };
-    } else if (!partos.observaciones) {
-        throw { ok: false, mensaje: "La observacion es obligatorio" };
     } else if (!partos.id_tipo) {
         throw { ok: false, mensaje: "El Id del tipo es obligatorio" };
-    } else if (!partos.id_bovino_genealogico) {
-        throw { ok: false, mensaje: "El Id del bovino  genealogico es obligatorio" };
-    } else if (!partos.id_usuario) {
+    }else if (!partos.id_usuario) {
         throw { ok: false, mensaje: "El Id del usuario es obligatorio" };
     }
 
@@ -39,9 +35,11 @@ let _servicio = new ServicioPG();
  * @returns
  */
  let consultarControlPartos = async () => {
-    let sql = `SELECT id_parto, id_bovino, fecha_parto, pesaje, observaciones, "TiposBovinos".nombre as tipo, id_bovino_genealogico, id_usuario
+    let sql = `SELECT id_parto, id_bovino, "Bovinos".nombre, fecha_parto, pesaje, observaciones, "TiposBovinos".nombre as tipo, 
+	id_bovino_genealogico, "ControlPartos".id_usuario, "Usuarios".nombre
 	FROM public."ControlPartos"
-	
+	INNER JOIN public."Bovinos" ON "ControlPartos".id_bovino = "Bovinos".chapeta
+	INNER JOIN public."Usuarios" ON "ControlPartos".id_usuario = "Usuarios".id_usuario
 	INNER JOIN public."TiposBovinos" ON "ControlPartos".id_tipo = "TiposBovinos".id_tipo;`;
     let respuesta = await _servicio.ejecutarSql(sql);
     return respuesta;
@@ -56,9 +54,13 @@ let _servicio = new ServicioPG();
  * @returns
  */
  let consultarControlParto = async (id_parto) => {
-    let sql = `SELECT id_parto, id_bovino, fecha_parto, pesaje, observaciones, "TiposBovinos".nombre as tipo, id_bovino_genealogico, id_usuario
+    let sql = `SELECT id_parto, id_bovino, "Bovinos".nombre, fecha_parto, pesaje, observaciones, "TiposBovinos".nombre as tipo, 
+	id_bovino_genealogico, "ControlPartos".id_usuario, "Usuarios".nombre
 	FROM public."ControlPartos"
-	INNER JOIN public."TiposBovinos" ON "ControlPartos".id_tipo = "TiposBovinos".id_tipo where id_parto=$1;`;
+	INNER JOIN public."Bovinos" ON "ControlPartos".id_bovino = "Bovinos".chapeta
+	INNER JOIN public."Usuarios" ON "ControlPartos".id_usuario = "Usuarios".id_usuario
+	INNER JOIN public."TiposBovinos" ON "ControlPartos".id_tipo = "TiposBovinos".id_tipo
+     where id_parto=$1;`;
     let respuesta = await _servicio.ejecutarSql(sql, [id_parto]);
     return respuesta;
 };
@@ -69,18 +71,9 @@ let _servicio = new ServicioPG();
  * @returns 
  */
  const guardarControlParto = async (parto) => {
-    let sql = `INSERT INTO public."ControlPartos"(
-        id_bovino, fecha_parto, pesaje, observaciones, id_tipo, id_bovino_genealogico, id_usuario)
-        VALUES ($1,$2,$3,$4,$5,$6,$7);`;
-    let valores = [
-     parto.id_bovino,
-     parto.fecha_parto,
-     parto.pesaje,
-     parto.observaciones,
-     parto.id_tipo,
-     parto.id_bovino_genealogico,
-     parto.id_usuario,
-                  ];
+    let sql = `CALL public.insertparto($1, $2, $3, $4, $5, $6,$7, $8, $9, $10, $11)`;
+    let valores = [parto.id_bovino, parto.id_tipo, parto.nombre, parto.id_raza, parto.finca,
+     parto.fecha_parto, parto.pesaje, parto.observaciones, parto.id_mama, parto.id_papa, parto.id_usuario];
     let respuesta = await _servicio.ejecutarSql(sql, valores);
     return respuesta
 };
@@ -103,7 +96,6 @@ let _servicio = new ServicioPG();
 	SET  id_bovino=$1, fecha_parto=$2, pesaje=$3, observaciones=$4, id_tipo=$5, id_bovino_genealogico=$6, id_usuario=$7
 	 WHERE id_parto=$8;`;
     let values = [
-       
         parto.id_bovino,
         parto.fecha_parto,
         parto.pesaje,
