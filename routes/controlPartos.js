@@ -108,10 +108,10 @@ router.post("/controlPartos", (req, res) => {
 
 
 /**
- * Petición: Eliminar la información de un registro lecherias
- * Parametros: id de la lecheria
+ * Petición: Eliminar la información de un control de partos
+ * Parametros: id control de parto
  * Cuerpo: Vacío
- * Respuesta: Registro lecheria eliminado o mensaje de error
+ * Respuesta: Registro control de parto eliminado o mensaje de error
  */
 router.delete("/controlPartos/:id_parto", (req, res) => {
     let id = req.params.id_parto;
