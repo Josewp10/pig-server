@@ -36,7 +36,7 @@ let _servicio = new ServicioPG();
  */
  let consultarControlPartos = async () => {
     let sql = `SELECT id_parto, "ControlPartos".id_bovino, "Bovinos".nombre as "Bovino", 
-	fecha_parto, pesaje, observaciones, "TiposBovinos".nombre as "Tipo Bovino", 
+	fecha_parto, pesaje, observaciones, "TiposBovinos".nombre as "Tipo_Bovino", 
 	"Genealogicos"."id_Tgenealogico", "ControlPartos".id_usuario, "Usuarios".nombre as "Usuario"
 	FROM public."ControlPartos"
 	INNER JOIN public."Bovinos" ON "ControlPartos".id_bovino = "Bovinos".chapeta
@@ -58,7 +58,7 @@ let _servicio = new ServicioPG();
  */
  let consultarControlParto = async (id_parto) => {
     let sql = `SELECT id_parto, "ControlPartos".id_bovino, "Bovinos".nombre as "Bovino", 
-	fecha_parto, pesaje, observaciones, "TiposBovinos".nombre as "Tipo Bovino", 
+	fecha_parto, pesaje, observaciones, "TiposBovinos".nombre as "Tipo_Bovino", 
 	"Genealogicos"."id_Tgenealogico", "ControlPartos".id_usuario, "Usuarios".nombre as "Usuario"
 	FROM public."ControlPartos"
 	INNER JOIN public."Bovinos" ON "ControlPartos".id_bovino = "Bovinos".chapeta
@@ -102,11 +102,9 @@ let _servicio = new ServicioPG();
 	SET   fecha_parto=$1, pesaje=$2, observaciones=$3, id_usuario=$4
 	 WHERE id_parto=$5;`;
     let values = [
-        parto.id_bovino,
         parto.fecha_parto,
         parto.pesaje,
         parto.observaciones,
-        parto.id_tipo,
         parto.id_usuario,
         id_parto
     ];
