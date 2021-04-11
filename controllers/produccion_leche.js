@@ -59,10 +59,10 @@ const consultarProducciones = async () => {
 
 /**
  * @description Consulta todos los registros de produccion diaria de leche de una lechería en la base de datos.
- * @param {int} id_produccion 
+ * @param {int} lecheria 
  * @returns 
  */
-let consultarProduccion = async (id_produccion) => {
+let consultarProduccion = async (lecheria) => {
     let sql = `SELECT "Produccion_Lactante"."id_Tproduccion",lecheria,"Produccion_Lactante".id_lactante,
         "Bovinos".nombre, fecha, cantidad_dia, "Usuarios".nombre Encargado
         FROM public."Produccion_Lactante"
@@ -70,8 +70,8 @@ let consultarProduccion = async (id_produccion) => {
         inner join public."Producciones_leche" on "Produccion_Lactante"."id_Tproduccion" = "Producciones_leche"."id_Tproduccion"
         inner join public."Lecherias" on "Lecherias".id_lecheria="Producciones_leche".lecheria
         inner join public."Usuarios" on "Lecherias".id_usuario="Usuarios".id_usuario
-	    where "Producciones_leche"."id_Tproduccion"=$1;`;    
-    let respuesta = await _servicio.ejecutarSql(sql, [id_produccion]);
+	    where "Producciones_leche"."lecheria"=$1;`;    
+    let respuesta = await _servicio.ejecutarSql(sql, [lecheria]);
     return respuesta;
   };
 
@@ -87,9 +87,14 @@ let consultarProduccion = async (id_produccion) => {
  * @returns 
  */
 let consultarLecheriaFecha = async (id_lecheria, fecha_inicio, fecha_fin) => {
-    let sql = `SELECT "id_Tproduccion", lecheria, fecha, cantidad_dia
-	FROM public."Producciones_leche" where lecheria =$1
-	and fecha between $2 and $3;`;    
+    let sql = `SELECT "Produccion_Lactante"."id_Tproduccion",lecheria,"Produccion_Lactante".id_lactante,
+    "Bovinos".nombre, fecha, cantidad_dia, "Usuarios".nombre Encargado
+    FROM public."Produccion_Lactante"
+    inner join public."Bovinos" on id_lactante = chapeta
+    inner join public."Producciones_leche" on "Produccion_Lactante"."id_Tproduccion" = "Producciones_leche"."id_Tproduccion"
+    inner join public."Lecherias" on "Lecherias".id_lecheria="Producciones_leche".lecheria
+    inner join public."Usuarios" on "Lecherias".id_usuario="Usuarios".id_usuario
+    where "Producciones_leche"."lecheria"=$1 and fecha between $2 and $3;`;    
     let respuesta = await _servicio.ejecutarSql(sql, [id_lecheria,fecha_inicio,fecha_fin]);
     return respuesta;
   };

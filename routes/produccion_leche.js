@@ -34,11 +34,11 @@ router.get("/produccionLeche", (req, res) => {
  * Cuerpo: Vacío
  * Respuesta: Producción consultada o mensaje de error
  */
-router.get('/produccionLeche/:id_produccion', async (req, res) => {
+router.get('/produccionLeche/:lecheria', async (req, res) => {
 
-    let id = req.params.id_produccion;
+    let lecheria = req.params.lecheria;
   
-    _controlador.consultarProduccion(id)
+    _controlador.consultarProduccion(lecheria)
         .then((respuestaDB) => {
             let produccion = respuestaDB.rows;
             res.send({ok: true, info: produccion, mensaje: 'Produccion consultada'});
