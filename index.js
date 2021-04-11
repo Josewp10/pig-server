@@ -74,8 +74,8 @@ const ruta_controlPartos= require("./routes/controlPartos");
 app.use(ruta_controlPartos);
 
 
-//const ruta_sms= require("./routes/notificacionSMS");
-//app.use(ruta_sms);
+const ruta_sms= require("./routes/notificacionSMS");
+app.use(ruta_sms);
 
  //Puerto
  const port = 3001;
