@@ -81,18 +81,16 @@ let consultarProduccion = async (id_produccion) => {
  *  - id_lecheria.
  *  - fecha_inicio.
  *  - fecha_fin.
- * @param {Object} lecheria_fechas 
+ * @param {int} id_lecheria 
+ * @param {Date} fecha_inicio
+ *  @param {Date} fecha_fin
  * @returns 
  */
-let consultarLecheriaFecha = async (lecheria_fechas) => {
+let consultarLecheriaFecha = async (id_lecheria, fecha_inicio, fecha_fin) => {
     let sql = `SELECT "id_Tproduccion", lecheria, fecha, cantidad_dia
 	FROM public."Producciones_leche" where lecheria =$1
 	and fecha between $2 and $3;`;    
-        let values = [
-            lecheria_fechas.id_lecheria,
-            lecheria_fechas.fecha_inicio,
-            lecheria_fechas.fecha_fin];
-    let respuesta = await _servicio.ejecutarSql(sql, values);
+    let respuesta = await _servicio.ejecutarSql(sql, [id_lecheria,fecha_inicio,fecha_fin]);
     return respuesta;
   };
 
@@ -102,17 +100,16 @@ let consultarLecheriaFecha = async (lecheria_fechas) => {
  *  - id_lecheria.
  *  - fecha_inicio.
  *  - fecha_fin.
- * @param {Object} lecheria_fechas 
+ * @param {int} id_lecheria 
+ * @param {Date} fecha_inicio
+ *  @param {Date} fecha_fin
  * @returns 
  */
-   let consultarCantidadLecheriaFecha = async (lecheria_fechas) => {
+   let consultarCantidadLecheriaFecha = async (id_lecheria, fecha_inicio, fecha_fin) => {
     let sql = `select  lecheria, sum(cantidad_dia)as Litros FROM public."Producciones_leche" where lecheria =$1
 	            and fecha between $2 and $3 group by lecheria;`;    
-        let values = [
-            lecheria_fechas.id_lecheria,
-            lecheria_fechas.fecha_inicio,
-            lecheria_fechas.fecha_fin];
-    let respuesta = await _servicio.ejecutarSql(sql, values);
+    
+    let respuesta = await _servicio.ejecutarSql(sql, [id_lecheria,fecha_inicio,fecha_fin]);
     return respuesta;
   };
 
