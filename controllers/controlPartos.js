@@ -35,12 +35,15 @@ let _servicio = new ServicioPG();
  * @returns
  */
  let consultarControlPartos = async () => {
-    let sql = `SELECT id_parto, id_bovino, "Bovinos".nombre, fecha_parto, pesaje, observaciones, "TiposBovinos".nombre as tipo, 
-	id_bovino_genealogico, "ControlPartos".id_usuario, "Usuarios".nombre
+    let sql = `SELECT id_parto, "ControlPartos".id_bovino, "Bovinos".nombre as "Bovino", 
+	fecha_parto, pesaje, observaciones, "TiposBovinos".nombre as "Tipo Bovino", 
+	"Genealogicos"."id_Tgenealogico", "ControlPartos".id_usuario, "Usuarios".nombre as "Usuario"
 	FROM public."ControlPartos"
 	INNER JOIN public."Bovinos" ON "ControlPartos".id_bovino = "Bovinos".chapeta
 	INNER JOIN public."Usuarios" ON "ControlPartos".id_usuario = "Usuarios".id_usuario
-	INNER JOIN public."TiposBovinos" ON "ControlPartos".id_tipo = "TiposBovinos".id_tipo;`;
+	INNER JOIN public."TiposBovinos" ON "ControlPartos".id_tipo = "TiposBovinos".id_tipo
+	INNER JOIN public."Genealogicos" 
+	ON "ControlPartos".id_bovino_genealogico = "Genealogicos".id_bovino;`;
     let respuesta = await _servicio.ejecutarSql(sql);
     return respuesta;
 };
@@ -54,13 +57,16 @@ let _servicio = new ServicioPG();
  * @returns
  */
  let consultarControlParto = async (id_parto) => {
-    let sql = `SELECT id_parto, id_bovino, "Bovinos".nombre, fecha_parto, pesaje, observaciones, "TiposBovinos".nombre as tipo, 
-	id_bovino_genealogico, "ControlPartos".id_usuario, "Usuarios".nombre
+    let sql = `SELECT id_parto, "ControlPartos".id_bovino, "Bovinos".nombre as "Bovino", 
+	fecha_parto, pesaje, observaciones, "TiposBovinos".nombre as "Tipo Bovino", 
+	"Genealogicos"."id_Tgenealogico", "ControlPartos".id_usuario, "Usuarios".nombre as "Usuario"
 	FROM public."ControlPartos"
 	INNER JOIN public."Bovinos" ON "ControlPartos".id_bovino = "Bovinos".chapeta
 	INNER JOIN public."Usuarios" ON "ControlPartos".id_usuario = "Usuarios".id_usuario
 	INNER JOIN public."TiposBovinos" ON "ControlPartos".id_tipo = "TiposBovinos".id_tipo
-     where id_parto=$1;`;
+	INNER JOIN public."Genealogicos" 
+	ON "ControlPartos".id_bovino_genealogico = "Genealogicos".id_bovino
+    where id_parto=$1;`;
     let respuesta = await _servicio.ejecutarSql(sql, [id_parto]);
     return respuesta;
 };
@@ -93,15 +99,14 @@ let _servicio = new ServicioPG();
         };
     }
     let sql = `UPDATE public."ControlPartos"
-	SET  id_bovino=$1, fecha_parto=$2, pesaje=$3, observaciones=$4, id_tipo=$5, id_bovino_genealogico=$6, id_usuario=$7
-	 WHERE id_parto=$8;`;
+	SET   fecha_parto=$1, pesaje=$2, observaciones=$3, id_usuario=$4
+	 WHERE id_parto=$5;`;
     let values = [
         parto.id_bovino,
         parto.fecha_parto,
         parto.pesaje,
         parto.observaciones,
         parto.id_tipo,
-        parto.id_bovino_genealogico,
         parto.id_usuario,
         id_parto
     ];
