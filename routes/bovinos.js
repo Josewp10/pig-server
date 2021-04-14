@@ -135,7 +135,7 @@ router.post("/bovinos", (req, res) => {
       _controlador
       .guardarBovino(info_bovino)
         .then((respuestaDB) => {
-          console.log("entro");  
+          
           res.send({ ok: true, mensaje: "Bovino guardado", info: info_bovino });
         })
         .catch((error) => {
