@@ -34,11 +34,11 @@ router.get("/produccionLeche", (req, res) => {
  * Cuerpo: Vacío
  * Respuesta: Producción consultada o mensaje de error
  */
-router.get('/produccionLeche/:id_produccion', async (req, res) => {
+router.get('/produccionLeche/:lecheria', async (req, res) => {
 
-    let id = req.params.id_produccion;
+    let lecheria = req.params.lecheria;
   
-    _controlador.consultarProduccion(id)
+    _controlador.consultarProduccion(lecheria)
         .then((respuestaDB) => {
             let produccion = respuestaDB.rows;
             res.send({ok: true, info: produccion, mensaje: 'Produccion consultada'});
@@ -60,16 +60,18 @@ router.get('/produccionLeche/:id_produccion', async (req, res) => {
  *  - fecha_fin.
  * Respuesta: Producciones consultadas o mensaje de error
  */
- router.get("/produccionLeche/fechas/:consulta", (req, res) => {
+ router.get("/produccionLeche/fechas/:consulta/:id_lecheria/:fecha_inicio/:fecha_fin", (req, res) => {
 
   let consulta = req.params.consulta;
-  let info_lecherias = req.body;
+  let id_lecheria = req.params.id_lecheria; 
+  let fecha_inicio = req.params.fecha_inicio;
+  let fecha_fin = req.params.fecha_fin;
 
   
   switch (consulta) {
     case 'registros':      
       _controlador
-      .consultarLecheriaFecha(info_lecherias)
+      .consultarLecheriaFecha(id_lecheria, fecha_inicio, fecha_fin)
       .then(respuestaDB => {
         console.log(respuestaDB);
         let produccion = respuestaDB.rows;
@@ -82,7 +84,7 @@ router.get('/produccionLeche/:id_produccion', async (req, res) => {
     case 'litros':
       
       _controlador
-      .consultarCantidadLecheriaFecha(info_lecherias)
+      .consultarCantidadLecheriaFecha(id_lecheria, fecha_inicio, fecha_fin)
       .then(respuestaDB => {
         console.log(respuestaDB);
         let produccion = respuestaDB.rows;

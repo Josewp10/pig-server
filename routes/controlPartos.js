@@ -82,17 +82,17 @@ router.post("/controlPartos", (req, res) => {
  * Cuerpo: Todos los datos del registro control partos
  * Respuesta: control partos almacenado o mensaje de error
  */
-  router.put("/lecherias/:id_lecheria", (req, res) => {
+  router.put("/controlPartos/:id_partos", (req, res) => {
     try {
       //Capturar el body desde la solicitud
-      let id = req.params.id_lecheria;
-      let info_lecherias = req.body;
+      let id = req.params.id_partos;
+      let info_partos = req.body;
   
       // Actualiza el usuario en base de datos
       _controlador
-      .actualizarLecheria(info_lecherias, id)
+      .actualizarControlParto(info_partos, id)
         .then((respuestaDB) => {
-          res.send({ ok: true, mensaje: "Lecheria editada", info: info_lecherias });
+          res.send({ ok: true, mensaje: "Lecheria editada", info: info_partos });
         })
         .catch((error) => {
             console.log(error);
@@ -108,10 +108,10 @@ router.post("/controlPartos", (req, res) => {
 
 
 /**
- * Petición: Eliminar la información de un registro lecherias
- * Parametros: id de la lecheria
+ * Petición: Eliminar la información de un control de partos
+ * Parametros: id control de parto
  * Cuerpo: Vacío
- * Respuesta: Registro lecheria eliminado o mensaje de error
+ * Respuesta: Registro control de parto eliminado o mensaje de error
  */
 router.delete("/controlPartos/:id_parto", (req, res) => {
     let id = req.params.id_parto;

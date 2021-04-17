@@ -53,12 +53,13 @@ const validarUsuario = usuario => {
  * @returns 
  */
 const consultarUsuarios = async () => {
-    let sql = `SELECT "Usuarios"."id_Tusuario", "Usuarios".id_usuario, "Usuarios".nombre, 
-    "Usuarios".correo, "Usuarios".celular, "TiposUsuarios".nombre
+    let sql = `SELECT "Usuarios"."id_Tusuario", "Usuarios".id_usuario, "Usuarios".nombre as "Usuario", 
+        "Usuarios".correo, "Usuarios".celular, "Usuarios".id_tipo, "TiposUsuarios".nombre as "Rol"
         FROM public."Usuarios"
-        INNER JOIN public."TiposUsuarios" ON public."Usuarios".id_tipo = "TiposUsuarios"."id_tipo";`;
+        INNER JOIN public."TiposUsuarios" 
+        ON public."Usuarios".id_tipo = "TiposUsuarios"."id_tipo";`;
     let respuesta = await _servicio.ejecutarSql(sql);
-    return respuesta
+    return respuesta;
 };
 
 const consultarUsuariosNombreyId = async () => {
@@ -74,13 +75,14 @@ const consultarUsuariosNombreyId = async () => {
  * @returns 
  */
 const consultarUsuario = async (id_usuario) => {
-    let sql = `SELECT "Usuarios"."id_Tusuario", "Usuarios".id_usuario, "Usuarios".nombre, 
-        "Usuarios".correo, "Usuarios".celular, "TiposUsuarios".nombre
+    let sql = `SELECT "Usuarios"."id_Tusuario", "Usuarios".id_usuario, "Usuarios".nombre as "Usuario", 
+        "Usuarios".correo, "Usuarios".celular, "Usuarios".id_tipo, "TiposUsuarios".nombre as "Rol"
         FROM public."Usuarios"
-        INNER JOIN public."TiposUsuarios" ON public."Usuarios".id_tipo = "TiposUsuarios"."id_tipo"
+        INNER JOIN public."TiposUsuarios" 
+        ON public."Usuarios".id_tipo = "TiposUsuarios"."id_tipo"
 		where "Usuarios".id_usuario = $1;`;
     let respuesta = await _servicio.ejecutarSql(sql, [id_usuario]);
-    return respuesta
+    return respuesta;
 };
 
 /**
@@ -92,7 +94,7 @@ const consultarCelUsuario = async (id_usuario) => {
     let sql = `SELECT celular
 	            FROM public."Usuarios" where id_usuario = $1 ;`;
     let respuesta = await _servicio.ejecutarSql(sql, [id_usuario]);
-    return respuesta
+    return respuesta;
 };
 
 /**
@@ -103,14 +105,68 @@ const consultarCelUsuario = async (id_usuario) => {
 const guardarUsuario = async (usuario) => {
     
     let sql = `INSERT INTO public."Usuarios"(
-        id_usuario,  nombre, correo, celular, id_tipo)
-        VALUES ($1, $2, $3, $4, $5 );`;
-    let valores = [usuario.id_usuario, usuario.nombre, usuario.correo, 
-        usuario.celular, usuario.id_tipo,];
+        id_usuario,  nombre, celular, id_tipo, correo, contrasena)
+        VALUES ($1, $2, $3, $4, $5, md5($6) );`;
+    let valores = [usuario.id_usuario, usuario.nombre,
+                    usuario.celular, usuario.id_tipo, 
+                    usuario.correo, usuario.contrasena];
     let respuesta = await _servicio.ejecutarSql(sql, valores);
-    return respuesta
 };
 
+/**
+ * @description Modifica la información de un usuario.
+ * @param {Object} usuario 
+ * @param {String} id_usuario
+ * @returns 
+ */
+ const editarUsuario = async (usuario, id_usuario) => {
+    if (usuario.id_usuario != id_usuario) {
+      throw {
+        ok: false,
+        mensaje: "El id del usuario no corresponde al enviado",
+      };
+    }
+    let sql =
+      `UPDATE public."Usuarios"
+      SET nombre=$1, celular=$2, id_tipo=$3, correo=$4
+      WHERE id_usuario=$5;`;
+    let valores = [usuario.nombre, usuario.celular, usuario.id_tipo, 
+      usuario.correo, usuario.id_usuario];
+    let respuesta = await _servicio.ejecutarSql(sql, valores);
+    return respuesta;
+  };
+
+/**
+ * @description Modifica la contraseña de un usuario.
+ * @param {Object} usuario 
+ * @param {String} id_usuario
+ * @returns 
+ */
+ const editarContrasena = async (usuario, id_usuario) => {
+    if (usuario.id_usuario != id_usuario) {
+      throw {
+        ok: false,
+        mensaje: "El id del usuario no corresponde al enviado",
+      };
+    }
+    let sql =`UPDATE public."Usuarios"
+            SET contrasena=md5($1)
+            WHERE  id_usuario=$2;`;
+    let valores = [usuario.contrasena, usuario.id_usuario];
+    let respuesta = await _servicio.ejecutarSql(sql, valores);
+  };
+
+/**
+ * @description Elimina un usuario de la base de datos.
+ * @param {String} id_usuario 
+ * @returns
+ */
+ const eliminarUsuario = async (id_usuario) => {
+    let sql = `DELETE FROM public."Usuarios" where id_usuario = $1;`;    
+    let respuesta = await _servicio.ejecutarSql(sql, [id_usuario]);
+    return respuesta;
+};
 
 module.exports = {validarUsuario, consultarUsuario, consultarUsuarios,
-     consultarCelUsuario, consultarUsuariosNombreyId ,guardarUsuario};
+     consultarCelUsuario, consultarUsuariosNombreyId ,editarContrasena,
+     guardarUsuario, editarUsuario, eliminarUsuario};
