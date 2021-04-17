@@ -6,6 +6,7 @@
 //Llamado a todas las librerías y servicios requeridos
 const ServicioPg = require("../services/postgres");
 const _service = new ServicioPg();
+const jwt = require("jsonwebtoken");
 
 
  /**
@@ -24,7 +25,7 @@ let validarLogin = (usuario) => {
       if (!usuario.correo) {
         throw { ok: false, message: "El correo es obligatrio." };
       }
-      if (!usuario.clave) {
+      if (!usuario.contrasena) {
         throw { ok: false, message: "La clave es obligatoria." };
       }
   };
@@ -37,9 +38,21 @@ let validarLogin = (usuario) => {
   let consultarUsuario = async (usuario) => {
     
     let sql = `SELECT * FROM public."Usuarios" WHERE correo = $1 AND contrasena = md5($2)`;
-    let valores = [usuario.correo, usuario.clave]
+    let valores = [usuario.correo, usuario.contrasena]
     let respuesta = await _service.ejecutarSql(sql, valores);
     return respuesta;
   };
+  let generar_token = (usuario) => {
+    delete usuario.contrasena;
+    let token = jwt.sign(usuario, process.env.SECRET_KEY, { expiresIn: "4h" });
+    return token;
+  };
+  
+  let descifrar_token = (token) => {
+    return jwt.decode(token, process.env.SECRET_KEY);
+  };
+  let validar_token = (token) => {
+    return jwt.verify(token, process.env.SECRET_KEY);
+  };
 
-module.exports = {validarLogin, consultarUsuario};
+module.exports = {validarLogin, consultarUsuario, generar_token,descifrar_token,validar_token};
