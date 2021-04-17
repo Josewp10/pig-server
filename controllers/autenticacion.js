@@ -55,4 +55,8 @@ let validarLogin = (usuario) => {
     return jwt.verify(token, process.env.SECRET_KEY);
   };
 
-module.exports = {validarLogin, consultarUsuario, generar_token,descifrar_token,validar_token};
+module.exports = {validarLogin, 
+                  consultarUsuario, 
+                  generar_token,
+                  descifrar_token,
+                  validar_token};
