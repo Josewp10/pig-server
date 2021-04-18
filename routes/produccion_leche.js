@@ -51,13 +51,14 @@ router.get('/produccionLeche/:lecheria', async (req, res) => {
 
 /**
  * Petición: Consulta los registros según el tipo de consulta
- * Parámetros: Tipo consulta
- *  - registros: Todas las producciones registradas de una lechería.
- *  - litros: Cantidad total de leche producida en litros de una lechería.
- * Cuerpo: 
+ * Parámetros: 
+ *  -Tipo consulta:
+ *    * registros: Todas las producciones registradas de una lechería.
+ *    * litros: Cantidad total de leche producida en litros de una lechería.
  *  - id_lecheria.
  *  - fecha_inicio.
  *  - fecha_fin.
+ * Cuerpo: Vacío.
  * Respuesta: Producciones consultadas o mensaje de error
  */
  router.get("/produccionLeche/fechas/:consulta/:id_lecheria/:fecha_inicio/:fecha_fin", (req, res) => {

@@ -26,7 +26,7 @@ let validarLogin = (usuario) => {
         throw { ok: false, message: "El correo es obligatrio." };
       }
       if (!usuario.contrasena) {
-        throw { ok: false, message: "La clave es obligatoria." };
+        throw { ok: false, message: "La contraseña es obligatoria." };
       }
   };
 
@@ -42,6 +42,7 @@ let validarLogin = (usuario) => {
     let respuesta = await _service.ejecutarSql(sql, valores);
     return respuesta;
   };
+
   let generar_token = (usuario) => {
     delete usuario.contrasena;
     let token = jwt.sign(usuario, process.env.SECRET_KEY, { expiresIn: "4h" });
