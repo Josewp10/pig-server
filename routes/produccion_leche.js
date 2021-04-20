@@ -50,6 +50,27 @@ router.get('/produccionLeche/:lecheria', async (req, res) => {
   });
 
 /**
+ * Petición: Traer registro de produccion especifico.
+ * Parámetros: id de la producción
+ * Cuerpo: Vacío
+ * Respuesta: Producción consultada o mensaje de error
+ */
+ router.get('/produccionLeche/id/:id_Tproduccion', async (req, res) => {
+
+  let id_Tproduccion = req.params.id_Tproduccion;
+
+  _controlador.consultarProduccionId(id_Tproduccion)
+      .then((respuestaDB) => {
+          let produccion = respuestaDB.rows;
+          res.send({ok: true, info: produccion, mensaje: 'Produccion consultada'});
+      })
+      .catch(error => {
+          console.log(error);
+          res.send(error);
+      });
+}); 
+
+/**
  * Petición: Consulta los registros según el tipo de consulta
  * Parámetros: 
  *  -Tipo consulta:
@@ -154,19 +175,19 @@ router.post("/produccionLeche", (req, res) => {
  * Cuerpo: Todos los datos de la producción
  * Respuesta: Producción actualizada o mensaje de error
  */
-router.put("/produccionLeche/:id_produccion", (req, res) => {
+router.put("/produccionLeche/:id_Tproduccion", (req, res) => {
   try {
     //Capturar el body desde la solicitud
-    let id = req.params.id_produccion;
-    let info_produccion = req.body;
+    let id_Tproduccion = req.params.id_Tproduccion;
+    let produccion = req.body;
 
-    _controlador.validarProduccion(info_produccion);
+    _controlador.validarProduccion(produccion);
 
-    // Actualiza una producción lechera en base de datos
+    // Actualiza una producción en base de datos
     _controlador
-    .editarProduccion(info_produccion, id)
+    .editarProduccion(produccion, id_Tproduccion)
       .then((respuestaDB) => {
-        res.send({ ok: true, mensaje: "Producción editada", info: info_produccion });
+        res.send({ ok: true, mensaje: "Producción editada", info: produccion });
       })
       .catch((error) => {
           console.log(error);

@@ -70,6 +70,25 @@ let consultarProduccion = async (lecheria) => {
     return respuesta;
   };
 
+
+  /**
+ * @description Consulta un registro especifico de produccion de leche en la base de datos.
+ * @param {int} id_Tproduccion 
+ * @returns 
+ */
+let consultarProduccionId = async (id_Tproduccion) => {
+    let sql = `SELECT "Produccion_Lactante"."id_Tproduccion",lecheria,"Produccion_Lactante".id_lactante,
+        "Bovinos".nombre, fecha, cantidad_dia, "Usuarios".nombre Encargado
+        FROM public."Produccion_Lactante"
+        inner join public."Bovinos" on id_lactante = chapeta
+        inner join public."Producciones_leche" on "Produccion_Lactante"."id_Tproduccion" = "Producciones_leche"."id_Tproduccion"
+        inner join public."Lecherias" on "Lecherias".id_lecheria="Producciones_leche".lecheria
+        inner join public."Usuarios" on "Lecherias".id_usuario="Usuarios".id_usuario
+	    where "Producciones_leche"."id_Tproduccion"=$1;`;    
+    let respuesta = await _servicio.ejecutarSql(sql, [id_Tproduccion]);
+    return respuesta;
+  };
+
 /**
  * @description Consulta todos los registros de produccion diaria de leche de una lechería en la base de datos entre dos fechas cualquiera.
  * El objeto debe contener:
@@ -120,17 +139,17 @@ let consultarLecheriaFecha = async (id_lecheria, fecha_inicio, fecha_fin) => {
  *  - id de la lechería
  *  - Fecha de la producción
  *  - Cantidad producida
- * @param {Object} lecheria 
+ * @param {Object} infolecheria 
  * @returns 
  */
- let insertarProduccion = async (lecheria) => {
+ let insertarProduccion = async (infolecheria) => {
     let sql = `CALL public.insertproduccionleche($1,$2,$3,$4);`;
 
     let values = [
-        lecheria.id_bovino,
-        lecheria.id_lecheria,
-        lecheria.fecha,
-        lecheria.cantidad_dia];
+        infolecheria.id_bovino,
+        infolecheria.lecheria,
+        infolecheria.fecha,
+        infolecheria.cantidad_dia];
     let respuesta = await _servicio.ejecutarSql(sql, values);
     return respuesta;
 };
@@ -166,13 +185,12 @@ let consultarLecheriaFecha = async (id_lecheria, fecha_inicio, fecha_fin) => {
       };
     }
     let sql =`call updateproduccionleche($1, $2, $3, $4,$5);`;
-    let valores = [produccion.id_Tproduccion, produccion.id_lecheria, produccion.fecha, 
-        produccion.id_lactante, produccion.cantidad_dia];
+    let valores = [produccion.id_Tproduccion, produccion.lecheria, produccion.fecha, produccion.id_bovino, produccion.cantidad_dia];
     let respuesta = await _servicio.ejecutarSql(sql, valores);
     return respuesta;
   };
 
 module.exports={validarProduccion,consultarProducciones,
-    consultarProduccion, insertarProduccion, consultarCantidadLecheriaFecha,
+    consultarProduccion,consultarProduccionId, insertarProduccion, consultarCantidadLecheriaFecha,
     editarProduccion,eliminarProduccion, consultarLecheriaFecha};
 
