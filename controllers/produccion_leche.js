@@ -128,22 +128,22 @@ let consultarLecheriaFecha = async (id_lecheria, fecha_inicio, fecha_fin) => {
 
     let values = [
         lecheria.id_bovino,
-        arbol.id_lecheria,
-        arbol.fecha,
-        arbol.cantidad_dia];
+        lecheria.id_lecheria,
+        lecheria.fecha,
+        lecheria.cantidad_dia];
     let respuesta = await _servicio.ejecutarSql(sql, values);
     return respuesta;
 };
 
 /**
  * @description Elimina un lecheria de la base de datos.
- * @param {String} chapeta 
+ * @param {String} id 
  * @returns
  */
- const eliminarProduccion = async (chapeta) => {
+ const eliminarProduccion = async (id) => {
     let sql = `DELETE FROM public."Producciones_leche"
 	            WHERE "id_Tproduccion" = $1;`;    
-    let respuesta = await _servicio.ejecutarSql(sql, [chapeta]);
+    let respuesta = await _servicio.ejecutarSql(sql, [id]);
     return respuesta
 };
 
