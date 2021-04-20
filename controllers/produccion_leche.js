@@ -33,11 +33,6 @@ const validarProduccion = produccion => {
             ok: false,
             mensaje: 'Ingrese la cantidad producida en éste día'
         };
-    }else if(!produccion.id_usuario){
-        throw{
-            ok: false,
-            mensaje: 'Ingrese el id del usuario'
-        };
     }
 };
 
