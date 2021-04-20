@@ -114,7 +114,7 @@ router.post("/produccionLeche", (req, res) => {
     _controlador.validarProduccion(info_lecherias);
 
     _controlador
-    .editarProduccion(info_lecherias)
+    .insertarProduccion(info_lecherias)
       .then((respuestaDB) => {
         res.send({ ok: true, mensaje: " guardada", info: info_lecherias });
       })
@@ -146,5 +146,38 @@ router.post("/produccionLeche", (req, res) => {
         res.send(error);
       });
   });
+
+
+  /**
+ * Petición: Actualizar la información de producción
+ * Parametros: id de producción
+ * Cuerpo: Todos los datos de la producción
+ * Respuesta: Producción actualizada o mensaje de error
+ */
+router.put("/produccionLeche/:id_produccion", (req, res) => {
+  try {
+    //Capturar el body desde la solicitud
+    let id = req.params.id_produccion;
+    let info_produccion = req.body;
+
+    _controlador.validarProduccion(info_produccion);
+
+    // Actualiza una producción lechera en base de datos
+    _controlador
+    .editarProduccion(info_produccion, id)
+      .then((respuestaDB) => {
+        res.send({ ok: true, mensaje: "Producción editada", info: info_produccion });
+      })
+      .catch((error) => {
+          console.log(error);
+        res.send(error);
+      });
+
+    // Responder
+  } catch (error) {
+      console.log(error);
+    res.send(error);
+  }
+});
   
   module.exports = router;
