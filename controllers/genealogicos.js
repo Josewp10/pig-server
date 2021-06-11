@@ -38,7 +38,8 @@ const consultarGenealogicos = async () => {
     id_papa, (SELECT nombre FROM public."Bovinos" where "Bovinos"."chapeta"="Genealogicos".id_papa) as "Papá",
 	 id_abuela, (SELECT nombre FROM public."Bovinos" where "Bovinos"."chapeta"="Genealogicos".id_abuela) as "Abuela",
     id_abuelo, (SELECT nombre FROM public."Bovinos" where "Bovinos"."chapeta"="Genealogicos".id_abuelo) as "Abuelo"
-    FROM public."Genealogicos";`;
+    FROM public."Genealogicos" where "id_Tgenealogico">0
+	order by id_bovino asc;`;
     let respuesta = await _servicio.ejecutarSql(sql);
     return respuesta
 };

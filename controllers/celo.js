@@ -59,6 +59,7 @@ const consultarCelos = async () => {
                 public."Usuarios"."nombre", fecha_posible_parto
                 from public."ControlCelos" 
                 inner join public."Usuarios" on public."Usuarios"."id_usuario" = public."ControlCelos"."id_usuario"
+                where id_celo>0
                 ORDER BY id_celo ASC;`;
     let respuesta = await _servicio.ejecutarSql(sql);
     return respuesta

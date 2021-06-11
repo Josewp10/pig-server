@@ -36,7 +36,8 @@ const validarDosis = dosis => {
  */
 const consultarDosis = async () => {
     let sql = `SELECT id_tipo, tipo
-	FROM public."TipoDosis";`;
+                FROM public."TipoDosis"
+                where id_tipo>0 order by id_tipo asc;`;
     let respuesta = await _servicio.ejecutarSql(sql);
     return respuesta
 };

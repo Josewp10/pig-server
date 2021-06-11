@@ -23,7 +23,7 @@ const validarProduccion = produccion => {
             ok: false,
             mensaje: 'Ingrese la fecha de la producción'
         };
-    }else if(!produccion.lecheria){
+    }else if(!produccion.id_lecheria){
         throw{
             ok: false,
             mensaje: 'Ingrese el id de la lecheria'
@@ -41,13 +41,15 @@ const validarProduccion = produccion => {
  * @returns 
  */
 const consultarProducciones = async () => {    
-    let sql =  `SELECT "Produccion_Lactante"."id_Tproduccion",lecheria,"Produccion_Lactante".id_lactante,
-        "Bovinos".nombre, fecha, cantidad_dia, "Usuarios".nombre as Encargado
-        FROM public."Produccion_Lactante"
-        inner join public."Bovinos" on id_lactante = chapeta
-        inner join public."Producciones_leche" on "Produccion_Lactante"."id_Tproduccion" = "Producciones_leche"."id_Tproduccion"
-        inner join public."Lecherias" on "Lecherias".id_lecheria="Producciones_leche".lecheria
-        inner join public."Usuarios" on "Lecherias".id_usuario="Usuarios".id_usuario;`;
+    let sql =  `SELECT "Produccion_Lactante"."id_Tproduccion","Producciones_leche".id_lecheria,"Produccion_Lactante".id_lactante,
+    "Bovinos".nombre, fecha, cantidad_dia, "Usuarios".nombre as Encargado
+    FROM public."Produccion_Lactante"
+    inner join public."Bovinos" on id_lactante = chapeta
+    inner join public."Producciones_leche" on "Produccion_Lactante"."id_Tproduccion" = "Producciones_leche"."id_Tproduccion"
+    inner join public."Lecherias" on "Lecherias".id_lecheria="Producciones_leche".id_lecheria
+    inner join public."Usuarios" on "Lecherias".id_usuario="Usuarios".id_usuario
+    where "Producciones_leche"."id_Tproduccion" >0
+	order by "Producciones_leche"."id_Tproduccion" asc;`;
     let respuesta = await _servicio.ejecutarSql(sql);
     return respuesta
 };
@@ -58,14 +60,14 @@ const consultarProducciones = async () => {
  * @returns 
  */
 let consultarProduccion = async (lecheria) => {
-    let sql = `SELECT "Produccion_Lactante"."id_Tproduccion",lecheria,"Produccion_Lactante".id_lactante,
-        "Bovinos".nombre, fecha, cantidad_dia, "Usuarios".nombre Encargado
+    let sql = `SELECT "Produccion_Lactante"."id_Tproduccion","Producciones_leche".id_lecheria,"Produccion_Lactante".id_lactante,
+        "Bovinos".nombre, fecha, cantidad_dia, "Usuarios".nombre as Encargado
         FROM public."Produccion_Lactante"
         inner join public."Bovinos" on id_lactante = chapeta
         inner join public."Producciones_leche" on "Produccion_Lactante"."id_Tproduccion" = "Producciones_leche"."id_Tproduccion"
-        inner join public."Lecherias" on "Lecherias".id_lecheria="Producciones_leche".lecheria
+        inner join public."Lecherias" on "Lecherias".id_lecheria="Producciones_leche".id_lecheria
         inner join public."Usuarios" on "Lecherias".id_usuario="Usuarios".id_usuario
-	    where "Producciones_leche"."lecheria"=$1;`;    
+	    where "Producciones_leche".id_lecheria=$1;`;    
     let respuesta = await _servicio.ejecutarSql(sql, [lecheria]);
     return respuesta;
   };
@@ -77,14 +79,15 @@ let consultarProduccion = async (lecheria) => {
  * @returns 
  */
 let consultarProduccionId = async (id_Tproduccion) => {
-    let sql = `SELECT "Produccion_Lactante"."id_Tproduccion",lecheria,"Produccion_Lactante".id_lactante,
-        "Bovinos".nombre, fecha, cantidad_dia, "Usuarios".nombre Encargado
-        FROM public."Produccion_Lactante"
-        inner join public."Bovinos" on id_lactante = chapeta
-        inner join public."Producciones_leche" on "Produccion_Lactante"."id_Tproduccion" = "Producciones_leche"."id_Tproduccion"
-        inner join public."Lecherias" on "Lecherias".id_lecheria="Producciones_leche".lecheria
-        inner join public."Usuarios" on "Lecherias".id_usuario="Usuarios".id_usuario
-	    where "Producciones_leche"."id_Tproduccion"=$1;`;    
+    let sql = `SELECT "Produccion_Lactante"."id_Tproduccion","Producciones_leche".id_lecheria,
+    "Produccion_Lactante".id_lactante,"Bovinos".nombre, 
+    fecha, cantidad_dia, "Usuarios".nombre Encargado
+    FROM public."Produccion_Lactante"
+    inner join public."Bovinos" on id_lactante = chapeta
+    inner join public."Producciones_leche" on "Produccion_Lactante"."id_Tproduccion" = "Producciones_leche"."id_Tproduccion"
+    inner join public."Lecherias" on "Lecherias".id_lecheria="Producciones_leche".id_lecheria
+    inner join public."Usuarios" on "Lecherias".id_usuario="Usuarios".id_usuario
+    where "Producciones_leche"."id_Tproduccion"=$1;`;    
     let respuesta = await _servicio.ejecutarSql(sql, [id_Tproduccion]);
     return respuesta;
   };
@@ -101,14 +104,16 @@ let consultarProduccionId = async (id_Tproduccion) => {
  * @returns 
  */
 let consultarLecheriaFecha = async (id_lecheria, fecha_inicio, fecha_fin) => {
-    let sql = `SELECT "Produccion_Lactante"."id_Tproduccion",lecheria,"Produccion_Lactante".id_lactante,
+    let sql = `SELECT "Produccion_Lactante"."id_Tproduccion","Producciones_leche".id_lecheria,
+	"Produccion_Lactante".id_lactante,
     "Bovinos".nombre, fecha, cantidad_dia, "Usuarios".nombre Encargado
     FROM public."Produccion_Lactante"
     inner join public."Bovinos" on id_lactante = chapeta
     inner join public."Producciones_leche" on "Produccion_Lactante"."id_Tproduccion" = "Producciones_leche"."id_Tproduccion"
-    inner join public."Lecherias" on "Lecherias".id_lecheria="Producciones_leche".lecheria
+    inner join public."Lecherias" on "Lecherias".id_lecheria="Producciones_leche".id_lecheria
     inner join public."Usuarios" on "Lecherias".id_usuario="Usuarios".id_usuario
-    where "Producciones_leche"."lecheria"=$1 and fecha between $2 and $3;`;    
+    where "Producciones_leche".id_lecheria=$1 and fecha between $2 and $3
+    order by "Producciones_leche"."id_Tproduccion" asc;`;    
     let respuesta = await _servicio.ejecutarSql(sql, [id_lecheria,fecha_inicio,fecha_fin]);
     return respuesta;
   };
@@ -125,8 +130,10 @@ let consultarLecheriaFecha = async (id_lecheria, fecha_inicio, fecha_fin) => {
  * @returns 
  */
    let consultarCantidadLecheriaFecha = async (id_lecheria, fecha_inicio, fecha_fin) => {
-    let sql = `select  lecheria, sum(cantidad_dia)as Litros FROM public."Producciones_leche" where lecheria =$1
-	            and fecha between $2 and $3 group by lecheria;`;    
+    let sql = `select  id_lecheria, sum(cantidad_dia)as Litros 
+            FROM public."Producciones_leche" 
+            where id_lecheria =$1 and fecha between $2 and $3
+            group by id_lecheria;`;    
     
     let respuesta = await _servicio.ejecutarSql(sql, [id_lecheria,fecha_inicio,fecha_fin]);
     return respuesta;
@@ -147,7 +154,7 @@ let consultarLecheriaFecha = async (id_lecheria, fecha_inicio, fecha_fin) => {
 
     let values = [
         infolecheria.id_bovino,
-        infolecheria.lecheria,
+        infolecheria.id_lecheria,
         infolecheria.fecha,
         infolecheria.cantidad_dia];
     let respuesta = await _servicio.ejecutarSql(sql, values);

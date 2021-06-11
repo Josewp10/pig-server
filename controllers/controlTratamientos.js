@@ -51,7 +51,7 @@ const ver_tratamiento = async (tratamiento) => {
           INNER JOIN public."Bovinos" ON "ControlTratamientos".id_bovino= "Bovinos"."chapeta"
           INNER JOIN public."Usuarios" ON "ControlTratamientos".id_usuario = "Usuarios"."id_usuario"
           INNER JOIN public."TipoDosis" ON "ControlTratamientos".tipo_dosis = "TipoDosis"."id_tipo"
-          ORDER BY id_tratamiento ASC;`
+          where id_tratamiento>0 ORDER BY id_tratamiento ASC;`
   ;
   let respuesta = await _service.ejecutarSql(sql);
   return respuesta
@@ -70,7 +70,7 @@ let consultarporControl = async (id_tratamiento) => {
         INNER JOIN public."Bovinos" ON "ControlTratamientos".id_bovino= "Bovinos"."chapeta"
         INNER JOIN public."Usuarios" ON "ControlTratamientos".id_usuario = "Usuarios"."id_usuario"
         INNER JOIN public."TipoDosis" ON "ControlTratamientos".tipo_dosis = "TipoDosis"."id_tipo"
-        WHERE id_tratamiento = 1;`;
+        WHERE id_tratamiento = $1;`;
           
   let respuesta = await _service.ejecutarSql(sql, [id_tratamiento]);
   return respuesta;

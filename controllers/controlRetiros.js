@@ -50,7 +50,7 @@ let consultarControlesRetiro = async () => {
             INNER JOIN public."Bovinos" ON "ControlRetiros".id_bovino = "Bovinos"."chapeta"
             INNER JOIN public."Usuarios" ON "ControlRetiros".id_usuario = "Usuarios"."id_usuario"
             INNER JOIN public."TiposRetiros" ON "ControlRetiros".id_tipo = "TiposRetiros"."id_tipo"
-            ORDER BY id_retiro ASC;`;
+            where id_retiro>0 ORDER BY id_retiro ASC;`;
     let respuesta = await _servicio.ejecutarSql(sql);
     return respuesta;
 };

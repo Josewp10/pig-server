@@ -46,7 +46,7 @@ const consultarTareas = async () => {
 	FROM public."RegistroTareas"
 	 INNER JOIN public."Tareas" ON "RegistroTareas".id_tarea= "Tareas"."id_tarea"
     INNER JOIN public."Usuarios" ON "RegistroTareas".id_usuario = "Usuarios"."id_usuario"
-    ORDER BY id_registro ASC;`;
+    where id_registro>0 ORDER BY id_registro ASC;`;
     let respuesta = await _servicio.ejecutarSql(sql);
     return respuesta
 };

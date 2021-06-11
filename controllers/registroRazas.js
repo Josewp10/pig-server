@@ -44,7 +44,8 @@ let consultarRaza = async (id_raza) => {
 
   let consultarRazas = async () => {
     let sql = `SELECT id_raza, nombre
-	FROM public."Razas"`;
+	        FROM public."Razas" 
+            where id_raza >0 ORDER BY id_raza ASC;`;
       
     let respuesta = await _servicio.ejecutarSql(sql);
     return respuesta;

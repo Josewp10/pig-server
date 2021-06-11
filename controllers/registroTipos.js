@@ -49,7 +49,8 @@ let consultarTipo = async (id_tipo) => {
  */
   let consultarTipos = async () => {
     let sql = `SELECT id_tipo, nombre
-	FROM public."TiposBovinos"`;
+                FROM public."TiposBovinos"
+                where id_tipo>0 ORDER BY id_tipo ASC;`;
       
     let respuesta = await _servicio.ejecutarSql(sql);
     return respuesta;

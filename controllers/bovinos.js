@@ -40,7 +40,8 @@ const validarBovino = bovino => {
  */
 const consultarBovinos = async () => {    
     let sql = `SELECT "id_Tbovinos", chapeta, id_tipo, nombre, id_raza, genetica, finca
-               FROM public."Bovinos";`;
+              FROM public."Bovinos"  where "id_Tbovinos">0
+              order by chapeta asc;`;
     let respuesta = await _servicio.ejecutarSql(sql);
     return respuesta
 };
@@ -65,8 +66,9 @@ let consultarBovino = async (tipo,chapeta) => {
  * @returns
  */
  let consultarPorTipo = async (tipo) => {
-  let sql = `SELECT "id_Tbovinos", chapeta, id_tipo, nombre, id_raza, genetica, finca FROM public."Bovinos"
-              WHERE id_tipo = $1 order by finca asc, nombre asc;`;
+  let sql = `SELECT "id_Tbovinos", chapeta, id_tipo, nombre, id_raza, genetica, finca 
+          FROM public."Bovinos" WHERE id_tipo = $1
+          order by chapeta asc, finca asc, nombre asc;`;
     
   let respuesta = await _servicio.ejecutarSql(sql, [tipo]);
   return respuesta;
@@ -79,8 +81,8 @@ let consultarBovino = async (tipo,chapeta) => {
  */
  let consultarPorTipoEspecifico = async (tipo) => {
   let sql = `SELECT chapeta, nombre
-	        FROM public."Bovinos" where id_tipo=$1
-           order by finca asc, nombre asc;`;
+            FROM public."Bovinos" where id_tipo=$1
+            order by chapeta asc,finca asc, nombre asc;`;
     
   let respuesta = await _servicio.ejecutarSql(sql, [tipo]);
   return respuesta;
@@ -92,8 +94,8 @@ let consultarBovino = async (tipo,chapeta) => {
  * @returns
  */
   let consultarChapeta = async (tipo) => {
-  let sql = `SELECT "id_Tbovinos", chapeta, id_tipo, nombre, id_raza, genetica, finca FROM public."Bovinos"
-            WHERE chapeta = $1;`;    
+  let sql = `SELECT "id_Tbovinos", chapeta, id_tipo, nombre, id_raza, genetica, finca 
+            FROM public."Bovinos" WHERE chapeta = $1;`;    
   let respuesta = await _servicio.ejecutarSql(sql, [tipo]);
   return respuesta;
 };
@@ -103,12 +105,12 @@ let consultarBovino = async (tipo,chapeta) => {
  * @param {int} tipo  
  * @returns
  */
-
  let consultarNovillonasyLactantes = async () => {   
   let sql = `SELECT "id_Tbovinos", chapeta, "TiposBovinos".nombre as tipo,"Bovinos".nombre, id_raza, genetica, finca
-  FROM public."Bovinos" 
-  	inner join public."TiposBovinos" on "Bovinos"."id_tipo" = "TiposBovinos"."id_tipo"
-	where "TiposBovinos".id_tipo=3 or "TiposBovinos".id_tipo=8;`;
+            FROM public."Bovinos" 
+            inner join public."TiposBovinos" on "Bovinos"."id_tipo" = "TiposBovinos"."id_tipo"
+            where "TiposBovinos".id_tipo=3 or "TiposBovinos".id_tipo=8
+            order by chapeta asc;`;
     
   let respuesta = await _servicio.ejecutarSql(sql);
   return respuesta;

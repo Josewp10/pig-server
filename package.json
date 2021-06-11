@@ -4,7 +4,7 @@
   "description": "Servidor de aplictivo para la gestión ganadera.",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "nodemon index.js"
   },
   "author": "Josewp10 Alealvfer12 ingjuanjosearroyave",
   "license": "ISC",

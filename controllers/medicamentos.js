@@ -59,9 +59,10 @@ const validarMedicamento = medicamento => {
  * @returns
  */
 const consultarMedicamentos = async () => {    
-    let sql = `SELECT "id_Tmedicamento", codigo, nombre, descripcion, 
-                horas_retiro_leche, fecha_compra, fecha_vencimiento, disponibilidad
-	            FROM public."Medicamentos";`;
+    let sql = `SELECT  codigo, nombre, descripcion, 
+            horas_retiro_leche, fecha_compra, fecha_vencimiento, disponibilidad
+            FROM public."Medicamentos" where "id_Tmedicamento">0
+            order by codigo asc;`;
     let respuesta = await _servicio.ejecutarSql(sql);
     return respuesta
 };
@@ -72,7 +73,7 @@ const consultarMedicamentos = async () => {
  * @returns
  */
 let consultarMedicamento = async (codigo) => {   
-    let sql = `SELECT "id_Tmedicamento", codigo, nombre, 
+    let sql = `SELECT codigo, nombre, 
                 descripcion, horas_retiro_leche, 
                 fecha_compra, fecha_vencimiento, disponibilidad
                 FROM public."Medicamentos" where codigo = $1;`;

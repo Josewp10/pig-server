@@ -17,7 +17,8 @@ const validarTermos = termo => {
 
 const consultarTermos = async () => {    
     let sql = `SELECT id_termo, num_pajillas
-	FROM public."Termos";`;
+            FROM public."Termos"
+            where id_termo>0 order by id_termo asc;`;
     let respuesta = await _servicio.ejecutarSql(sql);
     return respuesta
 };

@@ -20,7 +20,7 @@ router.get('/controlTratamientos', async (req, res) => {
   .ver_tratamiento()
       .then((answerDB) => {
           let tratamiento = answerDB.rows;
-          res.send({ok: true, info: tratamiento, mensaje: 'controles de tratamientos consultados'});
+          res.send({ok: true, info: tratamiento, mensaje: 'Controles de tratamientos consultados'});
       })
       .catch(error => {
           res.send(error);
@@ -40,7 +40,7 @@ router.get('/controlTratamientos/:id_tratamiento', async (req, res) => {
   .consultarporControl(id)
       .then((controlTratamiento) => {
           let controltratamiento = controlTratamiento.rows;
-          res.send({ok: true, info: controltratamiento, mensaje: 'Tratamiento consultado'});
+          res.send({ok: true, info: controltratamiento, mensaje: 'Control de tratamiento consultado'});
       })
       .catch(error => {
           console.log(error);
@@ -53,7 +53,7 @@ router.get('/controlTratamientos/:id_tratamiento', async (req, res) => {
  * Petición: Guardar un control de tratamiento
  * Parametros: Vacío
  * Cuerpo: Datos del control de tratamiento
- * Respuesta: Control de tratamiento guardado o mensaje de error
+ * Respuesta: Control de tratamiento almacenado o mensaje de error
  */
 router.post("/controlTratamientos", (req, res) => {
   try {
@@ -64,7 +64,7 @@ router.post("/controlTratamientos", (req, res) => {
     _controlador
     .crear_tratamiento(info_tratamiento)
       .then((respuestaDB) => { 
-        res.send({ ok: true, mensaje: "control tratamiento guardado", info: info_tratamiento });
+        res.send({ ok: true, mensaje: "control tratamiento almacenado", info: info_tratamiento });
       })
       .catch((error) => {
         console.log(error);
@@ -92,7 +92,7 @@ router.put("/controlTratamientos/:id_tratamiento", (req, res) => {
     
     _controlador.editar_tratamiento(info_tratamiento, id_tratamiento)
       .then((respuestaDB) => {
-        res.send({ ok: true, mensaje: "control tratamiento editado", info: info_tratamiento });
+        res.send({ ok: true, mensaje: "Control tratamiento modificado", info: info_tratamiento });
       })
       .catch((error) => {
           console.log(error);
@@ -119,7 +119,7 @@ router.delete("/controlTratamientos/:id_tratamiento", (req, res) => {
   _controlador
   .eliminar_tratamiento(id)
     .then((respuestaDB) => {
-      res.send({ ok: true, mensaje: "control tratamiento eliminado", info: { id } });
+      res.send({ ok: true, mensaje: "Control tratamiento eliminado", info: { id } });
     })
     .catch((error) => {
       console.log(error);

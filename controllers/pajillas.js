@@ -32,9 +32,10 @@ const validarPajilla = pajilla => {
 
 const consultarPajillas = async () => {    
     let sql = `SELECT id_pajilla, id_termo,"Pajillas".id_toro, "Bovinos".nombre as toro, "Razas".nombre as raza, disponibilidad
-	FROM public."Pajillas"
-		INNER JOIN public."Bovinos" ON "Pajillas".id_toro = "Bovinos"."chapeta"
-	INNER JOIN public."Razas" ON "Pajillas".id_raza = "Razas"."id_raza";`;
+            FROM public."Pajillas"
+            INNER JOIN public."Bovinos" ON "Pajillas".id_toro = "Bovinos"."chapeta"
+            INNER JOIN public."Razas" ON "Pajillas".id_raza = "Razas"."id_raza"
+            where id_pajilla>0 order by id_pajilla asc;`;
     let respuesta = await _servicio.ejecutarSql(sql);
     return respuesta
 };

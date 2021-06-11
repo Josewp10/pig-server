@@ -35,7 +35,8 @@ let consultarControlesPrenez = async () => {
 	FROM public."ControlPrenez"
 	INNER JOIN public."Bovinos" ON "ControlPrenez".id_vaca = "Bovinos".chapeta
 	INNER JOIN public."Usuarios" ON "ControlPrenez".id_usuario = "Usuarios".id_usuario
-	where num_parto IS NOT NULL AND "ControlPrenez".id_usuario IS NOT NULL;	`;
+	where num_parto IS NOT NULL AND "ControlPrenez".id_usuario IS NOT NULL
+    AND id_control>0 order by "Bovinos".chapeta asc;`;
     let respuesta = await _servicio.ejecutarSql(sql);
     return respuesta;
 };
@@ -66,10 +67,11 @@ let consultarControlPrenez = async (id_control) => {
  */
 let consultarNoCreados = async ()=>{
     let sql = `SELECT id_control, "Bovinos".chapeta as id_vaca, "Bovinos".nombre as Vaca,  
-        fecha_secado, id_celo
-        FROM public."ControlPrenez"
-        INNER JOIN public."Bovinos" ON "ControlPrenez".id_vaca = "Bovinos".chapeta
-        where num_parto IS NULL AND "ControlPrenez".id_usuario IS NULL;`;
+                fecha_secado, id_celo
+                FROM public."ControlPrenez"
+                INNER JOIN public."Bovinos" ON "ControlPrenez".id_vaca = "Bovinos".chapeta
+                where num_parto IS NULL AND "ControlPrenez".id_usuario IS NULL
+                AND id_vaca>0 order by id_vaca asc;`;
     let respuesta = await _servicio.ejecutarSql(sql);
     return respuesta;
 }

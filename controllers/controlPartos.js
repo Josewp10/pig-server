@@ -36,14 +36,15 @@ let _servicio = new ServicioPG();
  */
  let consultarControlPartos = async () => {
     let sql = `SELECT id_parto, "ControlPartos".id_bovino, "Bovinos".nombre as "Bovino", 
-	fecha_parto, pesaje, observaciones, "TiposBovinos".nombre as "Tipo_Bovino", 
-	"Genealogicos"."id_Tgenealogico", "ControlPartos".id_usuario, "Usuarios".nombre as "Usuario"
-	FROM public."ControlPartos"
-	INNER JOIN public."Bovinos" ON "ControlPartos".id_bovino = "Bovinos".chapeta
-	INNER JOIN public."Usuarios" ON "ControlPartos".id_usuario = "Usuarios".id_usuario
-	INNER JOIN public."TiposBovinos" ON "ControlPartos".id_tipo = "TiposBovinos".id_tipo
-	INNER JOIN public."Genealogicos" 
-	ON "ControlPartos".id_bovino_genealogico = "Genealogicos".id_bovino;`;
+            fecha_parto, pesaje, observaciones, "TiposBovinos".nombre as "Tipo_Bovino", 
+            "Genealogicos"."id_Tgenealogico", "ControlPartos".id_usuario, "Usuarios".nombre as "Usuario"
+            FROM public."ControlPartos"
+            INNER JOIN public."Bovinos" ON "ControlPartos".id_bovino = "Bovinos".chapeta
+            INNER JOIN public."Usuarios" ON "ControlPartos".id_usuario = "Usuarios".id_usuario
+            INNER JOIN public."TiposBovinos" ON "ControlPartos".id_tipo = "TiposBovinos".id_tipo
+            INNER JOIN public."Genealogicos" 
+            ON "ControlPartos".id_bovino_genealogico = "Genealogicos".id_bovino
+            where id_parto>0 order by id_bovino asc;`;
     let respuesta = await _servicio.ejecutarSql(sql);
     return respuesta;
 };
@@ -78,8 +79,11 @@ let _servicio = new ServicioPG();
  */
  const guardarControlParto = async (parto) => {
     let sql = `CALL public.insertparto($1, $2, $3, $4, $5, $6,$7, $8, $9, $10, $11)`;
-    let valores = [parto.id_bovino, parto.id_tipo, parto.nombre, parto.id_raza, parto.finca,
-     parto.fecha_parto, parto.pesaje, parto.observaciones, parto.id_mama, parto.id_papa, parto.id_usuario];
+    let valores = [parto.id_bovino, parto.id_tipo, 
+                parto.nombre, parto.id_raza, parto.finca,
+                parto.fecha_parto, parto.pesaje, 
+                parto.observaciones, parto.id_mama, 
+                parto.id_papa, parto.id_usuario];
     let respuesta = await _servicio.ejecutarSql(sql, valores);
     return respuesta
 };

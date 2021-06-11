@@ -46,8 +46,7 @@ router.post("/login", (req, res) => {
         _controller.consultarUsuario(usuario)
         .then(answerDB =>{
             let usuario_consulta = answerDB.rowCount > 0 ? answerDB.rows[0] : undefined;
-              console.log(answerDB.rows[0]);
-              console.log(usuario);
+              
                 if (usuario_consulta) {
                     let token = _controller.generar_token(usuario);
                     res.status(200).send({

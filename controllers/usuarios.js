@@ -54,17 +54,20 @@ const validarUsuario = usuario => {
  */
 const consultarUsuarios = async () => {
     let sql = `SELECT "Usuarios"."id_Tusuario", "Usuarios".id_usuario, "Usuarios".nombre as "Usuario", 
-        "Usuarios".correo, "Usuarios".celular, "Usuarios".id_tipo, "TiposUsuarios".nombre as "Rol"
-        FROM public."Usuarios"
-        INNER JOIN public."TiposUsuarios" 
-        ON public."Usuarios".id_tipo = "TiposUsuarios"."id_tipo";`;
+            "Usuarios".correo, "Usuarios".celular, "Usuarios".id_tipo, "TiposUsuarios".nombre as "Rol"
+            FROM public."Usuarios"
+            INNER JOIN public."TiposUsuarios" 
+            ON public."Usuarios".id_tipo = "TiposUsuarios"."id_tipo"
+            where "Usuarios"."id_Tusuario">0
+            order by  "Usuarios".id_usuario asc;`;
     let respuesta = await _servicio.ejecutarSql(sql);
     return respuesta;
 };
 
 const consultarUsuariosNombreyId = async () => {
     let sql = `SELECT  "Usuarios".id_usuario, "Usuarios".nombre
-        FROM public."Usuarios";`;
+        FROM public."Usuarios"  where "Usuarios"."id_Tusuario">0
+        order by  "Usuarios".id_usuario asc;`;
     let respuesta = await _servicio.ejecutarSql(sql);
     return respuesta
 };

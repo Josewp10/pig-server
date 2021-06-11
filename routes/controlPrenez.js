@@ -54,7 +54,13 @@ router.get('/controlPrenez/:id_control', async (req, res) => {
     _controlador.consultarControlPrenez(id)
       .then((respuestaDB) => {
           let controlPrenez = respuestaDB.rows;
-          res.send({ok: true, info: controlPrenez, mensaje: 'Control preñez consultado'});
+          
+          if (controlPrenez==0) {
+            res.send({ok: false, info: controlPrenez, mensaje: 'Control preñez no encontrado'}); 
+          }else{
+            res.send({ok: true, info: controlPrenez, mensaje: 'Control preñez consultado'});
+          }
+          
       })
       .catch(error => {
           console.log(error);

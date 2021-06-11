@@ -27,8 +27,10 @@ let validar = lecheria => {
  */
 let consultarLecherias = async () => {
     let sql = `SELECT id_lecheria, num_lactantes, "Usuarios".nombre as Usuario
-	FROM public."Lecherias"
-	INNER JOIN public."Usuarios" ON "Lecherias".id_usuario = "Usuarios".id_usuario;	`;
+            FROM public."Lecherias"
+            INNER JOIN public."Usuarios" ON "Lecherias".id_usuario = "Usuarios".id_usuario
+            where id_lecheria > 0
+            order by id_lecheria asc;`;
     let respuesta = await _servicio.ejecutarSql(sql);
     return respuesta;
 };
