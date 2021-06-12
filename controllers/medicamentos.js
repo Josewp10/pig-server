@@ -137,6 +137,18 @@ const editarMedicamento = async (medicamento, codigo) => {
   };
   
 
+/**
+ * @description Validar inventario
+ * @param
+ * @returns
+ */
+ const ValidarInventario = async () => {
+    let sql = `SELECT  nombre, disponibilidad FROM public."Medicamentos" where "disponibilidad"<=5 
+    order by codigo asc;`;    
+    let respuesta = await _servicio.ejecutarSql(sql);
+    return respuesta
+};
+
 module.exports = {validarMedicamento, consultarMedicamentos, 
                  consultarMedicamento, guardarMedicamento, 
-                 eliminarMedicamento, editarMedicamento};
+                 eliminarMedicamento, editarMedicamento, ValidarInventario};
